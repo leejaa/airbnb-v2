@@ -6,7 +6,7 @@ import path from 'path'
 
 export const GQLDate = asNexusMethod(GraphQLDate, 'date')
 
-const prisma = new PrismaClient()
+const prisma = new PrismaClient();
 
 const User = objectType({
   name: 'User',
