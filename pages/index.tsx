@@ -4,23 +4,16 @@ import Layout from "../components/Layout";
 import gql from "graphql-tag";
 import { useQuery } from "@apollo/react-hooks";
 
-const FeedQuery = gql`
-  query FeedQuery {
-    feed {
+const TestQuery = gql`
+  query TestQuery {
+    photo {
       id
-      title
-      content
-      published
-      author {
-        id
-        name
-      }
     }
   }
 `
 
 export default () => {
-  const { loading, error, data } = useQuery(FeedQuery)
+  const { loading, error, data } = useQuery(TestQuery)
   if (loading) {
     return <div>Loading ...</div>
   }
