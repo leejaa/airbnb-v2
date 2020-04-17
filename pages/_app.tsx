@@ -4,6 +4,7 @@ import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import { ApolloProvider } from "@apollo/react-hooks";
 import { withApollo } from "../apollo/client";
+import store, { persistor } from "../redux/store";
 
 class MyApp extends App<any> {
   constructor(props: any) {
@@ -14,7 +15,11 @@ class MyApp extends App<any> {
     return (
       <Container>
         <ApolloProvider client={apolloClient}>
-          <Component {...pageProps} />
+          <Provider store={store}>
+            <PersistGate persistor={persistor}>
+              <Component {...pageProps} />
+            </PersistGate>
+          </Provider>
         </ApolloProvider>
       </Container>
     );
