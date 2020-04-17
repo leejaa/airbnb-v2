@@ -21,7 +21,10 @@ const Query = objectType({
     t.list.field('photo', {
       type: 'Photo',
       resolve: (_parent, _args, ctx) => {
-        return prisma.photo.findMany({})
+        return prisma.photo.findMany({
+          first: 1,
+          skip: 1
+        })
       },
     })
   },

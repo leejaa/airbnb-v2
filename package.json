@@ -8,7 +8,8 @@
     "start": "next start",
     "generate": "yarn generate:prisma && yarn generate:nexus",
     "generate:prisma": "npx prisma generate",
-    "generate:nexus": "ts-node --transpile-only pages/api"
+    "generate:nexus": "ts-node --transpile-only pages/api",
+    "gen": "graphql-codegen --config codegen.yml"
   },
   "keywords": [],
   "author": "",
@@ -44,10 +45,17 @@
     "react-apollo": "3.1.4",
     "react-dom": "16.13.1",
     "react-markdown": "4.3.1",
+    "react-redux": "^7.2.0",
+    "redux-persist": "^6.0.0",
     "whatwg-fetch": "^3.0.0",
     "ws": "^7.2.3"
   },
   "devDependencies": {
+    "@graphql-codegen/cli": "^1.13.2",
+    "@graphql-codegen/introspection": "^1.13.2",
+    "@graphql-codegen/typescript": "^1.13.2",
+    "@graphql-codegen/typescript-operations": "^1.13.2",
+    "@graphql-codegen/typescript-react-apollo": "^1.13.2",
     "@prisma/cli": "^2.0.0-beta.2",
     "@types/graphql": "14.5.0",
     "@types/node": "13.11.1",
