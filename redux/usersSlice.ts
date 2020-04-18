@@ -14,8 +14,4 @@ const userSlice = createSlice({
 
 export const { changeTest } = userSlice.actions;
 
-export const userLogin = form => async dispatch => {
-    dispatch(changeTest({}));
-  };
-
 export default userSlice.reducer;

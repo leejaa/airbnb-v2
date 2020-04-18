@@ -5,8 +5,10 @@ import Layout from "../components/Layout";
 import gql from "graphql-tag";
 import { useQuery } from "@apollo/react-hooks";
 import { changeTest } from "../redux/usersSlice";
+import { TestDocument } from "../generated/graphql";
 
 export default () => {
+  TestDocument
   const { test } = useSelector(state => state.usersReducer);
   const dispatch = useDispatch();
   const onClick = () => {
