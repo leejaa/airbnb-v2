@@ -14,7 +14,6 @@ export default () => {
   const onClick = () => {
     dispatch(changeTest({}));
   }
-  console.log('test', test);
   return (
     <Layout>
       <div>index</div>
