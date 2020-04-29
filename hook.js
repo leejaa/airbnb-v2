@@ -15,10 +15,7 @@ doHook();
 async function doHook() {
     try {
         console.log('Web Hook 실행');
-        await axios.post( url, {
-            body,
-            { headers },
-        });
+        await axios.post( url, body, { headers });
     } catch (error) {
         console.log('error', error);
     }
