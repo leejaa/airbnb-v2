@@ -1,6 +1,6 @@
 const axios = require( 'axios' );
 
-const url = 'https://hooks.slack.com/services/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';
+const url = 'https://hooks.slack.com/services/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';
 
 const headers = {
     "Content-Type": "application/json"
