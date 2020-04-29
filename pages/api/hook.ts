@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const url = 'https://hooks.slack.com/services/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';
+const url = 'https://hooks.slack.com/services/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';
 const headers = {
     "Content-Type": "application/json"
 };
