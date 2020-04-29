@@ -15,7 +15,7 @@ export default () => {
   }
   return (
     <Layout>
-      <div>index222</div>
+      <div>index</div>
       <button onClick={ onClick }>버튼</button>
     </Layout>
   );
