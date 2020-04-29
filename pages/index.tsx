@@ -8,7 +8,6 @@ import { changeTest } from "../redux/usersSlice";
 import { TestDocument } from "../generated/graphql";
 
 export default () => {
-  TestDocument
   const { test } = useSelector(state => state.usersReducer);
   const dispatch = useDispatch();
   const onClick = () => {
@@ -16,7 +15,7 @@ export default () => {
   }
   return (
     <Layout>
-      <div>index...</div>
+      <div>index</div>
       <button onClick={ onClick }>버튼</button>
     </Layout>
   );
