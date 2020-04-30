@@ -11,6 +11,7 @@ const body = {
 const webhook = new IncomingWebhook(url);
 
 export default async(req, res) => {
+    console.log('url', url);
     res.setHeader('Content-Type', 'application/json');
     let result = 'success';
     try {
@@ -18,8 +19,10 @@ export default async(req, res) => {
             text: 'master에 배포합니다.'
         });
     } catch (error) {
+        console.log('error', error);
         result = error;
     }
+    console.log('result', result);
     res.end(JSON.stringify({ result }));
 }
 
