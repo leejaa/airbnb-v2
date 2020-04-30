@@ -1,3 +1,5 @@
+require("dotenv").config();
+
 module.exports = {
     typescript: {
         // !! WARN !!
@@ -9,4 +11,7 @@ module.exports = {
         // !! WARN !!
         ignoreBuildErrors: true,
     },
+    env: {
+        SLACK_WEBHOOK_URL: process.env.SLACK_WEBHOOK_URL
+    }
 }
