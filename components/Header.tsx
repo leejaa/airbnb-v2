@@ -1,61 +1,22 @@
-import Link from 'next/link'
 
-function isActive(pathname) {
+import React from "react"
+
+type Props = {
+};
+
+
+const Header: React.FunctionComponent<Props> = ({
+}) => {
   return (
-    typeof document !== 'undefined' && document.location.pathname === pathname
-  )
+    <div className="border flex-1 border-gray-900 w-full h-16 flex items-center justify-between">
+      <img src="https://cdn4.iconfinder.com/data/icons/socialcones/508/Airbnb-512.png" style={ { maxWidth: 45 } }/>
+      <div className="border border-gray-900 h-full w-1/4 flex items-center justify-center">
+        <div className="border border-gray-400 h-full w-1/5 flex items-center justify-center rounded-full cursor-pointer">
+          로그인
+        </div>
+      </div>
+    </div>
+  );
 }
 
-const Header = () => (
-  <nav>
-    <div className="left">
-      <Link href="/">
-        <a className="bold" data-active={isActive('/')}>
-          Blog
-        </a>
-      </Link>
-      <Link href="/drafts">
-        <a data-active={isActive('/drafts')}>Drafts</a>
-      </Link>
-    </div>
-    <div className="right">
-      <Link href="/signup">
-        <a data-active={isActive('/signup')}>Signup</a>
-      </Link>
-      <Link href="/create">
-        <a data-active={isActive('/create')}>+ Create draft</a>
-      </Link>
-    </div>
-    <style jsx>{`
-      nav {
-        display: flex;
-        padding: 2rem;
-        align-items: center;
-      }
-      .bold {
-        font-weight: bold;
-      }
-      a {
-        text-decoration: none;
-        color: #000;
-        display: inline-block;
-      }
-      .left a[data-active='true'] {
-        color: gray;
-      }
-      a + a {
-        margin-left: 1rem;
-      }
-      .right {
-        margin-left: auto;
-      }
-      .right a {
-        border: 1px solid black;
-        padding: 0.5rem 1rem;
-        border-radius: 3px;
-      }
-    `}</style>
-  </nav>
-)
-
-export default Header
+export default Header;

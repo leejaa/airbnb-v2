@@ -3,6 +3,7 @@ import React from "react";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import { ApolloProvider } from "@apollo/react-hooks";
+import '../css/tailwind.css';
 import { withApollo } from "../apollo/client";
 import store, { persistor } from "../redux/store";
 
