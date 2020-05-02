@@ -1,6 +1,6 @@
 import { combineReducers } from "redux";
-import usersReducer from "./usersSlice";
+import indexReducer from "./indexSlice";
 
 export default combineReducers({
-  usersReducer,
+  indexReducer,
 });

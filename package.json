@@ -38,11 +38,13 @@
     "dotenv": "^8.2.0",
     "dotenv-load": "^2.0.0",
     "express": "4.17.1",
+    "formik": "^2.1.4",
     "graphql": "14.6.0",
     "graphql-iso-date": "3.6.1",
     "graphql-tag": "2.10.3",
     "isomorphic-unfetch": "3.0.0",
     "jwt-decode": "^2.2.0",
+    "lodash": "^4.17.15",
     "micro-cors": "^0.1.1",
     "next": "9.3.4",
     "next-compose-plugins": "^2.2.0",
@@ -61,7 +63,8 @@
     "redux-persist": "^6.0.0",
     "tailwindcss": "^1.4.0",
     "whatwg-fetch": "^3.0.0",
-    "ws": "^7.2.3"
+    "ws": "^7.2.3",
+    "yup": "^0.28.5"
   },
   "devDependencies": {
     "@fullhuman/postcss-purgecss": "^2.1.2",
@@ -75,8 +78,10 @@
     "@types/dotenv": "^8.2.0",
     "@types/graphql": "14.5.0",
     "@types/jwt-decode": "^2.2.1",
+    "@types/lodash": "^4.14.150",
     "@types/node": "13.11.1",
     "@types/react": "16.9.33",
+    "@types/yup": "^0.28.0",
     "husky": "^4.2.5",
     "postcss-preset-env": "^6.7.0",
     "typescript": "3.8.3"
