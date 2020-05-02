@@ -12,6 +12,8 @@ module.exports = {
         ignoreBuildErrors: true,
     },
     env: {
-        SLACK_WEBHOOK_URL: process.env.SLACK_WEBHOOK_URL
+        SLACK_WEBHOOK_URL: process.env.SLACK_WEBHOOK_URL,
+        ACCESS_TOKEN_SECRET: 'accessToken',
+        REFRESH_TOKEN_SECRET: 'refreshToken',
     }
 }

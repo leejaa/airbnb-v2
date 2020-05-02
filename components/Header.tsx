@@ -1,7 +1,7 @@
 
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { toggleShowJoinModal } from "../redux/indexSlice";
+import { toggleShowJoinModal, toggleShowLoginModal } from "../redux/indexSlice";
 
 type Props = {
 };
@@ -23,7 +23,7 @@ const Header: React.FunctionComponent<Props> = ({
         <div className="h-full w-1/5 flex items-center justify-center rounded-full cursor-pointer hover:bg-gray-200" onClick={() => dispatch(toggleShowJoinModal({}))}>
           회원가입
         </div>
-        <div className="border border-gray-400 h-full w-1/5 flex items-center justify-center rounded-full cursor-pointer">
+        <div className="border border-gray-400 h-full w-1/5 flex items-center justify-center rounded-full cursor-pointer" onClick={() => dispatch(toggleShowLoginModal({}))}>
           로그인
         </div>
       </div>

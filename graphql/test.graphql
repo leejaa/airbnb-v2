@@ -1,7 +1,0 @@
-query test {
-  photo{
-    id
-    file
-    caption
-  }
-}
