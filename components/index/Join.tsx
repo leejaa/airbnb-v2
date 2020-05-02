@@ -3,9 +3,9 @@ import React, { useState } from "react";
 import { useFormik } from 'formik';
 import * as yup from "yup";
 import _ from 'lodash';
-import { useCreateUserMutation } from "../../app/generated/graphql";
 import { useDispatch } from "react-redux";
 import { toggleShowJoinModal, toggleShowLoginModal } from "../../redux/indexSlice";
+import { useCreateUserMutation } from "../../generated/graphql";
 
 type Props = {
 };
