@@ -15,5 +15,8 @@ module.exports = {
         SLACK_WEBHOOK_URL: process.env.SLACK_WEBHOOK_URL,
         ACCESS_TOKEN_SECRET: 'accessToken',
         REFRESH_TOKEN_SECRET: 'refreshToken',
+        PRODUCTION_URL: process.env.PRODUCTION_URL,
+        DEVELOPMENT_URL: process.env.DEVELOPMENT_URL,
+        IS_PRODUCTION: process.env.IS_PRODUCTION,
     }
 }

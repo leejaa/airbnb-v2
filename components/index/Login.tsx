@@ -16,8 +16,6 @@ const validationSchema = yup.object({
         .string()
         .required('X 이메일주소가 필요합니다.')
         .email('X 이메일형식으로 입력해주세요.'),
-    password: yup
-        .string().matches(/^(?=.*[a-z])(?=.*[0-9])(?=.*[!@#$%^*()\-_=+\\\|\[\]{};:\'",.<>\/?])*.{8,}$/i, 'X 비밀번호 형식이 맞지 않습니다.'),
 });
 
 const Login: React.FunctionComponent<Props> = ({
@@ -46,6 +44,7 @@ const Login: React.FunctionComponent<Props> = ({
                 } else {
                     alert('로그인이 실패했습니다.');
                 }
+                document.cookie = `jid=${result?.data?.login?.refreshToken ?? ''}`;
                 dispatch(toggleShowLoginModal({}));
             } catch (error) {
                 console.log('error', error);
@@ -71,7 +70,6 @@ const Login: React.FunctionComponent<Props> = ({
                 </div>
                 <div className="w-full h-16 focus:border-white relative mb-6">
                     <div className="text-orange-700">{formik?.errors?.email ?? ''}</div>
-                    <div className="text-orange-700">{formik?.errors?.password ?? ''}</div>
                 </div>
                 <div className="w-full h-16 bg-red-500 flex justify-center items-center">
                     <button className="text-white w-full h-full focus:outline-none" type="submit">{loading ? '로딩중' : '로그인'}</button>

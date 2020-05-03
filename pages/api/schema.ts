@@ -18,7 +18,7 @@ const Photo = objectType({
   },
 });
 
-const User = objectType({
+export const User = objectType({
   name: 'User',
   definition(t) {
     t.int('id')
@@ -124,7 +124,7 @@ const Mutation = objectType({
           return {
             success: true,
             accessToken: sign({ userId: user[0].id }, process.env.ACCESS_TOKEN_SECRET!, {
-              expiresIn: "1h"
+              expiresIn: "1s"
             }),
             refreshToken: sign({ userId: user[0].id }, process.env.REFRESH_TOKEN_SECRET!, {
               expiresIn: "30d"

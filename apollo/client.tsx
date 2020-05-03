@@ -61,30 +61,17 @@ export function withApollo(PageComponent: any, { ssr = true } = {}) {
       let serverAccessToken = "";
 
       if (isServer()) {
-        // const cookies : any = cookie.parse(`${req.headers.cookie}`);
-        // if (cookies.jid) {
-        //   const response = await fetch(IS_PRODUCTION ? `${API_PRODUCTION}/refresh_token` : `${API_DEVELOPMENT}/refresh_token`, {
-        //     method: "POST",
-        //     credentials: "include",
-        //     headers: {
-        //       cookie: "jid=" + cookies.jid
-        //     }
-        //   });
-        //   const data = await response.json();
-        //   serverAccessToken = data.accessToken;
-        // }
-
         const cookies: any = cookie.parse(`${req.headers.cookie}`);
         if (cookies.jid) {
-          // const response = await fetch(`http://localhost:3000/refresh_token`, {
-          //   method: "POST",
-          //   credentials: "include",
-          //   headers: {
-          //     cookie: "jid=" + cookies.jid,
-          //   }
-          // });
-          // const data = await response.json();
-          // serverAccessToken = data.accessToken;
+          const response = await fetch(`${process.env.IS_PRODUCTION === 'true' ? process.env.PRODUCTION_URL : process.env.DEVELOPMENT_URL}/api/refresh_token`, {
+            method: "POST",
+            credentials: "include",
+            headers: {
+              cookie: "jid=" + cookies.jid,
+            }
+          });
+          const data = await response.json();
+          serverAccessToken = data.accessToken;
         }
       }
 
@@ -176,7 +163,7 @@ function initApolloClient(initState: any, serverAccessToken?: string) {
  */
 function createApolloClient(initialState = {}, serverAccessToken?: string) {
   const httpLink = new HttpLink({
-    uri: 'http://localhost:3000/api',
+    uri: `${process.env.IS_PRODUCTION === 'true' ? process.env.PRODUCTION_URL : process.env.DEVELOPMENT_URL}/api`,
     credentials: "include",
     fetch,
   });
@@ -202,7 +189,7 @@ function createApolloClient(initialState = {}, serverAccessToken?: string) {
       }
     },
     fetchAccessToken: () => {
-      return fetch(`http://localhost:3000/api`, {
+      return fetch(`${process.env.IS_PRODUCTION === 'true' ? process.env.PRODUCTION_URL : process.env.DEVELOPMENT_URL}/api`, {
         method: "POST",
         credentials: "include",
       });
@@ -211,7 +198,7 @@ function createApolloClient(initialState = {}, serverAccessToken?: string) {
       setAccessToken(accessToken);
     },
     handleError: err => {
-      console.warn("Your refresh token is invalid. Try to relogin");
+      console.warn("리프레시토큰이 만료되었습니다. 다시 로그인해주세요.");
       console.error(err);
     }
   });
