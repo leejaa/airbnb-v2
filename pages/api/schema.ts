@@ -93,7 +93,6 @@ const Mutation = objectType({
               password: hashedPassword
             },
           });
-          console.log('user', JSON.stringify(user));
           return {
             success: true,
             user

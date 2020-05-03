@@ -21,3 +21,11 @@ mutation login($email: String!, $password: String!){
     }
   }
 }
+
+query selectUser($id: Int!){
+  selectUser(id: $id){
+    id
+    name
+    email
+  }
+}

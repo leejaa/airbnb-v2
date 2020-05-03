@@ -1,5 +1,5 @@
 Arguments: 
-  /usr/local/bin/node /usr/local/bin/yarn add -D @types/formik
+  /usr/local/bin/node /usr/local/bin/yarn add -D @types/nexus
 
 PATH: 
   /Library/Frameworks/Python.framework/Versions/3.7/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/Frameworks/Python.framework/Versions/3.7/bin
@@ -14,7 +14,7 @@ Platform:
   darwin x64
 
 Trace: 
-  Error: https://registry.yarnpkg.com/@types%2fformik: Not found
+  Error: https://registry.yarnpkg.com/@types%2fnexus: Not found
       at Request.params.callback [as _callback] (/usr/local/lib/node_modules/yarn/lib/cli.js:66830:18)
       at Request.self.callback (/usr/local/lib/node_modules/yarn/lib/cli.js:140464:22)
       at Request.emit (events.js:198:13)
@@ -35,8 +35,9 @@ npm manifest:
       "dev": "next",
       "build": "next build",
       "start": "next start",
-      "generate": "yarn generate:prisma && yarn generate:nexus",
+      "prisma": "npx prisma generate && npx prisma introspect",
       "generate:prisma": "npx prisma generate",
+      "instrospect:prisma": "npx prisma introspect",
       "generate:nexus": "ts-node --transpile-only pages/api",
       "gen": "graphql-codegen --config codegen.yml",
       "hook": "node hook.js"
@@ -63,6 +64,7 @@ npm manifest:
       "apollo-link-ws": "^1.0.20",
       "apollo-server-micro": "^2.12.0",
       "axios": "^0.19.2",
+      "bcryptjs": "^2.4.3",
       "cookie": "^0.4.0",
       "dotenv": "^8.2.0",
       "dotenv-load": "^2.0.0",
@@ -72,7 +74,9 @@ npm manifest:
       "graphql-iso-date": "3.6.1",
       "graphql-tag": "2.10.3",
       "isomorphic-unfetch": "3.0.0",
+      "jsonwebtoken": "^8.5.1",
       "jwt-decode": "^2.2.0",
+      "lodash": "^4.17.15",
       "micro-cors": "^0.1.1",
       "next": "9.3.4",
       "next-compose-plugins": "^2.2.0",
@@ -91,7 +95,8 @@ npm manifest:
       "redux-persist": "^6.0.0",
       "tailwindcss": "^1.4.0",
       "whatwg-fetch": "^3.0.0",
-      "ws": "^7.2.3"
+      "ws": "^7.2.3",
+      "yup": "^0.28.5"
     },
     "devDependencies": {
       "@fullhuman/postcss-purgecss": "^2.1.2",
@@ -101,12 +106,18 @@ npm manifest:
       "@graphql-codegen/typescript-operations": "^1.13.2",
       "@graphql-codegen/typescript-react-apollo": "^1.13.2",
       "@prisma/cli": "^2.0.0-beta.2",
+      "@types/bcryptjs": "^2.4.2",
       "@types/cookie": "^0.3.3",
       "@types/dotenv": "^8.2.0",
+      "@types/express": "^4.17.6",
       "@types/graphql": "14.5.0",
+      "@types/jsonwebtoken": "^8.3.9",
       "@types/jwt-decode": "^2.2.1",
+      "@types/lodash": "^4.14.150",
       "@types/node": "13.11.1",
       "@types/react": "16.9.33",
+      "@types/react-redux": "^7.1.7",
+      "@types/yup": "^0.28.0",
       "husky": "^4.2.5",
       "postcss-preset-env": "^6.7.0",
       "typescript": "3.8.3"
@@ -1140,7 +1151,7 @@ Lockfile:
     dependencies:
       regenerator-runtime "^0.13.2"
   
-  "@babel/runtime@^7.0.0", "@babel/runtime@^7.5.5", "@babel/runtime@^7.8.4", "@babel/runtime@^7.9.2":
+  "@babel/runtime@^7.0.0", "@babel/runtime@^7.5.5", "@babel/runtime@^7.8.4", "@babel/runtime@^7.9.2", "@babel/runtime@^7.9.6":
     version "7.9.6"
     resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.9.6.tgz#a9102eb5cadedf3f31d08a9ecf294af7827ea29f"
     integrity sha512-64AF1xY3OAkFHqOb9s4jpgk1Mm5vDZ4L3acHvAml+53nO1XbXLuDodsVpO4OIUsmemlUHMxNdYMNJmsvOwLrvQ==
@@ -1639,6 +1650,11 @@ Lockfile:
     dependencies:
       "@types/node" "*"
   
+  "@types/bcryptjs@^2.4.2":
+    version "2.4.2"
+    resolved "https://registry.yarnpkg.com/@types/bcryptjs/-/bcryptjs-2.4.2.tgz#e3530eac9dd136bfdfb0e43df2c4c5ce1f77dfae"
+    integrity sha512-LiMQ6EOPob/4yUL66SZzu6Yh77cbzJFYll+ZfaPiPPFswtIlA/Fs1MzdKYA7JApHU49zQTbJGX3PDmCpIdDBRQ==
+  
   "@types/body-parser@*":
     version "1.19.0"
     resolved "https://registry.yarnpkg.com/@types/body-parser/-/body-parser-1.19.0.tgz#0685b3c47eb3006ffed117cdd55164b61f80538f"
@@ -1694,7 +1710,7 @@ Lockfile:
       "@types/node" "*"
       "@types/range-parser" "*"
   
-  "@types/express@*":
+  "@types/express@*", "@types/express@^4.17.6":
     version "4.17.6"
     resolved "https://registry.yarnpkg.com/@types/express/-/express-4.17.6.tgz#6bce49e49570507b86ea1b07b806f04697fac45e"
     integrity sha512-n/mr9tZI83kd4azlPG5y997C/M4DNABK9yErhFM6hKdym4kkmd9j0vtsJyjFIwfRBxtrxZtAfGZCNRIBMFLK5w==
@@ -1728,10 +1744,25 @@ Lockfile:
     dependencies:
       graphql "*"
   
+  "@types/hoist-non-react-statics@^3.3.0":
+    version "3.3.1"
+    resolved "https://registry.yarnpkg.com/@types/hoist-non-react-statics/-/hoist-non-react-statics-3.3.1.tgz#1124aafe5118cb591977aeb1ceaaed1070eb039f"
+    integrity sha512-iMIqiko6ooLrTh1joXodJK5X9xeEALT1kM5G3ZLhD3hszxBdIEd5C75U834D9mLcINgD4OyZf5uQXjkuYydWvA==
+    dependencies:
+      "@types/react" "*"
+      hoist-non-react-statics "^3.3.0"
+  
   "@types/http-assert@*":
     version "1.5.1"
     resolved "https://registry.yarnpkg.com/@types/http-assert/-/http-assert-1.5.1.tgz#d775e93630c2469c2f980fc27e3143240335db3b"
     integrity sha512-PGAK759pxyfXE78NbKxyfRcWYA/KwW17X290cNev/qAsn9eQIxkH4shoNBafH37wewhDG/0p1cHPbK6+SzZjWQ==
+  
+  "@types/jsonwebtoken@^8.3.9":
+    version "8.3.9"
+    resolved "https://registry.yarnpkg.com/@types/jsonwebtoken/-/jsonwebtoken-8.3.9.tgz#48da9a49997e4eb046733e6878f583d7448f0594"
+    integrity sha512-00rI8GbOKuRtoYxltFSRTVUXCRLbuYwln2/nUMPtFU9JGS7if+nnmLjeoFGmqsNCmblPLAaeQ/zMLVsHr6T5bg==
+    dependencies:
+      "@types/node" "*"
   
   "@types/jwt-decode@^2.2.1":
     version "2.2.1"
@@ -1762,6 +1793,11 @@ Lockfile:
       "@types/keygrip" "*"
       "@types/koa-compose" "*"
       "@types/node" "*"
+  
+  "@types/lodash@^4.14.150":
+    version "4.14.150"
+    resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.150.tgz#649fe44684c3f1fcb6164d943c5a61977e8cf0bd"
+    integrity sha512-kMNLM5JBcasgYscD9x/Gvr6lTAv2NVgsKtet/hm93qMyf/D1pt+7jeEZklKJKxMVmXjxbRVQQGfqDSfipYCO6w==
   
   "@types/long@^4.0.0":
     version "4.0.1"
@@ -1816,6 +1852,24 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/@types/range-parser/-/range-parser-1.2.3.tgz#7ee330ba7caafb98090bece86a5ee44115904c2c"
     integrity sha512-ewFXqrQHlFsgc09MK5jP5iR7vumV/BYayNC6PgJO2LPe8vrnNFyjQjSppfEngITi0qvfKtzFvgKymGheFM9UOA==
   
+  "@types/react-redux@^7.1.7":
+    version "7.1.7"
+    resolved "https://registry.yarnpkg.com/@types/react-redux/-/react-redux-7.1.7.tgz#12a0c529aba660696947384a059c5c6e08185c7a"
+    integrity sha512-U+WrzeFfI83+evZE2dkZ/oF/1vjIYgqrb5dGgedkqVV8HEfDFujNgWCwHL89TDuWKb47U0nTBT6PLGq4IIogWg==
+    dependencies:
+      "@types/hoist-non-react-statics" "^3.3.0"
+      "@types/react" "*"
+      hoist-non-react-statics "^3.3.0"
+      redux "^4.0.0"
+  
+  "@types/react@*":
+    version "16.9.34"
+    resolved "https://registry.yarnpkg.com/@types/react/-/react-16.9.34.tgz#f7d5e331c468f53affed17a8a4d488cd44ea9349"
+    integrity sha512-8AJlYMOfPe1KGLKyHpflCg5z46n0b5DbRfqDksxBLBTUpB75ypDBAO9eCUcjNwE6LCUslwTz00yyG/X9gaVtow==
+    dependencies:
+      "@types/prop-types" "*"
+      csstype "^2.2.0"
+  
   "@types/react@16.9.33":
     version "16.9.33"
     resolved "https://registry.yarnpkg.com/@types/react/-/react-16.9.33.tgz#a5274520f0d28cbbb73c8652ddd48646fd4bcae5"
@@ -1838,6 +1892,11 @@ Lockfile:
     integrity sha512-PpPrX7SZW9re6+Ha8ojZG4Se8AZXgf0GK6zmfqEuCsY49LFDNXO3SByp44X3dFEqtB73lkCDAdUazhAjVPiNwg==
     dependencies:
       "@types/node" "*"
+  
+  "@types/yup@^0.28.0":
+    version "0.28.0"
+    resolved "https://registry.yarnpkg.com/@types/yup/-/yup-0.28.0.tgz#bddd4c7bc3cb23109d87b77d4607f983a9595768"
+    integrity sha512-M11FLKWuwvJo1HjL6oXXl7lXEjpvkW1vK+OA9qFQu1SGDY7Sh36FmvxFd2PoYkrUamKbluWQ+1ZMd+tbgQmwmg==
   
   "@types/zen-observable@^0.8.0":
     version "0.8.0"
@@ -2747,6 +2806,11 @@ Lockfile:
     integrity sha1-pDAdOJtqQ/m2f/PKEaP2Y342Dp4=
     dependencies:
       tweetnacl "^0.14.3"
+  
+  bcryptjs@^2.4.3:
+    version "2.4.3"
+    resolved "https://registry.yarnpkg.com/bcryptjs/-/bcryptjs-2.4.3.tgz#9ab5627b93e60621ff7cdac5da9733027df1d0cb"
+    integrity sha1-mrVie5PmBiH/fNrF2pczAn3x0Ms=
   
   big.js@^5.2.2:
     version "5.2.2"
@@ -4423,6 +4487,11 @@ Lockfile:
       inherits "^2.0.3"
       readable-stream "^2.3.6"
   
+  fn-name@~3.0.0:
+    version "3.0.0"
+    resolved "https://registry.yarnpkg.com/fn-name/-/fn-name-3.0.0.tgz#0596707f635929634d791f452309ab41558e3c5c"
+    integrity sha512-eNMNr5exLoavuAMhIUVsOKF79SWd/zG104ef6sxBTSw+cZc6BXdQXDvYcGvp0VbxVVSp1XDUNoz7mg1xMtSznA==
+  
   follow-redirects@1.5.10:
     version "1.5.10"
     resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.5.10.tgz#7b7a9f9aea2fdff36786a94ff643ed07f4ff5e2a"
@@ -5505,7 +5574,7 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/jsonify/-/jsonify-0.0.0.tgz#2c74b6ee41d93ca51b7b5aaee8f503631d252a73"
     integrity sha1-LHS27kHZPKUbe1qu6PUDYx0lKnM=
   
-  jsonwebtoken@^8.1.0:
+  jsonwebtoken@^8.1.0, jsonwebtoken@^8.5.1:
     version "8.5.1"
     resolved "https://registry.yarnpkg.com/jsonwebtoken/-/jsonwebtoken-8.5.1.tgz#00e71e0b8df54c2121a1f26137df2280673bcc0d"
     integrity sha512-XjwVfRS6jTMsqYs0EsuJ4LGxXV14zQybNd4L2r0UvbVnSF9Af8x7p5MzbJ90Ioz/9TI41/hTCvznF/loiSzn8w==
@@ -5681,7 +5750,7 @@ Lockfile:
     dependencies:
       p-locate "^4.1.0"
   
-  lodash-es@^4.17.14:
+  lodash-es@^4.17.11, lodash-es@^4.17.14:
     version "4.17.15"
     resolved "https://registry.yarnpkg.com/lodash-es/-/lodash-es-4.17.15.tgz#21bd96839354412f23d7a10340e5eac6ee455d78"
     integrity sha512-rlrc3yU3+JNOpZ9zj5pQtxnx2THmvRykwL4Xlxoa8I9lHBlVbbyPhgyPMioxVZ4NqyxaVVtaJnzsyOidQIhyyQ==
@@ -7201,6 +7270,11 @@ Lockfile:
       object-assign "^4.1.1"
       react-is "^16.8.1"
   
+  property-expr@^2.0.2:
+    version "2.0.2"
+    resolved "https://registry.yarnpkg.com/property-expr/-/property-expr-2.0.2.tgz#fff2a43919135553a3bc2fdd94bdb841965b2330"
+    integrity sha512-bc/5ggaYZxNkFKj374aLbEDqVADdYaLcFo8XBkishUWbaAdjlphaBFns9TvRA2pUseVL/wMFmui9X3IdNDU37g==
+  
   proxy-addr@~2.0.5:
     version "2.0.6"
     resolved "https://registry.yarnpkg.com/proxy-addr/-/proxy-addr-2.0.6.tgz#fdc2336505447d3f2f2c638ed272caf614bbb2bf"
@@ -8398,6 +8472,11 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/symbol-observable/-/symbol-observable-1.2.0.tgz#c22688aed4eab3cdc2dfeacbb561660560a00804"
     integrity sha512-e900nM8RRtGhlV36KGEU9k65K3mPb1WV70OdjfxlG2EAuM1noi/E/BaW/uMhL7bPEssK8QV57vN3esixjUvcXQ==
   
+  synchronous-promise@^2.0.10:
+    version "2.0.10"
+    resolved "https://registry.yarnpkg.com/synchronous-promise/-/synchronous-promise-2.0.10.tgz#e64c6fd3afd25f423963353043f4a68ebd397fd8"
+    integrity sha512-6PC+JRGmNjiG3kJ56ZMNWDPL8hjyghF5cMXIFOKg+NiwwEZZIvxTWd0pinWKyD227odg9ygF8xVhhz7gb8Uq7A==
+  
   tailwindcss@^1.4.0:
     version "1.4.0"
     resolved "https://registry.yarnpkg.com/tailwindcss/-/tailwindcss-1.4.0.tgz#bf4b0aba44319aedfddfc75ed4704f162ad13a50"
@@ -8539,6 +8618,11 @@ Lockfile:
     version "1.0.0"
     resolved "https://registry.yarnpkg.com/toidentifier/-/toidentifier-1.0.0.tgz#7e1be3470f1e77948bc43d94a3c8f4d7752ba553"
     integrity sha512-yaOH/Pk/VEhBWWTlhI+qXxDFXlejDGcQipMlyxda9nthulaxLZUNcUqFxokp0vcYnvteJln5FNQDRrxj3YcbVw==
+  
+  toposort@^2.0.2:
+    version "2.0.2"
+    resolved "https://registry.yarnpkg.com/toposort/-/toposort-2.0.2.tgz#ae21768175d1559d48bef35420b2f4962f09c330"
+    integrity sha1-riF2gXXRVZ1IvvNUILL0li8JwzA=
   
   tough-cookie@~2.5.0:
     version "2.5.0"
@@ -9129,6 +9213,19 @@ Lockfile:
       which-module "^2.0.0"
       y18n "^4.0.0"
       yargs-parser "^15.0.1"
+  
+  yup@^0.28.5:
+    version "0.28.5"
+    resolved "https://registry.yarnpkg.com/yup/-/yup-0.28.5.tgz#85cabb4000d3623ef69be81551190692e631a8a5"
+    integrity sha512-7JZcvpUGUxMKoaEtcoMEM8lCWRaueGNH/A3EhL/UWqfbFm3uloiI+x59Yq4nzhbbYWUTwAsCteaZOJ+VbqI1uw==
+    dependencies:
+      "@babel/runtime" "^7.9.6"
+      fn-name "~3.0.0"
+      lodash "^4.17.15"
+      lodash-es "^4.17.11"
+      property-expr "^2.0.2"
+      synchronous-promise "^2.0.10"
+      toposort "^2.0.2"
   
   zen-observable-ts@^0.8.21:
     version "0.8.21"

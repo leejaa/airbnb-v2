@@ -2,6 +2,7 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { toggleShowJoinModal, toggleShowLoginModal } from "../redux/indexSlice";
+import { useSelectUserQuery } from "../generated/graphql";
 
 type Props = {
 };
@@ -10,6 +11,13 @@ type Props = {
 const Header: React.FunctionComponent<Props> = ({
 }) => {
   const dispatch = useDispatch();
+  const { loading, data } = useSelectUserQuery({
+    variables: {
+      id: 211
+    }
+  });
+  console.log('loading', loading);
+  console.log('data', JSON.stringify(data));
   return (
     <div className="flex-1 w-full h-16 flex items-center justify-between">
       <img src="https://cdn4.iconfinder.com/data/icons/socialcones/508/Airbnb-512.png" style={{ maxWidth: 45 }} />
