@@ -4,7 +4,7 @@ import { PrismaClient } from "@prisma/client";
 
 
 export default async (req, res) => {
-    const token = req.cookies.jid;
+    const token = req?.cookies?.jid ?? '';
     if (!token) {
         return res.send({ ok: false, accessToken: "" });
     }
@@ -12,7 +12,7 @@ export default async (req, res) => {
     try {
         payload = verify(token, process.env.REFRESH_TOKEN_SECRET!);
     } catch (err) {
-        console.log(err);
+        console.log('error', err);
         return res.send({ ok: false, accessToken: "" });
     }
     // token is valid and

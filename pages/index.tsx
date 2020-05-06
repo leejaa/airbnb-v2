@@ -8,7 +8,9 @@ import Join from "../components/index/Join";
 import { toggleShowJoinModal, toggleShowLoginModal } from "../redux/indexSlice";
 import Login from "../components/index/Login";
 
-export default () => {
+const Index = (props) => {
+  console.log('props', JSON.stringify(props));
+  const router = useRouter();
   const { showJoinModal, showLoginModal } = useSelector(( state: any ) => state.indexReducer);
   const dispatch = useDispatch();
   const joinRef = useRef(null);
@@ -41,3 +43,5 @@ export default () => {
     </div>
   );
 };
+
+export default Index;

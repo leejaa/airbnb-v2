@@ -12,17 +12,16 @@ class MyApp extends App<any> {
     super(props);
   }
   render() {
-    const { Component, pageProps, apolloClient }: any = this.props;
+    const { Component, pageProps, apolloClient, isAuth }: any = this.props;
+    console.log('isAuth', isAuth);
     return (
-      <Container>
-        <ApolloProvider client={apolloClient}>
-          <Provider store={store}>
-            <PersistGate persistor={persistor}>
-              <Component {...pageProps} />
-            </PersistGate>
-          </Provider>
-        </ApolloProvider>
-      </Container>
+      <ApolloProvider client={apolloClient}>
+        <Provider store={store}>
+          <PersistGate persistor={persistor}>
+            <Component {...pageProps} isAuth={ isAuth }/>
+          </PersistGate>
+        </Provider>
+      </ApolloProvider>
     );
   }
 }

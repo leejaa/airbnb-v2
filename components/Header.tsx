@@ -16,7 +16,6 @@ const Header: React.FunctionComponent<Props> = ({
       id: 211
     }
   });
-  console.log('loading', loading);
   console.log('data', JSON.stringify(data));
   return (
     <div className="flex-1 w-full h-16 flex items-center justify-between">

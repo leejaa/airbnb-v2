@@ -1,13 +1,18 @@
-import { makeSchema, objectType, stringArg, asNexusMethod, intArg } from 'nexus';
+import { makeSchema, objectType, stringArg, asNexusMethod, intArg, fieldAuthorizePlugin, plugin } from 'nexus';
 import { GraphQLDate } from 'graphql-iso-date';
 import { PrismaClient } from '@prisma/client';
 import { hash, compare } from "bcryptjs";
-import { sign } from "jsonwebtoken";
+import { sign, verify } from "jsonwebtoken";
 import _ from "lodash";
+
+const SELECT_USER = 'selectUser';
+export const AUTH_LIST = [
+  SELECT_USER,
+];
 
 export const GQLDate = asNexusMethod(GraphQLDate, 'date')
 
-const prisma = new PrismaClient();
+export const prisma = new PrismaClient();
 
 const Photo = objectType({
   name: 'Photo',
@@ -60,7 +65,7 @@ const Query = objectType({
         })
       },
     })
-    t.field('selectUser', {
+    t.field(SELECT_USER, {
       type: 'User',
       args: { id: intArg({ required: true }) },
       resolve: async (_parent, { id }, ctx) => {
@@ -141,8 +146,39 @@ const Mutation = objectType({
   },
 })
 
+export const checkAuth = ({ req }) => {
+  const authorization = req?.headers?.authorization ?? '';
+  // const token = authorization?.split(" ")[1] ?? '';
+  const token = 'asdsdfdsf';
+  try {
+    const payload = verify(token, process.env.ACCESS_TOKEN_SECRET!);
+    return {
+      isAuth: true,
+      payload,
+    };
+  } catch (error) {
+    return {
+      isAuth: false,
+      error
+    };
+  }
+};
+
+const authorizePlugin = plugin({
+  name: "authorizePlugin",
+  onCreateFieldResolver(config) {
+    return async (root, args, ctx, info, next) => {
+      const value = await next(root, args, ctx, info);
+      return value;
+    };
+  },
+});
+
 export const schema = makeSchema({
   types: [Query, Mutation, Objects, GQLDate],
+  plugins: [
+    authorizePlugin,
+  ],
   outputs: {
     // typegen: path.join(__dirname, 'nexus-typegen.ts'),
     // schema: path.join(__dirname, 'schema.graphql')

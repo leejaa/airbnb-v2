@@ -23,12 +23,3 @@ export default async(req, res) => {
     }
     res.end(JSON.stringify({ result }));
 }
-
-async function doHook() {
-    try {
-        console.log('Web Hook 실행');
-        await axios.post( url, body, { headers });
-    } catch (error) {
-        console.log('error', error);
-    }
-}

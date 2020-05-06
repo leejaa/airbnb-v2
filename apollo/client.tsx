@@ -13,6 +13,7 @@ import { onError } from "apollo-link-error";
 import { ApolloLink } from "apollo-link";
 import { WebSocketLink } from 'apollo-link-ws';
 import cookie from "cookie";
+import { useRouter } from 'next/router'
 
 const isServer = () => typeof window === "undefined";
 
@@ -25,6 +26,7 @@ const isServer = () => typeof window === "undefined";
  * @param {Boolean} [config.ssr=true]
  */
 export function withApollo(PageComponent: any, { ssr = true } = {}) {
+  let isAuth = true;
   const WithApollo = ({
     apolloClient,
     serverAccessToken,
@@ -59,7 +61,6 @@ export function withApollo(PageComponent: any, { ssr = true } = {}) {
       } = ctx;
 
       let serverAccessToken = "";
-
       if (isServer()) {
         const cookies: any = cookie.parse(`${req.headers.cookie}`);
         if (cookies.jid) {
@@ -71,6 +72,9 @@ export function withApollo(PageComponent: any, { ssr = true } = {}) {
             }
           });
           const data = await response.json();
+          if ( !(data?.ok ?? false) ) {
+            isAuth = false;
+          }
           serverAccessToken = data.accessToken;
         }
       }
@@ -102,9 +106,10 @@ export function withApollo(PageComponent: any, { ssr = true } = {}) {
               <AppTree
                 pageProps={{
                   ...pageProps,
-                  apolloClient
+                  apolloClient,
                 }}
                 apolloClient={apolloClient}
+                isAuth
               />
             );
           } catch (error) {
@@ -126,7 +131,8 @@ export function withApollo(PageComponent: any, { ssr = true } = {}) {
       return {
         ...pageProps,
         apolloState,
-        serverAccessToken
+        serverAccessToken,
+        isAuth
       };
     };
   }
@@ -189,7 +195,7 @@ function createApolloClient(initialState = {}, serverAccessToken?: string) {
       }
     },
     fetchAccessToken: () => {
-      return fetch(`${process.env.IS_PRODUCTION === 'true' ? process.env.PRODUCTION_URL : process.env.DEVELOPMENT_URL}/api`, {
+      return fetch(`${process.env.IS_PRODUCTION === 'true' ? process.env.PRODUCTION_URL : process.env.DEVELOPMENT_URL}/api/refresh_token`, {
         method: "POST",
         credentials: "include",
       });
