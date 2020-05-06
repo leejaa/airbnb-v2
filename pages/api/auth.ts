@@ -28,14 +28,3 @@ export const sendRefreshToken = (res: Response, token: string) => {
         // path: "/refresh_token"
     });
 };
-
-export const sendNeedToLogin = (res: Response) => {
-    res.cookie("needToLogin", 'true', {
-        httpOnly: true,
-        secure: true,
-        // domain: '.herokuapp.com',
-        // www.example.com
-        // api.example.com
-        // path: "/refresh_token"
-    });
-};

@@ -13,7 +13,6 @@ class MyApp extends App<any> {
   }
   render() {
     const { Component, pageProps, apolloClient, isAuth }: any = this.props;
-    console.log('isAuth', isAuth);
     return (
       <ApolloProvider client={apolloClient}>
         <Provider store={store}>

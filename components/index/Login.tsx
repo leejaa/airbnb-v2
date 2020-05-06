@@ -45,7 +45,7 @@ const Login: React.FunctionComponent<Props> = ({
                     alert('로그인이 실패했습니다.');
                 }
                 document.cookie = `jid=${result?.data?.login?.refreshToken ?? ''}`;
-                dispatch(toggleShowLoginModal({}));
+                dispatch(toggleShowLoginModal({ data: false }));
             } catch (error) {
                 console.log('error', error);
             } finally {

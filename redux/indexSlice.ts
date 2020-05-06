@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import _ from "lodash";
 
 const indexSlice = createSlice({
   name: "index",
@@ -17,7 +18,11 @@ const indexSlice = createSlice({
       state.showJoinModal = !state.showJoinModal;
     },
     toggleShowLoginModal(state, action) {
-      state.showLoginModal = !state.showLoginModal;
+      if ( _.isEmpty(action.payload.data) ) {
+        state.showLoginModal = !state.showLoginModal;
+      } else {
+        state.showLoginModal = action.payload.data;
+      }
     }
   }
 });
