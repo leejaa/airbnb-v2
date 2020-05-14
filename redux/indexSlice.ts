@@ -1,15 +1,22 @@
 import { createSlice } from "@reduxjs/toolkit";
 import _ from "lodash";
 
+export type indexReducerType = {
+  test: boolean,
+  showJoinModal: boolean,
+  showLoginModal: boolean,
+  isLogin: boolean,
+}
+let initialState : indexReducerType = {
+  test: false,
+  showJoinModal: false,
+  showLoginModal: false,
+  isLogin: false,
+};
+
 const indexSlice = createSlice({
   name: "index",
-  initialState: {
-    test: false,
-    showJoinModal: false,
-    showLoginModal: false,
-    accessToken: '',
-    refreshToken: '',
-  },
+  initialState,
   reducers: {
     changeTest(state, action) {
       state.test = true;
@@ -23,10 +30,13 @@ const indexSlice = createSlice({
       } else {
         state.showLoginModal = action.payload.data;
       }
+    },
+    toggleIsLogin(state, action) {
+      state.isLogin = action.payload.data;
     }
   }
 });
 
-export const { changeTest, toggleShowJoinModal, toggleShowLoginModal } = indexSlice.actions;
+export const { changeTest, toggleShowJoinModal, toggleShowLoginModal, toggleIsLogin } = indexSlice.actions;
 
 export default indexSlice.reducer;

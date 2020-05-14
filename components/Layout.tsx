@@ -52,7 +52,7 @@ const Layout: React.FunctionComponent<Props> = ({ props, children }) => {
       <div className="px-16">
         <Header />
       </div>
-      <div className={`w-30 h-140 bg-white z-10 absolute right-35 top-10 p-6 ${!showJoinModal && 'hidden'}`} ref={showJoinModal ? joinRef : null}>
+      <div className={`w-30 h-160 bg-white z-10 absolute right-35 top-10 p-6 ${!showJoinModal && 'hidden'}`} ref={showJoinModal ? joinRef : null}>
         <Join />
       </div>
       <div className={`w-30 h-140 bg-white z-10 absolute right-35 top-10 p-6 ${!showLoginModal && 'hidden'}`} ref={showLoginModal ? loginRef : null}>

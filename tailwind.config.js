@@ -22,7 +22,13 @@ module.exports = {
           30: '30%',
           35: '35%',
           50: '50%',
-        }
+        },
+        backgroundColor: theme => ({
+          'f2f2f2': '#f2f2f2',
+        }),
+        textColor: {
+          '5f6368': '#5f6368'
+        },
       },
     },
     variants: {},

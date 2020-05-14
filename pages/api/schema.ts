@@ -6,6 +6,7 @@ import { sign, verify } from "jsonwebtoken";
 import _ from "lodash";
 
 const SELECT_USER = 'selectUser';
+const SELECT_USER2 = 'selectUser2';
 export const AUTH_LIST = [
   SELECT_USER,
 ];
@@ -73,6 +74,16 @@ const Query = objectType({
           where: { id }
         });
         return user;
+      },
+    })
+    t.field(SELECT_USER2, {
+      type: 'User',
+      args: { email: stringArg({ default: '' }) },
+      resolve: async (_parent, { email }, ctx) => {
+        const user = await prisma.user.findMany({
+          where: { email }
+        });
+        return user[0];
       },
     })
   },

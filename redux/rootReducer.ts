@@ -1,5 +1,9 @@
 import { combineReducers } from "redux";
-import indexReducer from "./indexSlice";
+import indexReducer, { indexReducerType } from "./indexSlice";
+
+export interface rootState {
+  indexReducer: indexReducerType
+}
 
 export default combineReducers({
   indexReducer,
