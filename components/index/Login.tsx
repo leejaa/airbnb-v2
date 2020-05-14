@@ -1,9 +1,10 @@
 
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import { useFormik } from 'formik';
 import * as yup from "yup";
 import _ from 'lodash';
 import { GoogleLogin } from 'react-google-login';
+import NaverLogin from 'react-naver-login';
 import { useCreateUserMutation } from "../../app/generated/graphql";
 import { useLoginMutation } from "../../generated/graphql";
 import { useDispatch } from "react-redux";
@@ -25,6 +26,7 @@ const Login: React.FunctionComponent<Props> = ({
     const [login] = useLoginMutation();
     const [loading, setLoading] = useState(false);
     const [googleLoading, setGoogleLoading] = useState(false);
+    const [naverLoginLoading, setNaverLoginLoading] = useState(false);
     const formik = useFormik({
         initialValues: {
             email: '',
@@ -46,7 +48,7 @@ const Login: React.FunctionComponent<Props> = ({
                     document.cookie = `jid=${result?.data?.login?.refreshToken ?? ''}`;
                     dispatch(toggleIsLogin({ data: true }));
                 } else {
-                    alert('로그인이 실패했습니다.');
+                    console.log('로그인 실패');
                 }
                 dispatch(toggleShowLoginModal({ data: false }));
             } catch (error) {
@@ -73,7 +75,7 @@ const Login: React.FunctionComponent<Props> = ({
                 document.cookie = `jid=${result?.data?.login?.refreshToken ?? ''}`;
                 dispatch(toggleIsLogin({ data: true }));
             } else {
-                alert('로그인이 실패했습니다.');
+                console.log('로그인 실패');
             }
             dispatch(toggleShowLoginModal({ data: false }));
         } catch (error) {
@@ -84,6 +86,41 @@ const Login: React.FunctionComponent<Props> = ({
     }, []);
     const onFailureGoogle = useCallback(() => {
         alert('로그인이 실패했습니다.');
+        dispatch(toggleShowLoginModal({ data: false }));
+    }, []);
+    const onSuccessNaverLogin = useCallback(async (naverResult) => {
+        alert('onSuccessNaverLogin');
+        const email = naverResult?.email ?? '';
+        const id = naverResult?.id ?? '';
+        const name = naverResult?.name ?? '';
+        setNaverLoginLoading(true);
+        try {
+            const result = await login({
+                variables: {
+                    email,
+                    password: id,
+                }
+            });
+            const success = result?.data?.login ?? false;
+            if (success) {
+                alert('로그인이 성공했습니다.');
+                document.cookie = `jid=${result?.data?.login?.refreshToken ?? ''}`;
+                dispatch(toggleIsLogin({ data: true }));
+            } else {
+                console.log('로그인 실패');
+            }
+            dispatch(toggleShowLoginModal({ data: false }));
+        } catch (error) {
+            console.log('error', error);
+        } finally {
+            setNaverLoginLoading(false);
+        }
+    }, [setNaverLoginLoading]);
+    const onFailureNaverLogin = useCallback(() => {
+        alert('네이버 인증 실패');
+        dispatch(toggleShowLoginModal({ data: false }));
+    }, []);
+    useEffect(() => {
         dispatch(toggleShowLoginModal({ data: false }));
     }, []);
     return (
@@ -114,8 +151,16 @@ const Login: React.FunctionComponent<Props> = ({
                     onFailure={onFailureGoogle}
                     cookiePolicy={'single_host_origin'}
                     onAutoLoadFinished={() => null}
-                    className="w-full h-16 bg-f2f2f2 flex justify-center items-center"
+                    className="w-full h-16 bg-f2f2f2 flex justify-center items-center mb-5"
                 />
+                {/* <NaverLogin
+                    clientId={process.env.NAVER_CLIENT_ID}
+                    callbackUrl={process.env.NAVER_CALLBACK_URL}
+                    render={(props) => <div className="w-full h-16 bg-03c75a flex justify-center items-center text-white cursor-pointer" onClick={props.onClick}>{naverLoginLoading ? '로딩중' : '네이버로그인'}</div>}
+                    onSuccess={onSuccessNaverLogin}
+                    onFailure={onFailureNaverLogin}
+                />
+                <div id="naver_id_login"></div> */}
             </form>
         </div>
     );

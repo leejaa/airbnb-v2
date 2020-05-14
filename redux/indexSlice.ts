@@ -22,14 +22,10 @@ const indexSlice = createSlice({
       state.test = true;
     },
     toggleShowJoinModal(state, action) {
-      state.showJoinModal = !state.showJoinModal;
+      state.showJoinModal = action.payload.data ? action.payload.data : !state.showJoinModal;
     },
     toggleShowLoginModal(state, action) {
-      if ( _.isEmpty(action.payload.data) ) {
-        state.showLoginModal = !state.showLoginModal;
-      } else {
-        state.showLoginModal = action.payload.data;
-      }
+      state.showLoginModal = action.payload.data ? action.payload.data : !state.showLoginModal;
     },
     toggleIsLogin(state, action) {
       state.isLogin = action.payload.data;

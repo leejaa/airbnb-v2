@@ -1,12 +1,14 @@
 
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import { useFormik } from 'formik';
 import * as yup from "yup";
 import _ from 'lodash';
 import { useDispatch } from "react-redux";
+import GoogleLogin from "react-google-login";
+import NaverLogin from 'react-naver-login';
 import { toggleShowJoinModal, toggleShowLoginModal } from "../../redux/indexSlice";
 import { useCreateUserMutation } from "../../generated/graphql";
-import GoogleLogin from "react-google-login";
+import { useRouter } from "next/router";
 
 type Props = {
 };
@@ -29,10 +31,12 @@ const validationSchema = yup.object({
 
 const Join: React.FunctionComponent<Props> = ({
 }) => {
+    const router = useRouter();
     const dispatch = useDispatch();
     const [createUser] = useCreateUserMutation();
     const [loading, setLoading] = useState(false);
     const [googleLoading, setGoogleLoading] = useState(false);
+    const [naverLoading, setNaverLoading] = useState(false);
     const formik = useFormik({
         initialValues: {
             email: '',
@@ -96,10 +100,47 @@ const Join: React.FunctionComponent<Props> = ({
         } finally {
             setGoogleLoading(false);
         }
-    }, []);
+    }, [googleLoading]);
     const onFailureGoogle = useCallback(() => {
-        alert('구글 인증에 실패했습니다.');
+        console.log('구글인증 실패');
         dispatch(toggleShowJoinModal({}));
+    }, []);
+    const onSuccessNaver = useCallback(async (naverResult) => {
+        alert('onSuccessNaver');
+        const email = naverResult?.email ?? '';
+        const id = naverResult?.id ?? '';
+        const name = naverResult?.name ?? '';
+        setNaverLoading(true);
+        try {
+            const result = await createUser({
+                variables: {
+                    email,
+                    name,
+                    password: id,
+                }
+            });
+            const success = result?.data?.createUser?.success ?? false;
+            if (success) {
+                alert('회원가입이 성공했습니다.');
+                dispatch(toggleShowJoinModal({}));
+                dispatch(toggleShowLoginModal({}));
+            } else {
+                alert('회원가입이 실패했습니다.');
+                dispatch(toggleShowJoinModal({}));
+            }
+        } catch (error) {
+            console.log('error', error);
+            dispatch(toggleShowJoinModal({}));
+        } finally {
+            setNaverLoading(false);
+        }
+    }, [naverLoading]);
+    const onFailureNaver = useCallback(() => {
+        alert('네이버 인증 실패');
+        dispatch(toggleShowJoinModal({}));
+    }, []);
+    useEffect(() => {
+        dispatch(toggleShowJoinModal({ data: false }));
     }, []);
     return (
         <div className="w-full h-full">
@@ -144,8 +185,16 @@ const Join: React.FunctionComponent<Props> = ({
                     onFailure={onFailureGoogle}
                     cookiePolicy={'single_host_origin'}
                     onAutoLoadFinished={() => null}
-                    className="w-full h-16 bg-f2f2f2 flex justify-center items-center"
+                    className="w-full h-16 bg-f2f2f2 flex justify-center items-center mb-6"
                 />
+                <NaverLogin
+                    clientId={process.env.NAVER_CLIENT_ID}
+                    callbackUrl={process.env.NAVER_CALLBACK_URL}
+                    render={(props) => <div className="w-full h-16 bg-03c75a flex justify-center items-center text-white cursor-pointer" onClick={props.onClick}>{naverLoading ? '로딩중' : '네이버로 회원가입'}</div>}
+                    onSuccess={onSuccessNaver}
+                    onFailure={onFailureNaver}
+                />
+                <div id="naver_id_login"></div>
             </form>
         </div>
     );
