@@ -1,0 +1,135 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = "postgres://qomefyqegswzck:1a309b9befa850337bc68848c1fbed7f368be5f73dd32fa5e74dcb0dd3b83015@ec2-107-22-216-151.compute-1.amazonaws.com:5432/dc45or7cf1v2lp?connection_limit=10"
+}
+
+model conversation {
+  id      Int      @default(autoincrement()) @id
+  message message?
+}
+
+model like {
+  id     Int  @default(autoincrement()) @id
+  roomId Int
+  userId Int
+  room   room @relation(fields: [roomId], references: [id])
+  user   user @relation(fields: [userId], references: [id])
+}
+
+model list {
+  id     Int    @default(autoincrement()) @id
+  name   String
+  userId Int?   @unique
+  user   user?  @relation(fields: [userId], references: [id])
+}
+
+model message {
+  conversationId Int?          @unique
+  id             Int           @default(autoincrement()) @id
+  message        String
+  userId         Int?          @unique
+  conversation   conversation? @relation(fields: [conversationId], references: [id])
+  user           user?         @relation(fields: [userId], references: [id])
+}
+
+model movie {
+  id      Int    @default(autoincrement()) @id
+  minutes Int    @default(60)
+  title   String
+}
+
+model photo {
+  caption String?
+  file    String?
+  hostId  Int?
+  id      Int     @default(autoincrement()) @id
+  roomId  Int?
+  room    room?   @relation(fields: [roomId], references: [id])
+}
+
+model reservation {
+  check_in    DateTime?
+  check_out   DateTime?
+  guestId     Int
+  id          Int       @default(autoincrement()) @id
+  in_progress Boolean?
+  is_finished Boolean?
+  roomId      Int
+  user        user      @relation(fields: [guestId], references: [id])
+  room        room      @relation(fields: [roomId], references: [id])
+}
+
+model review {
+  accuracy      Int?    @default(0)
+  check_in      Int?    @default(0)
+  cleanliness   Int?    @default(0)
+  communication Int?    @default(0)
+  createdAt     String? @default("2020-05-04T12:12:19.400Z")
+  id            Int     @default(autoincrement()) @id
+  location      Int?    @default(0)
+  review        String? @default("")
+  roomId        Int
+  userId        Int?
+  value         Int?    @default(0)
+  room          room    @relation(fields: [roomId], references: [id])
+  user          user?   @relation(fields: [userId], references: [id])
+}
+
+model room {
+  address      String?
+  baths        Int?
+  bedrooms     Int?
+  beds         Int?
+  check_in     DateTime?
+  check_out    DateTime?
+  city         String?       @default("")
+  convenience  String[]
+  country      String?
+  dates        String[]
+  description  String?
+  guests       Int?
+  houseRadio   String?
+  houseType    String?
+  id           Int           @default(autoincrement()) @id
+  instant_book Boolean?
+  lat          Float?
+  lng          Float?
+  name         String
+  post_code    String?
+  price        Int?
+  room_type    String?
+  score        Int?
+  userId       Int?
+  user         user?         @relation(fields: [userId], references: [id])
+  like         like[]
+  photo        photo[]
+  reservation  reservation[]
+  review       review[]
+}
+
+model user {
+  avatar         String?
+  birthdate      DateTime?
+  currentcy      String?
+  email          String
+  email_secret   String?
+  email_verified Boolean?      @default(false)
+  gender         String?
+  id             Int           @default(autoincrement()) @id
+  language       String?
+  login_method   String?
+  name           String?
+  password       String
+  superhost      Boolean?      @default(false)
+  tokenVersion   String?
+  like           like[]
+  list           list?
+  message        message?
+  reservation    reservation[]
+  review         review[]
+  room           room[]
+}
