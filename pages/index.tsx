@@ -20,7 +20,6 @@ const Index = (props) => {
       <div>sdfsdfsdfsdfsdfsdf</div>
       <div>sdfsdfsdfsdfsdfsdf</div>
       <div>sdfsdfsdfsdfsdfsdf</div>
-      <div>sdfsdfsdfsdfsdfsdf</div>
     </Layout>
   );
 };
