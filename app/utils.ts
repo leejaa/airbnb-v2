@@ -1,4 +1,6 @@
 import { Platform } from "react-native";
+import { Dimensions } from "react-native";
+const { width, height } = Dimensions.get("screen");
 
 export default {
   isAndroid: () => Platform.OS === "android",
@@ -7,3 +9,6 @@ export default {
     return regEx.test(email);
   }
 };
+
+export const SCREEN_WIDTH = width;
+export const SCREEN_HEIGHT = height;

@@ -9,6 +9,7 @@ import BackBtn from "../components/Auth/BackBtn";
 import { BlurView } from "expo-blur";
 import { StyleSheet } from "react-native";
 import Profile from "../screens/Main/Profile";
+import Home from "../screens/Main/Home";
 
 const TabsNavigator = createBottomTabNavigator();
 const Tabs = () => (
@@ -35,6 +36,8 @@ const Tabs = () => (
           iconName += "map";
         } else if (route.name === "Profile") {
           iconName += "person";
+        } else if (route.name === "Home") {
+          iconName += "home";
         }
         return (
           <Ionicons
@@ -46,9 +49,7 @@ const Tabs = () => (
       }
     })}
   >
-    {/* <TabsNavigator.Screen name="Explore" component={Explore} />
-    <TabsNavigator.Screen name="Saved" component={Saved} />
-    <TabsNavigator.Screen name="Map" component={MapScreen} /> */}
+    <TabsNavigator.Screen name="Home" component={Home} />
     <TabsNavigator.Screen name="Profile" component={Profile} />
   </TabsNavigator.Navigator>
 );
@@ -59,28 +60,15 @@ export default () => (
     mode="modal"
     screenOptions={{
       headerBackTitleVisible: false,
+      headerTitle: "",
       headerBackImage: () => <BackBtn />
     }}
   >
     <MainNavigator.Screen
       name="Tabs"
       component={Tabs}
-      options={{ headerShown: false }}
+      options={{ headerShown: true }}
     />
-    {/* <MainNavigator.Screen
-      name="RoomDetail"
-      component={Room}
-      options={{
-        headerTransparent: true,
-        headerBackground: () => (
-          <BlurView
-            intensity={100}
-            tint="light"
-            style={StyleSheet.absoluteFill}
-          />
-        )
-      }}
-    /> */}
     <MainNavigator.Screen
       name="Search"
       options={{ headerShown: false }}

@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "HelloWorld",
+    "name": "airbnb-v2",
     "slug": "app",
     "platforms": [
       "ios",

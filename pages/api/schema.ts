@@ -4,9 +4,12 @@ import { PrismaClient } from '@prisma/client';
 import { hash, compare } from "bcryptjs";
 import { sign, verify } from "jsonwebtoken";
 import _ from "lodash";
+import q from 'q';
+import { testData, testPhotos, testWords } from './testdata';
 
 const SELECT_USER = 'selectUser';
 const SELECT_USER2 = 'selectUser2';
+const SELECT_PHOTO = 'selectPhoto';
 export const AUTH_LIST = [
   SELECT_USER,
 ];
@@ -84,6 +87,41 @@ const Query = objectType({
           where: { email }
         });
         return user[0];
+      },
+    })
+    t.list.field(SELECT_PHOTO, {
+      type: 'Photo',
+      args: {},
+      resolve: async (_parent, { }, ctx) => {
+        const photos = await prisma.photo.findMany();
+        return photos;
+      },
+    })
+    t.boolean("createTestPhoto", {
+      args: {},
+      resolve: async (_parent, { }, ctx) => {
+        try {
+          const arrays = _.fill(Array(1000), 1);
+          let cnt = 0;
+          for (const array of arrays) {
+            console.log('cnt', cnt++);
+            const file = testPhotos[Math.floor(Math.random() * testPhotos.length)];
+            let caption = '';
+            _.forEach(_.fill(Array(1000), 1), item => {
+              caption += testWords[Math.floor(Math.random() * testWords.length)];
+            });
+            await prisma.photo.create({
+              data: {
+                file,
+                caption,
+              }
+            });
+          }
+          return true;
+        } catch (error) {
+          console.log('error', error);
+          return false;
+        }
       },
     })
   },
