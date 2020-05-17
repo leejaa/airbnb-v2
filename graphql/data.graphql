@@ -29,3 +29,11 @@ query selectUser($id: Int!){
     email
   }
 }
+
+query selectPhoto{
+  selectPhoto{
+    id
+    file
+    caption
+  }
+}

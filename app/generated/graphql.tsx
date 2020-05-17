@@ -62,11 +62,19 @@ export type Query = {
    __typename?: 'Query';
   photo: Array<Photo>;
   selectUser: User;
+  selectUser2: User;
+  selectPhoto: Array<Photo>;
+  createTestPhoto: Scalars['Boolean'];
 };
 
 
 export type QuerySelectUserArgs = {
   id: Scalars['Int'];
+};
+
+
+export type QuerySelectUser2Args = {
+  email?: Maybe<Scalars['String']>;
 };
 
 export type User = {
@@ -125,6 +133,17 @@ export type SelectUserQuery = (
     { __typename?: 'User' }
     & Pick<User, 'id' | 'name' | 'email'>
   ) }
+);
+
+export type SelectPhotoQueryVariables = {};
+
+
+export type SelectPhotoQuery = (
+  { __typename?: 'Query' }
+  & { selectPhoto: Array<(
+    { __typename?: 'Photo' }
+    & Pick<Photo, 'id' | 'file' | 'caption'>
+  )> }
 );
 
 
@@ -242,3 +261,37 @@ export function useSelectUserLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryH
 export type SelectUserQueryHookResult = ReturnType<typeof useSelectUserQuery>;
 export type SelectUserLazyQueryHookResult = ReturnType<typeof useSelectUserLazyQuery>;
 export type SelectUserQueryResult = ApolloReactCommon.QueryResult<SelectUserQuery, SelectUserQueryVariables>;
+export const SelectPhotoDocument = gql`
+    query selectPhoto {
+  selectPhoto {
+    id
+    file
+    caption
+  }
+}
+    `;
+
+/**
+ * __useSelectPhotoQuery__
+ *
+ * To run a query within a React component, call `useSelectPhotoQuery` and pass it any options that fit your needs.
+ * When your component renders, `useSelectPhotoQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useSelectPhotoQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useSelectPhotoQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<SelectPhotoQuery, SelectPhotoQueryVariables>) {
+        return ApolloReactHooks.useQuery<SelectPhotoQuery, SelectPhotoQueryVariables>(SelectPhotoDocument, baseOptions);
+      }
+export function useSelectPhotoLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<SelectPhotoQuery, SelectPhotoQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<SelectPhotoQuery, SelectPhotoQueryVariables>(SelectPhotoDocument, baseOptions);
+        }
+export type SelectPhotoQueryHookResult = ReturnType<typeof useSelectPhotoQuery>;
+export type SelectPhotoLazyQueryHookResult = ReturnType<typeof useSelectPhotoLazyQuery>;
+export type SelectPhotoQueryResult = ApolloReactCommon.QueryResult<SelectPhotoQuery, SelectPhotoQueryVariables>;

@@ -65,7 +65,7 @@ const Query = objectType({
       resolve: (_parent, _args, ctx) => {
         return prisma.photo.findMany({
           first: 1,
-          skip: 1
+          skip: 3
         })
       },
     })
@@ -93,7 +93,10 @@ const Query = objectType({
       type: 'Photo',
       args: {},
       resolve: async (_parent, { }, ctx) => {
-        const photos = await prisma.photo.findMany();
+        const photos = await prisma.photo.findMany({
+          first: 3,
+          skip: 1,
+        });
         return photos;
       },
     })
@@ -104,7 +107,6 @@ const Query = objectType({
           const arrays = _.fill(Array(1000), 1);
           let cnt = 0;
           for (const array of arrays) {
-            console.log('cnt', cnt++);
             const file = testPhotos[Math.floor(Math.random() * testPhotos.length)];
             let caption = '';
             _.forEach(_.fill(Array(1000), 1), item => {
