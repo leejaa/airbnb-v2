@@ -94,7 +94,7 @@ const Query = objectType({
       args: {},
       resolve: async (_parent, { }, ctx) => {
         const photos = await prisma.photo.findMany({
-          first: 3,
+          first: 4,
           skip: 1,
         });
         return photos;

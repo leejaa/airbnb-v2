@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { Keyboard, ActivityIndicator, View } from "react-native";
 import HomePresenter from "./HomePresenter";
@@ -9,7 +9,7 @@ interface props {
 }
 
 export default ({ token }: props) => {
-  const { data, loading } = useSelectPhotoQuery();
+  const { data, loading, refetch } = useSelectPhotoQuery();
   if (loading) {
     return (
       <View>
@@ -17,6 +17,12 @@ export default ({ token }: props) => {
       </View>
     );
   }
+  const init = async () => {
+    await refetch();
+  }
+  useEffect(() => {
+    // init();
+  }, []);
   return (
     <HomePresenter
       data={data}
