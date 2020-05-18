@@ -8,9 +8,10 @@ import { ApolloLink, Observable } from "apollo-link";
 import { TokenRefreshLink } from "apollo-link-token-refresh";
 import { setContext } from "apollo-link-context";
 import jwtDecode from "jwt-decode";
+import utils from "../utils";
 
+const ipAddress = utils.isAndroid() ? '192.168.0.167' : 'localhost';
 const cache = new InMemoryCache({});
-
 const requestLink = new ApolloLink(
   (operation, forward) =>
     new Observable(observer => {
@@ -52,7 +53,7 @@ export const client = new ApolloClient({
         return true;
       },
       fetchAccessToken: () => {
-        return fetch(`http://localhost:3000/api/refresh_token`, {
+        return fetch(`http://${ipAddress}:3000/api/refresh_token`, {
           method: "POST",
           credentials: "include"
         });
@@ -71,7 +72,7 @@ export const client = new ApolloClient({
     authLink,
     requestLink,
     new HttpLink({
-      uri: `http://localhost:3000/api/graphql`,
+      uri: `http://${ipAddress}:3000/api/graphql`,
       credentials: "include"
     })
   ]),

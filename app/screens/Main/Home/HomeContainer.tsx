@@ -9,7 +9,7 @@ interface props {
 }
 
 export default ({ token }: props) => {
-  const { data, loading, refetch } = useSelectPhotoQuery();
+  const { data, loading } = useSelectPhotoQuery();
   if (loading) {
     return (
       <View>
@@ -17,12 +17,6 @@ export default ({ token }: props) => {
       </View>
     );
   }
-  const init = async () => {
-    await refetch();
-  }
-  useEffect(() => {
-    // init();
-  }, []);
   return (
     <HomePresenter
       data={data}

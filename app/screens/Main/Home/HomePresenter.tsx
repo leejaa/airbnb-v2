@@ -26,8 +26,6 @@ const Container3 = styled.View`
     top: 10px;
 `;
 const Container4 = styled.View`
-    border-width: 1px;
-    border-color: black;
     width: 100%;
     height: ${SCREEN_HEIGHT / 4}px;
     margin-top: ${SCREEN_HEIGHT / 25}px;

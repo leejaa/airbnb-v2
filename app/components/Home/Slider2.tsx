@@ -49,12 +49,14 @@ const Slider2: React.FC<sliderProps> = ({
         }
         return container2WidthList;
     }, [page]);
-    const onScrollEndDrag = useCallback((data) => {
-        let x = data?.nativeEvent?.targetContentOffset?.x ?? 1;
+    const onScroll = useCallback((data) => {
+        let x = data?.nativeEvent?.contentOffset?.x ?? 1;
         x = x === 0 ? 1 : x;
         const intervalWidth = Math.round(width / intervals);
         const newPage = Math.round(x / intervalWidth);
-        setPage(newPage);
+        if (newPage !== page) {
+            setPage(newPage);
+        }
     }, [width]);
     useEffect(() => {
         const newIntervals = data?.selectPhoto?.length ?? 1;
@@ -70,7 +72,8 @@ const Slider2: React.FC<sliderProps> = ({
             decelerationRate={"fast"}
             contentContainerStyle={{ width: `${100 * intervals}%` }}
             // onContentSizeChange={(w, h) => init(w)}
-            onScrollEndDrag={onScrollEndDrag}
+            // onScrollEndDrag={onScrollEndDrag}
+            onScroll={onScroll}
             scrollEventThrottle={200}
         >
             {

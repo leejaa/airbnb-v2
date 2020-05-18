@@ -13,6 +13,7 @@ import Gate from "./components/Gate";
 import { client } from "./apollo/client";
 import { Ionicons } from '@expo/vector-icons';
 
+
 const cacheImages = (images: any[]) =>
   images.map((image: any) => {
     if (typeof image === "string") {
