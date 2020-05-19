@@ -11,31 +11,18 @@ const Container = styled.View`
   align-items: center;
 `;
 
-const InputContainer = styled.View`
-  margin-bottom: 30px;
-`;
+interface props {
+  googleLogin: any,
+  googleLoading: boolean,
+}
 
-export default ({ email, setEmail, password, setPassword, handleSubmit } : any) => (
+export default ({ googleLogin, googleLoading }: props) => (
   <DismissKeyboard>
     <Container>
       <StatusBar barStyle="dark-content" />
       <KeyboardAvoidingView behavior="position">
-        <InputContainer>
-          <Input
-            value={email}
-            placeholder="Email"
-            keyboardType="email-address"
-            autoCapitalize="none"
-            stateFn={setEmail}
-          />
-          <Input
-            value={password}
-            placeholder="Password"
-            isPassword={true}
-            stateFn={setPassword}
-          />
-        </InputContainer>
-        <Btn text={"Sign In"} accent onPress={handleSubmit}></Btn>
+        <Btn text={"페이스북 계정으로 로그인"} onPress={googleLogin} iconName="facebook-with-circle" iconColor="blue" iconType="Entypo"></Btn>
+        <Btn text={"구글 계정으로 로그인"} onPress={googleLogin} iconName="logo-google" iconColor="#5f6368" iconType="Ionicons" loading={googleLoading}></Btn>
       </KeyboardAvoidingView>
     </Container>
   </DismissKeyboard>

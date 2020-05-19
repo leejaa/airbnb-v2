@@ -22,7 +22,12 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "config": {
+        "googleSignIn": {
+          "reservedClientId":"com.googleusercontent.apps.856576729820-fgkktl85u8hd2op9n6mqlcuqt20b3lpd"
+        }
+      }
     }
   }
 }

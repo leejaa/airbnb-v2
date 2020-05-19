@@ -1,22 +1,28 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { setFavs, setFav } from "./roomsSlice";
+import { State } from "react-native-gesture-handler";
+
+export type usersReducerType = {
+  isLoggedIn: boolean,
+  token: string,
+}
+let initialState : usersReducerType = {
+  isLoggedIn: false,
+  token: '',
+};
 
 const userSlice = createSlice({
   name: "users",
-  initialState: {
-    isLoggedIn: false,
-    token: null
-  },
+  initialState,
   reducers: {
     logIn(state, action) {
       state.isLoggedIn = true;
       state.token = action.payload.token;
-      // state.id = action.payload.id;
     },
     logOut(state, action) {
       state.isLoggedIn = false;
-      state.token = null;
-    }
+      state.token = '';
+    },
   }
 });
 

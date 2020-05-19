@@ -5,7 +5,7 @@ import { hash, compare } from "bcryptjs";
 import { sign, verify } from "jsonwebtoken";
 import _ from "lodash";
 import q from 'q';
-import { testData, testPhotos, testWords } from './testdata';
+import { testPhotos, testWords } from './testdata';
 
 const SELECT_USER = 'selectUser';
 const SELECT_USER2 = 'selectUser2';
@@ -31,7 +31,7 @@ export const User = objectType({
   name: 'User',
   definition(t) {
     t.int('id')
-    t.string('name')
+    t.string('name', { nullable: true })
     t.string('email')
     t.string('password')
   }
@@ -163,15 +163,45 @@ const Mutation = objectType({
     })
     t.field('login', {
       type: 'LoginResult',
-      args: { email: stringArg({ required: true }), password: stringArg() },
-      resolve: async (_parent, { email, password }, ctx) => {
+      args: { email: stringArg({ required: true }), password: stringArg(), loginType: stringArg() },
+      resolve: async (_parent, { email, password, loginType = '' }, ctx) => {
         const user = await prisma.user.findMany({
           where: { email }
         });
         if (_.isEmpty(user)) {
+          if (_.includes(["facebook", "google"], loginType)) {
+            const newUser = await prisma.user.create({
+              data: {
+                email,
+                password: 'temp'
+              }
+            });
+            return {
+              success: true,
+              accessToken: sign({ userId: newUser[0].id }, process.env.ACCESS_TOKEN_SECRET!, {
+                expiresIn: "1s"
+              }),
+              refreshToken: sign({ userId: newUser[0].id }, process.env.REFRESH_TOKEN_SECRET!, {
+                expiresIn: "300d"
+              }),
+              user: user[0]
+            };
+          }
           return {
             success: false,
             error: '유저를 찾을수 없습니다.'
+          };
+        }
+        if (_.includes(["facebook", "google"], loginType)) {
+          return {
+            success: true,
+            accessToken: sign({ userId: user[0].id }, process.env.ACCESS_TOKEN_SECRET!, {
+              expiresIn: "1s"
+            }),
+            refreshToken: sign({ userId: user[0].id }, process.env.REFRESH_TOKEN_SECRET!, {
+              expiresIn: "300d"
+            }),
+            user: user[0]
           };
         }
         const valid = await compare(password, user[0].password);

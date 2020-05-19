@@ -49,6 +49,7 @@ export type MutationCreateUserArgs = {
 export type MutationLoginArgs = {
   email: Scalars['String'];
   password?: Maybe<Scalars['String']>;
+  loginType?: Maybe<Scalars['String']>;
 };
 
 export type Photo = {
@@ -107,6 +108,7 @@ export type CreateUserMutation = (
 export type LoginMutationVariables = {
   email: Scalars['String'];
   password: Scalars['String'];
+  loginType?: Maybe<Scalars['String']>;
 };
 
 
@@ -187,8 +189,8 @@ export type CreateUserMutationHookResult = ReturnType<typeof useCreateUserMutati
 export type CreateUserMutationResult = ApolloReactCommon.MutationResult<CreateUserMutation>;
 export type CreateUserMutationOptions = ApolloReactCommon.BaseMutationOptions<CreateUserMutation, CreateUserMutationVariables>;
 export const LoginDocument = gql`
-    mutation login($email: String!, $password: String!) {
-  login(email: $email, password: $password) {
+    mutation login($email: String!, $password: String!, $loginType: String) {
+  login(email: $email, password: $password, loginType: $loginType) {
     success
     accessToken
     refreshToken
@@ -217,6 +219,7 @@ export type LoginMutationFn = ApolloReactCommon.MutationFunction<LoginMutation, 
  *   variables: {
  *      email: // value for 'email'
  *      password: // value for 'password'
+ *      loginType: // value for 'loginType'
  *   },
  * });
  */
