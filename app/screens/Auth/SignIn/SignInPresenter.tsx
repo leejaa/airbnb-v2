@@ -14,14 +14,16 @@ const Container = styled.View`
 interface props {
   googleLogin: any,
   googleLoading: boolean,
+  facebookLogin: any,
+  facebookLoading: boolean,
 }
 
-export default ({ googleLogin, googleLoading }: props) => (
+export default ({ googleLogin, googleLoading, facebookLogin, facebookLoading }: props) => (
   <DismissKeyboard>
     <Container>
       <StatusBar barStyle="dark-content" />
       <KeyboardAvoidingView behavior="position">
-        <Btn text={"페이스북 계정으로 로그인"} onPress={googleLogin} iconName="facebook-with-circle" iconColor="blue" iconType="Entypo"></Btn>
+        <Btn text={"페이스북 계정으로 로그인"} onPress={facebookLogin} iconName="facebook-with-circle" iconColor="blue" iconType="Entypo" loading={facebookLoading}></Btn>
         <Btn text={"구글 계정으로 로그인"} onPress={googleLogin} iconName="logo-google" iconColor="#5f6368" iconType="Ionicons" loading={googleLoading}></Btn>
       </KeyboardAvoidingView>
     </Container>

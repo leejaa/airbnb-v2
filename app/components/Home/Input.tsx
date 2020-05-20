@@ -6,6 +6,8 @@ import { inputProps } from "./types";
 import utils, { SCREEN_WIDTH } from "../../utils";
 import _ from "lodash";
 import { Ionicons } from "@expo/vector-icons";
+import { useDispatch } from "react-redux";
+import { logOut } from "../../redux/usersSlice";
 
 const css001 = styled.TextInput`
   width: 90%;
@@ -41,6 +43,7 @@ const Input: React.FC<inputProps> = ({
   cssType,
   placeholderTextColor,
 }) => {
+  const dispatch = useDispatch();
   const Container = useMemo(() => {
     let Container;
     switch (cssType) {
@@ -53,6 +56,9 @@ const Input: React.FC<inputProps> = ({
     }
     return Container;
   }, [cssType]);
+  const onFocus = () => {
+    dispatch(logOut({}));
+  }
   return (
     <Container2>
       <Container3>
@@ -70,6 +76,7 @@ const Input: React.FC<inputProps> = ({
         autoCapitalize={autoCapitalize}
         onChangeText={text => stateFn(text)}
         inlineImageLeft="md-search"
+        onFocus={onFocus}
       />
     </Container2>
   );
