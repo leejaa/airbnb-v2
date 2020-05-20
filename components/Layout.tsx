@@ -59,6 +59,7 @@ const Layout: React.FunctionComponent<Props> = ({ props, children }) => {
         <Login />
       </div>
       {children}
+      <div className="border border-black absolute bottom-0 w-full h-16 lg:hidden"></div>
     </div>
   );
 }

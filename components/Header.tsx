@@ -20,7 +20,7 @@ const Header: React.FunctionComponent<Props> = ({
   return (
     <div className="flex-1 w-full h-16 flex items-center justify-between">
       <img src="https://cdn4.iconfinder.com/data/icons/socialcones/508/Airbnb-512.png" style={{ maxWidth: 45 }} />
-      <div className="h-full w-1/4 flex items-center justify-around">
+      <div className="hidden lg:inline lg:h-full lg:w-1/4 lg:flex lg:items-center lg:justify-around">
         <div className="h-full w-1/5 flex items-center justify-center rounded-full cursor-pointer hover:bg-gray-200">
           호스트되기
         </div>
