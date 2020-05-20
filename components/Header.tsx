@@ -15,7 +15,7 @@ const Header: React.FunctionComponent<Props> = ({
   const dispatch = useDispatch();
   const logout = useCallback(() => {
     dispatch(toggleIsLogin({ data: false }));
-    document.cookie = '';
+    document.cookie = 'jid=';
   }, [ isLogin ]);
   return (
     <div className="flex-1 w-full h-16 flex items-center justify-between">
@@ -36,7 +36,7 @@ const Header: React.FunctionComponent<Props> = ({
               로그아웃
             </div>
           ): (
-            <div className = "border border-gray-400 h-full w-1/5 flex items-center justify-center rounded-full cursor-pointer" onClick = { () => dispatch(toggleShowLoginModal({ }))}>
+            <div className = "border border-gray-400 h-full w-1/5 flex items-center justify-center rounded-full cursor-pointer" onClick = { () => dispatch(toggleShowLoginModal({}))}>
               로그인
             </div>
           )

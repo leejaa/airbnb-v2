@@ -140,7 +140,6 @@ const Join: React.FunctionComponent<Props> = ({
         dispatch(toggleShowJoinModal({}));
     }, []);
     useEffect(() => {
-        dispatch(toggleShowJoinModal({ data: false }));
     }, []);
     return (
         <div className="w-full h-full">

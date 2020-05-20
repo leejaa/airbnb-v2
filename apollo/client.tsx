@@ -71,11 +71,14 @@ export function withApollo(PageComponent: any, { ssr = true } = {}) {
               cookie: "jid=" + cookies.jid,
             }
           });
+          console.log('response', JSON.stringify(response));
           const data = await response.json();
           if ( !(data?.ok ?? false) ) {
             isAuth = false;
           }
           serverAccessToken = data.accessToken;
+        } else {
+          isAuth = false;
         }
       }
 

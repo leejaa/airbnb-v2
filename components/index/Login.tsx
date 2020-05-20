@@ -66,7 +66,8 @@ const Login: React.FunctionComponent<Props> = ({
             const result = await login({
                 variables: {
                     email,
-                    password: tokenId
+                    password: tokenId,
+                    loginType: 'google',
                 }
             });
             const success = result?.data?.login ?? false;
@@ -121,7 +122,6 @@ const Login: React.FunctionComponent<Props> = ({
         dispatch(toggleShowLoginModal({ data: false }));
     }, []);
     useEffect(() => {
-        dispatch(toggleShowLoginModal({ data: false }));
     }, []);
     return (
         <div className="w-full h-full">
