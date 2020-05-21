@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { toggleShowJoinModal, toggleShowLoginModal, toggleIsLogin } from "../redux/indexSlice";
 import { useSelectUserQuery } from "../generated/graphql";
 import { rootState } from "../redux/rootReducer";
+import Input from "./common/Input";
 
 type Props = {
 };
@@ -16,11 +17,14 @@ const Header: React.FunctionComponent<Props> = ({
   const logout = useCallback(() => {
     dispatch(toggleIsLogin({ data: false }));
     document.cookie = 'jid=';
-  }, [ isLogin ]);
+  }, [isLogin]);
   return (
-    <div className="flex-1 w-full h-16 flex items-center justify-between">
-      <img src="https://cdn4.iconfinder.com/data/icons/socialcones/508/Airbnb-512.png" style={{ maxWidth: 45 }} />
-      <div className="hidden lg:inline lg:h-full lg:w-1/4 lg:flex lg:items-center lg:justify-around">
+    <div className="flex-1 w-full h-16 flex items-center justify-center xl:justify-between">
+      <img src="https://cdn4.iconfinder.com/data/icons/socialcones/508/Airbnb-512.png" className="hidden xl:inline" style={{ maxWidth: 45 }} />
+      <div className="w-full h-full flex flex-row items-center">
+        <Input />
+      </div>
+      <div className="hidden xl:inline xl:h-full xl:w-1/4 xl:flex xl:items-center xl:justify-around">
         <div className="h-full w-1/5 flex items-center justify-center rounded-full cursor-pointer hover:bg-gray-200">
           호스트되기
         </div>
@@ -32,14 +36,14 @@ const Header: React.FunctionComponent<Props> = ({
         </div>
         {
           isLogin ? (
-            <div className = "border border-gray-400 h-full w-1/5 flex items-center justify-center rounded-full cursor-pointer" onClick = { logout }>
+            <div className="border border-gray-400 h-full w-1/5 flex items-center justify-center rounded-full cursor-pointer" onClick={logout}>
               로그아웃
             </div>
-          ): (
-            <div className = "border border-gray-400 h-full w-1/5 flex items-center justify-center rounded-full cursor-pointer" onClick = { () => dispatch(toggleShowLoginModal({}))}>
-              로그인
+          ) : (
+              <div className="border border-gray-400 h-full w-1/5 flex items-center justify-center rounded-full cursor-pointer" onClick={() => dispatch(toggleShowLoginModal({}))}>
+                로그인
             </div>
-          )
+            )
         }
       </div>
     </div >
