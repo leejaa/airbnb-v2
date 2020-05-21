@@ -6,6 +6,8 @@ export type indexReducerType = {
   showJoinModal: boolean,
   showLoginModal: boolean,
   showSearchModal: boolean,
+  showHeader: boolean,
+  showSearchPlace: boolean,
   isLogin: boolean,
 }
 let initialState : indexReducerType = {
@@ -13,6 +15,8 @@ let initialState : indexReducerType = {
   showJoinModal: false,
   showLoginModal: false,
   showSearchModal: false,
+  showHeader: true,
+  showSearchPlace: false,
   isLogin: false,
 };
 
@@ -32,12 +36,19 @@ const indexSlice = createSlice({
     toggleShowSearchModal(state, action) {
       state.showSearchModal = action.payload.data ? action.payload.data : !state.showSearchModal;
     },
+    toggleShowHeader(state, action) {
+      state.showHeader = action.payload.data ? action.payload.data : !state.showHeader;
+    },
+    toggleShowSearchPlace(state, action) {
+      state.showSearchPlace = action.payload.data ? action.payload.data : !state.showSearchPlace;
+    },
     toggleIsLogin(state, action) {
       state.isLogin = action.payload.data;
     }
   }
 });
 
-export const { changeTest, toggleShowJoinModal, toggleShowLoginModal, toggleIsLogin, toggleShowSearchModal } = indexSlice.actions;
+export const { changeTest, toggleShowJoinModal, toggleShowLoginModal, toggleIsLogin, toggleShowSearchModal, toggleShowHeader, toggleShowSearchPlace
+} = indexSlice.actions;
 
 export default indexSlice.reducer;

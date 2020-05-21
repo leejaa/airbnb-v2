@@ -32,6 +32,8 @@ module.exports = {
         backgroundColor: theme => ({
           'f2f2f2': '#f2f2f2',
           '03c75a': '#03c75a',
+          '221': 'rgb(221, 221, 221)',
+          '247': 'rgb(247, 247, 247)'
         }),
         textColor: {
           '5f6368': '#5f6368',

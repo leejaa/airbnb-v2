@@ -2,11 +2,15 @@ import React, { useCallback } from "react";
 import { InputProps, SearchProps } from "../types";
 import { CloseOutlined, SearchOutlined, CalendarOutlined, UsergroupAddOutlined } from "@ant-design/icons";
 import { useDispatch } from "react-redux";
-import { toggleShowSearchModal } from "../../redux/indexSlice";
+import { toggleShowSearchModal, toggleShowSearchPlace, toggleShowHeader } from "../../redux/indexSlice";
 
 const Search: React.FunctionComponent<SearchProps> = ({
 }) => {
     const dispatch = useDispatch();
+    const onClickTrip = useCallback(() => {
+        dispatch(toggleShowHeader({data: false}));
+        dispatch(toggleShowSearchPlace({data: true}));
+    }, []);
     return (
         <div className="w-full h-full">
             <div className="w-full h-30p flex justify-center items-center relative">
@@ -16,7 +20,7 @@ const Search: React.FunctionComponent<SearchProps> = ({
                 <span className="text-lg">숙소</span>
             </div>
             <div className="border border-gray-300 shadow-lg w-full h-65p rounded-75">
-                <div className="border-b border-gray-300 w-full h-50p flex flex-row items-center pl-4">
+                <div className="border-b border-gray-300 w-full h-50p flex flex-row items-center pl-4" onClick={onClickTrip}>
                     <SearchOutlined style={{ fontSize: 15 }} />
                     <span className="text-base ml-3 text-rgb-113">어디로 여행가세요?</span>
                 </div>

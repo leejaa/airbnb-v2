@@ -10,6 +10,7 @@ import Login from "./index/Login";
 import Footer from "./Footer";
 import Search from "./common/Search";
 import { rootState } from "../redux/rootReducer";
+import SearchPlace from "./common/SearchPlace";
 
 type Props = {
   props: any
@@ -19,7 +20,7 @@ type Props = {
 const Layout: React.FunctionComponent<Props> = ({ props, children }) => {
   const isAuth = props?.isAuth ?? true;
   const router = useRouter();
-  const { showJoinModal, showLoginModal, showSearchModal } = useSelector((state: rootState) => state.indexReducer);
+  const { showJoinModal, showLoginModal, showSearchModal, showHeader = true, showSearchPlace } = useSelector((state: rootState) => state.indexReducer);
   const dispatch = useDispatch();
   const joinRef = useRef(null);
   const loginRef = useRef(null);
@@ -52,7 +53,7 @@ const Layout: React.FunctionComponent<Props> = ({ props, children }) => {
   }, [joinRef, loginRef]);
   return (
     <div className={`w-full h-full relative ${(showJoinModal || showLoginModal) && 'bg-black bg-opacity-75'}`}>
-      <div className="px-16 border-b border-gray-300">
+      <div className={`px-16 border-b border-gray-300 ${!showHeader && 'hidden'}`}>
         <Header />
       </div>
       <div className={`w-30 h-200 bg-white z-10 absolute right-35 top-10 p-6 ${!showJoinModal && 'hidden'}`} ref={showJoinModal ? joinRef : null}>
@@ -63,6 +64,9 @@ const Layout: React.FunctionComponent<Props> = ({ props, children }) => {
       </div>
       <div className={`w-full h-48 bg-white z-10 absolute top-0 border-b border-gray-300 p-3 ${!showSearchModal && 'hidden'}`}>
         <Search />
+      </div>
+      <div className={`w-full h-full bg-white z-10 absolute ${!showSearchPlace && 'hidden'}`}>
+        <SearchPlace />
       </div>
       {children}
       <Footer />
