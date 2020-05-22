@@ -12,6 +12,7 @@ const SearchPlace: React.FunctionComponent<SearchPlaceProps> = ({
         dispatch(toggleShowSearchPlace({data: false}));
         dispatch(toggleShowHeader({data: true}));
     }, []);
+    
     return (
         <div className="w-full h-full p-5">
             <div className="w-full h-16 flex flex-row">
