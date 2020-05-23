@@ -22,5 +22,6 @@ module.exports = {
         GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
         NAVER_CLIENT_ID: process.env.NAVER_CLIENT_ID,
         NAVER_CALLBACK_URL: process.env.NAVER_CALLBACK_URL,
+        KAKAO_KEY: process.env.KAKAO_KEY,
     }
 }

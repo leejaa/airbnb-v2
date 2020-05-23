@@ -1,30 +1,68 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useState } from "react";
 import { InputProps, SearchProps, SearchPlaceProps } from "../types";
-import { CloseOutlined, SearchOutlined, CalendarOutlined, UsergroupAddOutlined } from "@ant-design/icons";
+import { CloseOutlined, SearchOutlined, CalendarOutlined, UsergroupAddOutlined, CloseCircleFilled, InstagramOutlined } from "@ant-design/icons";
 import { useDispatch } from "react-redux";
+import axios from "axios";
 import { toggleShowSearchModal, toggleShowSearchPlace, toggleShowHeader } from "../../redux/indexSlice";
 import Input from "./Input";
 
 const SearchPlace: React.FunctionComponent<SearchPlaceProps> = ({
 }) => {
     const dispatch = useDispatch();
+    const [searchResultList, setSearchResultList] = useState([]);
     const cancel = useCallback(() => {
-        dispatch(toggleShowSearchPlace({data: false}));
-        dispatch(toggleShowHeader({data: true}));
+        dispatch(toggleShowSearchPlace({ data: false }));
+        dispatch(toggleShowHeader({ data: true }));
     }, []);
-    
+    const [searchword, setSearchword] = useState("");
+    const onChangeSearch = useCallback((e) => {
+        setSearchword(e?.target?.value ?? "");
+        searchAddress();
+    }, [searchword]);
+    const onKeyDown = useCallback((e) => {
+        if (e.keyCode === 13) {
+            // searchAddress();
+        }
+    }, [searchword]);
+    const searchAddress = useCallback(async () => {
+        const result = await axios.get(`https://dapi.kakao.com/v2/local/search/keyword.json?query=${searchword}`, {
+            headers: {
+                Authorization: `KakaoAK ${process.env.KAKAO_KEY}`
+            }
+        });
+        setSearchResultList(result?.data?.documents ?? []);
+    }, [searchword, searchResultList]);
+
     return (
-        <div className="w-full h-full p-5">
-            <div className="w-full h-16 flex flex-row">
+        <div className="move001">
+            <div className="move002 flex flex-row">
                 <div className="w-4/5 h-full flex justify-center items-center">
                     <Input
                         inputType="002"
+                        value={searchword}
+                        setValue={setSearchword}
+                        onChange={onChangeSearch}
+                        onKeyDown={onKeyDown}
+                        searchResultList={searchResultList}
                     />
                 </div>
                 <div className="w-1/5 h-full flex justify-center items-center" onClick={cancel}>
                     <span>취소</span>
                 </div>
             </div>
+            {
+                searchResultList.slice(0,10).map(result => (
+                    <div className="w-full h-16 flex flex-row items-center">
+                        <div className="w-14p h-70p rounded-md bg-235 flex items-center justify-center">
+                            <InstagramOutlined style={{ fontSize: 23 }} />
+                        </div>
+                        <div className="w-4/5 h-full flex justify-center items-center">
+                            <span>{result?.address_name ?? ''}</span>
+                        </div>
+                    </div>
+
+                ))
+            }
         </div >
     );
 }

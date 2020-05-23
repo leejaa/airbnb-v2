@@ -65,7 +65,7 @@ const Layout: React.FunctionComponent<Props> = ({ props, children }) => {
       <div className={`w-full h-48 bg-white z-10 absolute top-0 border-b border-gray-300 p-3 ${!showSearchModal && 'hidden'}`}>
         <Search />
       </div>
-      <div className={`w-full h-full bg-white z-10 absolute ${!showSearchPlace && 'hidden'}`}>
+      <div className={`w-full h-full bg-white z-10 absolute relative ${!showSearchPlace && 'hidden'}`}>
         <SearchPlace />
       </div>
       {children}

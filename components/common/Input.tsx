@@ -1,15 +1,23 @@
 import React, { useCallback, useMemo } from "react";
 import { InputProps } from "../types";
-import { MessageOutlined, SearchOutlined } from "@ant-design/icons";
+import { MessageOutlined, SearchOutlined, CloseCircleOutlined, CloseCircleFilled } from "@ant-design/icons";
 import { useDispatch } from "react-redux";
 import _ from "lodash";
 import { toggleShowSearchModal } from "../../redux/indexSlice";
 
 
 const Input: React.FunctionComponent<InputProps> = ({
-    inputType = '001'
+    inputType = '001',
+    value,
+    setValue,
+    onChange,
+    onKeyDown,
+    searchResultList,
 }) => {
     const dispatch = useDispatch();
+    const clear = useCallback(() => {
+        setValue("");
+    }, [value]);
     const Input001 = useMemo(() => {
         return (
             <div className="border border-gray-300 w-full h-70p shadow-lg rounded-lg flex flex-row justify-center items-center" onClick={() => dispatch(toggleShowSearchModal({ data: true }))}>
@@ -27,11 +35,21 @@ const Input: React.FunctionComponent<InputProps> = ({
                     <SearchOutlined style={{ fontSize: 20 }} />
                 </div>
                 <div className="w-4/6 h-full flex justify-center items-center">
-                    <input type="text" placeholder="어디로 여행가세요?" className="w-full h-full focus:outline-none bg-247 placeholder-gray-700"/>
+                    <input type="text" placeholder="어디로 여행가세요?" className="w-full h-full focus:outline-none bg-247 placeholder-gray-700" 
+                        value={value} onChange={onChange} onKeyDown={onKeyDown}
+                    />
                 </div>
+                {
+                    value !== "" && (
+                        <div className="w-1/6 h-full flex justify-center items-center" onClick={clear}>
+                            <CloseCircleFilled style={{ fontSize: 18, color: 'rgb(135, 135, 135)' }} />
+                        </div>
+
+                    )
+                }
             </div>
         );
-    }, []);
+    }, [value]);
     let Input;
     switch (inputType) {
         case '001':
