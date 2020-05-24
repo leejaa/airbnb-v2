@@ -12,3 +12,6 @@ export interface SearchProps {
 export interface SearchPlaceProps {
     
 }
+export interface SearchCalendarProps {
+    
+}

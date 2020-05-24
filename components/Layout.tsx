@@ -11,6 +11,7 @@ import Footer from "./Footer";
 import Search from "./common/Search";
 import { rootState } from "../redux/rootReducer";
 import SearchPlace from "./common/SearchPlace";
+import SearchCalendar from "./common/SearchCalendar";
 
 type Props = {
   props: any
@@ -20,7 +21,7 @@ type Props = {
 const Layout: React.FunctionComponent<Props> = ({ props, children }) => {
   const isAuth = props?.isAuth ?? true;
   const router = useRouter();
-  const { showJoinModal, showLoginModal, showSearchModal, showHeader = true, showSearchPlace } = useSelector((state: rootState) => state.indexReducer);
+  const { showJoinModal, showLoginModal, showSearchModal, showHeader = true, showSearchPlace, showSearchCalendar } = useSelector((state: rootState) => state.indexReducer);
   const dispatch = useDispatch();
   const joinRef = useRef(null);
   const loginRef = useRef(null);
@@ -67,6 +68,9 @@ const Layout: React.FunctionComponent<Props> = ({ props, children }) => {
       </div>
       <div className={`w-full h-full bg-white z-10 absolute relative ${!showSearchPlace && 'hidden'}`}>
         <SearchPlace />
+      </div>
+      <div className={`w-full h-full bg-white z-10 absolute relative ${!showSearchCalendar && 'hidden'}`}>
+        <SearchCalendar />
       </div>
       {children}
       <Footer />
