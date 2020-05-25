@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import { InputProps } from "../types";
 import { MessageOutlined, SearchOutlined, CloseCircleOutlined, CloseCircleFilled } from "@ant-design/icons";
 import { useDispatch } from "react-redux";
@@ -13,8 +13,10 @@ const Input: React.FunctionComponent<InputProps> = ({
     onChange,
     onKeyDown,
     searchResultList,
+    placeholder = "어디로 여행가세요?",
 }) => {
     const dispatch = useDispatch();
+    const [isFocused, setIsFocused] = useState(false);
     const clear = useCallback(() => {
         setValue("");
     }, [value]);
@@ -35,7 +37,7 @@ const Input: React.FunctionComponent<InputProps> = ({
                     <SearchOutlined style={{ fontSize: 20 }} />
                 </div>
                 <div className="w-4/6 h-full flex justify-center items-center">
-                    <input type="text" placeholder="어디로 여행가세요?" className="w-full h-full focus:outline-none bg-247 placeholder-gray-700" 
+                    <input type="text" placeholder={placeholder} className="w-full h-full focus:outline-none bg-247 placeholder-gray-700"
                         value={value} onChange={onChange} onKeyDown={onKeyDown}
                     />
                 </div>
@@ -50,6 +52,17 @@ const Input: React.FunctionComponent<InputProps> = ({
             </div>
         );
     }, [value]);
+    const Input003 = useMemo(() => {
+        return (
+            <div className="w-full h-full flex flex-row items-center">
+                <div className={`w-full h-full flex justify-center items-center ${isFocused && "border-b-2 border-black"}`}>
+                    <input type="text" placeholder={placeholder} className="w-full h-full focus:outline-none"
+                        value={value} onChange={onChange} onFocus={() => setIsFocused(true)} onBlur={() => setIsFocused(false)}
+                    />
+                </div>
+            </div>
+        );
+    }, [value, isFocused]);
     let Input;
     switch (inputType) {
         case '001':
@@ -57,6 +70,9 @@ const Input: React.FunctionComponent<InputProps> = ({
             break;
         case '002':
             Input = _.clone(Input002);
+            break;
+        case '003':
+            Input = _.clone(Input003);
             break;
         default:
             Input = _.clone(Input001);

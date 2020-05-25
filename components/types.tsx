@@ -5,6 +5,7 @@ export interface InputProps {
     setValue?: any,
     onKeyDown?: any,
     searchResultList?: any,
+    placeholder?: string,
 }
 export interface SearchProps {
     
@@ -14,4 +15,7 @@ export interface SearchPlaceProps {
 }
 export interface SearchCalendarProps {
     
+}
+export interface CalendarProps {
+    calenderType?: string,
 }
