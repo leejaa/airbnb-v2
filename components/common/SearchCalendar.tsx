@@ -1,13 +1,17 @@
 import React, { useCallback } from "react";
+import _ from "lodash";
 import { SearchCalendarProps } from "../types";
 import { LeftOutlined, ArrowRightOutlined, SwapRightOutlined } from "@ant-design/icons";
 import Input from "./Input";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { toggleShowHeader, toggleShowSearchCalendar } from "../../redux/indexSlice";
 import Calendar from "./Calendar";
+import { rootState } from "../../redux/rootReducer";
+import moment from "moment";
 
 const SearchCalendar: React.FunctionComponent<SearchCalendarProps> = ({
 }) => {
+    const { selectedDateRange } = useSelector((state: rootState) => state.indexReducer);
     const dispatch = useDispatch();
     const onChangeDate = useCallback(() => {
 
@@ -31,6 +35,7 @@ const SearchCalendar: React.FunctionComponent<SearchCalendarProps> = ({
                         inputType="003"
                         placeholder="년.월.일"
                         onChange={onChangeDate}
+                        value={_.isEmpty(selectedDateRange?.startDate) ? "" : moment(selectedDateRange.startDate).format('YYYY.MM.DD')}
                     />
                 </div>
                 <div className="w-1/12 h-full flex items-center justify-center">
@@ -41,6 +46,7 @@ const SearchCalendar: React.FunctionComponent<SearchCalendarProps> = ({
                         inputType="003"
                         placeholder="년.월.일"
                         onChange={onChangeDate}
+                        value={_.isEmpty(selectedDateRange?.endDate) ? "" : moment(selectedDateRange.endDate).format('YYYY.MM.DD')}
                     />
                 </div>
             </div>

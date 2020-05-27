@@ -4,14 +4,16 @@ import { InputProps, CalendarProps } from "../types";
 import _ from "lodash";
 import { getDates, getDatesEachMonths } from "../../utils/utils";
 import { DownOutlined } from "@ant-design/icons";
+import { useDispatch } from "react-redux";
+import { changeSelectedDateRange } from "../../redux/indexSlice";
 
 const format = 'YYYY-MM-DD';
 const monthPageSize = 4;
-const weekDays = ['일', '월', '화', '수', '목', '금', '토'];
 let dateIndex = 0;
 const Calendar: React.FunctionComponent<CalendarProps> = ({
     calenderType = '001',
 }) => {
+    const dispatch = useDispatch();
     const [baseDate, setBaseDate] = useState(moment().format(format));
     const [selectedDateRange, setSelectedDateRange] = useState({startDate: null, endDate: null});
     const [dates, setDates] = useState(getDatesEachMonths({ baseDate: moment().format(format), monthPageSize }));
@@ -21,6 +23,9 @@ const Calendar: React.FunctionComponent<CalendarProps> = ({
         const newDates = _.union(dates, getDatesEachMonths({baseDate: newBaseDate, monthPageSize}));
         setDates(newDates);
     }, [dates, baseDate]);
+    useEffect(() => {
+        dispatch(changeSelectedDateRange({ data: selectedDateRange }));
+    }, [selectedDateRange]);
     const selectDate = useCallback(({eachDateParam, isAble}) => {
         if (!isAble) {
             return false;
