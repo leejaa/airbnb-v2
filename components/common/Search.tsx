@@ -2,7 +2,7 @@ import React, { useCallback } from "react";
 import { InputProps, SearchProps } from "../types";
 import { CloseOutlined, SearchOutlined, CalendarOutlined, UsergroupAddOutlined } from "@ant-design/icons";
 import { useDispatch } from "react-redux";
-import { toggleShowSearchModal, toggleShowSearchPlace, toggleShowHeader, toggleShowSearchCalendar } from "../../redux/indexSlice";
+import { toggleShowSearchModal, toggleShowSearchPlace, toggleShowHeader, toggleShowSearchCalendar, toggleAddGuest } from "../../redux/indexSlice";
 
 const Search: React.FunctionComponent<SearchProps> = ({
 }) => {
@@ -14,6 +14,10 @@ const Search: React.FunctionComponent<SearchProps> = ({
     const onClickCalendar = useCallback(() => {
         dispatch(toggleShowHeader({data: false}));
         dispatch(toggleShowSearchCalendar({data: true}));
+    }, []);
+    const onClickGuest = useCallback(() => {
+        dispatch(toggleShowHeader({data: false}));
+        dispatch(toggleAddGuest({data: true}));
     }, []);
     return (
         <div className="w-full h-full">
@@ -33,7 +37,7 @@ const Search: React.FunctionComponent<SearchProps> = ({
                         <CalendarOutlined style={{ fontSize: 15 }} />
                         <span className="text-base ml-3 text-rgb-113">날짜 추가</span>
                     </div>
-                    <div className="w-1/2 h-full relative flex flex-row items-center pl-4">
+                    <div className="w-1/2 h-full relative flex flex-row items-center pl-4" onClick={onClickGuest}>
                         <UsergroupAddOutlined style={{ fontSize: 15 }} />
                         <span className="text-base ml-3 text-rgb-113">게스트 추가</span>
                     </div>

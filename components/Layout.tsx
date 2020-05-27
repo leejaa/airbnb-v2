@@ -12,11 +12,11 @@ import Search from "./common/Search";
 import { rootState } from "../redux/rootReducer";
 import SearchPlace from "./common/SearchPlace";
 import SearchCalendar from "./common/SearchCalendar";
+import AddGuest from "./common/AddGuest";
 
 type Props = {
   props: any
 };
-
 
 const Layout: React.FunctionComponent<Props> = ({ props, children }) => {
   const isAuth = props?.isAuth ?? true;
@@ -73,7 +73,7 @@ const Layout: React.FunctionComponent<Props> = ({ props, children }) => {
         <SearchCalendar />
       </div>
       <div className={`w-full h-full bg-white z-10 absolute relative ${!showAddGuest && 'hidden'}`}>
-        {/* <AddGuest /> */}
+        <AddGuest />
       </div>
       {children}
       <Footer />

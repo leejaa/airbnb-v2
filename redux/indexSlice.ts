@@ -67,7 +67,7 @@ const indexSlice = createSlice({
 });
 
 export const { changeTest, toggleShowJoinModal, toggleShowLoginModal, toggleIsLogin, toggleShowSearchModal, toggleShowHeader, toggleShowSearchPlace, toggleShowSearchCalendar,
-  changeSelectedDateRange,
+  changeSelectedDateRange, toggleAddGuest,
 } = indexSlice.actions;
 
 export default indexSlice.reducer;
