@@ -19,3 +19,5 @@ export interface SearchCalendarProps {
 export interface CalendarProps {
     calenderType?: string,
 }
+export interface addGuestProps {
+}

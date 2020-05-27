@@ -21,7 +21,7 @@ type Props = {
 const Layout: React.FunctionComponent<Props> = ({ props, children }) => {
   const isAuth = props?.isAuth ?? true;
   const router = useRouter();
-  const { showJoinModal, showLoginModal, showSearchModal, showHeader = true, showSearchPlace, showSearchCalendar } = useSelector((state: rootState) => state.indexReducer);
+  const { showJoinModal, showLoginModal, showSearchModal, showHeader = true, showSearchPlace, showSearchCalendar, showAddGuest } = useSelector((state: rootState) => state.indexReducer);
   const dispatch = useDispatch();
   const joinRef = useRef(null);
   const loginRef = useRef(null);
@@ -71,6 +71,9 @@ const Layout: React.FunctionComponent<Props> = ({ props, children }) => {
       </div>
       <div className={`w-full h-full bg-white z-10 absolute relative ${!showSearchCalendar && 'hidden'}`}>
         <SearchCalendar />
+      </div>
+      <div className={`w-full h-full bg-white z-10 absolute relative ${!showAddGuest && 'hidden'}`}>
+        {/* <AddGuest /> */}
       </div>
       {children}
       <Footer />
