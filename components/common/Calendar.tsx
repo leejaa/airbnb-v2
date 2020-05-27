@@ -13,6 +13,7 @@ const Calendar: React.FunctionComponent<CalendarProps> = ({
     calenderType = '001',
 }) => {
     const [baseDate, setBaseDate] = useState(moment().format(format));
+    const [selectedDateRange, setSelectedDateRange] = useState({startDate: null, endDate: null});
     const [dates, setDates] = useState(getDatesEachMonths({ baseDate: moment().format(format), monthPageSize }));
     const showMoreMonths = useCallback(() => {
         const newBaseDate = moment(baseDate).add(monthPageSize, 'months').format(format);
@@ -20,6 +21,32 @@ const Calendar: React.FunctionComponent<CalendarProps> = ({
         const newDates = _.union(dates, getDatesEachMonths({baseDate: newBaseDate, monthPageSize}));
         setDates(newDates);
     }, [dates, baseDate]);
+    const selectDate = useCallback(({eachDateParam, isAble}) => {
+        if (!isAble) {
+            return false;
+        }
+        const newSelectedDateRange = _.clone(selectedDateRange);
+        if (_.isEmpty(selectedDateRange.startDate)) {
+            newSelectedDateRange.startDate = eachDateParam;
+        } 
+        if (_.isEmpty(selectedDateRange.endDate)) {
+            newSelectedDateRange.endDate = eachDateParam;
+        }
+        if (!_.isEmpty(selectedDateRange.startDate) && !_.isEmpty(selectedDateRange.endDate)) {
+            if (_.isEqual(selectedDateRange.startDate, selectedDateRange.endDate)) {
+                newSelectedDateRange.endDate = eachDateParam;
+            } else {
+                newSelectedDateRange.startDate = eachDateParam;
+                newSelectedDateRange.endDate = eachDateParam;
+            }
+        }
+        if (moment(newSelectedDateRange.startDate).isAfter(moment(newSelectedDateRange.endDate))) {
+            const temp = newSelectedDateRange.startDate;
+            newSelectedDateRange.startDate = newSelectedDateRange.endDate;
+            newSelectedDateRange.endDate = temp;
+        }
+        setSelectedDateRange(newSelectedDateRange);
+    }, [selectedDateRange]);
     const drawCells = useCallback((eachDates) => {
         const dayIndex = moment(eachDates[0]).day();
         dateIndex = 0;
@@ -34,16 +61,22 @@ const Calendar: React.FunctionComponent<CalendarProps> = ({
                                         if (dateIndex > eachDates.length - 1) {
                                             return;
                                         }
-                                        const fontColor = moment(eachDates[dateIndex]).isSameOrBefore(moment()) ? "text-gray-300" : "";
+                                        const isAble = !moment(eachDates[dateIndex]).isSameOrBefore(moment());
+                                        let fontColor = moment(eachDates[dateIndex]).isSameOrBefore(moment()) ? "text-gray-300" : "";
+                                        fontColor = _.includes([selectedDateRange.startDate, selectedDateRange.endDate], eachDates[dateIndex]) ? "text-white" : fontColor;
+                                        const isSelectedDate = moment(eachDates[dateIndex]).isBetween(selectedDateRange.startDate, selectedDateRange.endDate, null, '[]');
+                                        const eachDateParam = _.clone(eachDates[dateIndex]);
                                         return (
-                                            <div className="w-1/7 h-12 flex items-center justify-center">
-                                                {
-                                                    eachWeekIndex === 0 ? (
-                                                        <span className={`text-sm font-bold ${fontColor}`}>{dayIndex > cellIndex ? "" : moment(eachDates[dateIndex++]).format('D')}</span>
-                                                    ) : (
-                                                        <span className={`text-sm font-bold ${fontColor}`}>{moment(eachDates[dateIndex++]).format('D')}</span>
-                                                    )
-                                                }
+                                            <div className={`w-1/7 h-12 flex items-center justify-center ${isSelectedDate && "bg-gray-200"} ${eachDates[dateIndex] === selectedDateRange.startDate && "rounded-l-full"} ${eachDates[dateIndex] === selectedDateRange.endDate && "rounded-r-full"}`}>
+                                                <div className={`w-full h-full rounded-full flex items-center justify-center ${_.includes([selectedDateRange.startDate, selectedDateRange.endDate], eachDates[dateIndex]) && "bg-black"}`} onClick={() => selectDate({eachDateParam, isAble})}>
+                                                    {
+                                                        eachWeekIndex === 0 ? (
+                                                            <span className={`text-sm font-bold ${fontColor}`}>{dayIndex > cellIndex ? "" : moment(eachDates[dateIndex++]).format('D')}</span>
+                                                        ) : (
+                                                            <span className={`text-sm font-bold ${fontColor}`}>{moment(eachDates[dateIndex++]).format('D')}</span>
+                                                        )
+                                                    }
+                                                </div>
                                             </div>
                                         )
                                     }
@@ -55,7 +88,7 @@ const Calendar: React.FunctionComponent<CalendarProps> = ({
                 }
             </>
         );
-    }, [dates, baseDate]);
+    }, [dates, baseDate, selectedDateRange]);
     const Calendar001 = useMemo(() => {
         return (
             <div className="w-full h-full">
@@ -103,7 +136,7 @@ const Calendar: React.FunctionComponent<CalendarProps> = ({
                 </div>
             </div>
         );
-    }, [dates, baseDate]);
+    }, [dates, baseDate, selectedDateRange]);
     let Calendar;
     switch (calenderType) {
         case '001':
