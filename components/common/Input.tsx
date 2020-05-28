@@ -3,7 +3,7 @@ import { InputProps } from "../types";
 import { MessageOutlined, SearchOutlined, CloseCircleOutlined, CloseCircleFilled } from "@ant-design/icons";
 import { useDispatch } from "react-redux";
 import _ from "lodash";
-import { toggleShowSearchModal } from "../../redux/indexSlice";
+import { toggleShowSearchModal, toggleShowSearchTotalModal, toggleShowHeader } from "../../redux/indexSlice";
 
 
 const Input: React.FunctionComponent<InputProps> = ({
@@ -63,6 +63,26 @@ const Input: React.FunctionComponent<InputProps> = ({
             </div>
         );
     }, [value, isFocused]);
+    const Input004 = useMemo(() => {
+        return (
+            <div className="w-full h-full flex flex-row items-center">
+                <div className="border border-gray-300 rounded-r-75 rounded-l-75 w-full h-70p shadow-md flex flex-row">
+                    <div className="border-r border-gray-300 w-1/3 h-full flex items-center justify-center" onClick={() => dispatch(toggleShowSearchTotalModal({ data: true, searchIndex: 1 }))}>
+                        <span className="text-gray-600 text-sm hover:text-black cursor-pointer">위치추가</span>
+                    </div>
+                    <div className="border-r border-gray-300 w-1/3 h-full flex items-center justify-center" onClick={() => dispatch(toggleShowSearchTotalModal({ data: true, searchIndex: 2 }))}>
+                        <span className="text-gray-600 text-sm hover:text-black cursor-pointer">날짜추가</span>
+                    </div>
+                    <div className="border-r border-gray-300 w-1/3 h-full flex items-center justify-center" onClick={() => dispatch(toggleShowSearchTotalModal({ data: true, searchIndex: 3 }))}>
+                        <span className="text-gray-600 text-sm hover:text-black cursor-pointer">게스트추가</span>
+                    </div>
+                    <div className="w-1/6 h-full flex items-center justify-center">
+                        <SearchOutlined style={{ fontSize: 15, color: 'rgb(255, 56, 92)' }} />
+                    </div>
+                </div>
+            </div>
+        );
+    }, []);
     let Input;
     switch (inputType) {
         case '001':
@@ -73,6 +93,9 @@ const Input: React.FunctionComponent<InputProps> = ({
             break;
         case '003':
             Input = _.clone(Input003);
+            break;
+        case '004':
+            Input = _.clone(Input004);
             break;
         default:
             Input = _.clone(Input001);

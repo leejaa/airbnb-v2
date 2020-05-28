@@ -21,8 +21,11 @@ const Header: React.FunctionComponent<Props> = ({
   return (
     <div className="flex-1 w-full h-16 flex items-center justify-center xl:justify-between">
       <img src="https://cdn4.iconfinder.com/data/icons/socialcones/508/Airbnb-512.png" className="hidden xl:inline" style={{ maxWidth: 45 }} />
-      <div className="w-full h-full flex flex-row items-center">
+      <div className="w-full h-full flex flex-row items-center xl:hidden">
         <Input />
+      </div>
+      <div className="hidden xl:inline xl:w-1/5 xl:h-full">
+        <Input inputType="004" />
       </div>
       <div className="hidden xl:inline xl:h-full xl:w-1/4 xl:flex xl:items-center xl:justify-around">
         <div className="h-full w-1/5 flex items-center justify-center rounded-full cursor-pointer hover:bg-gray-200">

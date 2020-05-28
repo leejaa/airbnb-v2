@@ -21,3 +21,7 @@ export interface CalendarProps {
 }
 export interface addGuestProps {
 }
+
+export interface SearchTotalModalProps {
+
+}
