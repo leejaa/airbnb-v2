@@ -35,4 +35,5 @@ export interface SearchPlaceListProps {
     searchResultList: any,
     width?: string,
     height?: string,
+    maxCnt?: number,
 }

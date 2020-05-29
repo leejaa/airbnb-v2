@@ -10,11 +10,12 @@ const SearchPlaceList: React.FunctionComponent<SearchPlaceListProps> = ({
     searchResultList = [],
     width = "w-full",
     height = "h-16",
+    maxCnt = 10,
 }) => {
     return (
         <div className={`${width} h-full`}>
             {
-                searchResultList.slice(0, 4).map(result => (
+                searchResultList.slice(0, maxCnt).map(result => (
                     <div className={`w-full ${height} flex flex-row items-center cursor-pointer hover:bg-gray-100`}>
                         <div className="w-14p h-50p rounded-md bg-235 flex items-center justify-center">
                             <InstagramOutlined style={{ fontSize: 23 }} />

@@ -76,6 +76,7 @@ const SearchTotalModal: React.FunctionComponent<SearchTotalModalProps> = ({
                         searchResultList={searchResultList}
                         width="w-30"
                         height="h-25p"
+                        maxCnt={4}
                     />
                 </div>
             </div>
