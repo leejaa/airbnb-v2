@@ -6,6 +6,8 @@ export interface InputProps {
     onKeyDown?: any,
     searchResultList?: any,
     placeholder?: string,
+    labelText?: string,
+    inputBackgroundColor?: string,
 }
 export interface SearchProps {
     
@@ -21,7 +23,11 @@ export interface CalendarProps {
 }
 export interface addGuestProps {
 }
-
 export interface SearchTotalModalProps {
 
+}
+export interface ButtonProps {
+    buttonColor?: string,
+    showIcon?: boolean,
+    buttonText?: string,
 }

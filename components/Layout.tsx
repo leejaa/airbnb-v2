@@ -77,7 +77,7 @@ const Layout: React.FunctionComponent<Props> = ({ props, children }) => {
       <div className={`w-full h-full bg-white z-10 absolute relative ${!showAddGuest && 'hidden'}`}>
         <AddGuest />
       </div>
-      <div className={`w-full h-65p bg-white z-10 flex items-center justify-center absolute relative ${!showSearchTotalModal && 'hidden'}`}>
+      <div className={`w-full h-80p bg-white z-10 flex items-center justify-center absolute ${!showSearchTotalModal && 'hidden'} move003 `}>
         <SearchTotalModal />
       </div>
       {children}

@@ -14,6 +14,8 @@ const Input: React.FunctionComponent<InputProps> = ({
     onKeyDown,
     searchResultList,
     placeholder = "어디로 여행가세요?",
+    labelText = "",
+    inputBackgroundColor = "bg-white",
 }) => {
     const dispatch = useDispatch();
     const [isFocused, setIsFocused] = useState(false);
@@ -83,6 +85,23 @@ const Input: React.FunctionComponent<InputProps> = ({
             </div>
         );
     }, []);
+    const Input005 = useMemo(() => {
+        return (
+            <div className="w-full h-80p p-1 flex items-center">
+                <div className="w-85p h-full flex flex-col">
+                    <span className="text-xs font-bold">{labelText}</span>
+                    <div className="w-full h-full">
+                        <input type="text" placeholder={placeholder} className={`focus:outline-none placeholder-gray-700 ${inputBackgroundColor}`}
+                            value={value} onChange={onChange} onKeyDown={onKeyDown}
+                        />
+                    </div>
+                </div>
+                <div className={`w-15p h-full flex items-center justify-center cursor-pointer ${value === "" && "hidden"}`} onClick={() => setValue("")}>
+                    <CloseCircleFilled style={{ fontSize: 20, color: 'rgb(135, 135, 135)' }} />
+                </div>
+            </div>
+        );
+    }, [value, labelText, inputBackgroundColor, placeholder]);
     let Input;
     switch (inputType) {
         case '001':
@@ -96,6 +115,9 @@ const Input: React.FunctionComponent<InputProps> = ({
             break;
         case '004':
             Input = _.clone(Input004);
+            break;
+        case '005':
+            Input = _.clone(Input005);
             break;
         default:
             Input = _.clone(Input001);

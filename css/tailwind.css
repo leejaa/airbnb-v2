@@ -20,6 +20,13 @@
     animation-fill-mode: both;
 }
 
+.move003 {
+    animation-name: move003;
+    animation-duration: 0.6s;
+    animation-delay: 0s;
+    animation-fill-mode: both;
+}
+
 @keyframes move001 {
     from {
         width: 100%;
@@ -51,5 +58,14 @@
         display: flex;
         flex-direction: row;
         top: 0%;
+    }
+}
+
+@keyframes move003 {
+    from {
+        bottom: 100%;
+    }
+    to {
+        bottom: 35%;
     }
 }
