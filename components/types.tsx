@@ -31,3 +31,8 @@ export interface ButtonProps {
     showIcon?: boolean,
     buttonText?: string,
 }
+export interface SearchPlaceListProps {
+    searchResultList: any,
+    width?: string,
+    height?: string,
+}

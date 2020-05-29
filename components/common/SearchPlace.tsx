@@ -5,6 +5,7 @@ import { useDispatch } from "react-redux";
 import axios from "axios";
 import { toggleShowSearchModal, toggleShowSearchPlace, toggleShowHeader } from "../../redux/indexSlice";
 import Input from "./Input";
+import SearchPlaceList from "./SearchPlaceList";
 
 const SearchPlace: React.FunctionComponent<SearchPlaceProps> = ({
 }) => {
@@ -32,7 +33,6 @@ const SearchPlace: React.FunctionComponent<SearchPlaceProps> = ({
         });
         setSearchResultList(result?.data?.documents ?? []);
     }, [searchword, searchResultList]);
-
     return (
         <div className="move001">
             <div className="move002 flex flex-row">
@@ -50,19 +50,9 @@ const SearchPlace: React.FunctionComponent<SearchPlaceProps> = ({
                     <span>취소</span>
                 </div>
             </div>
-            {
-                searchResultList.slice(0,10).map(result => (
-                    <div className="w-full h-16 flex flex-row items-center">
-                        <div className="w-14p h-70p rounded-md bg-235 flex items-center justify-center">
-                            <InstagramOutlined style={{ fontSize: 23 }} />
-                        </div>
-                        <div className="w-4/5 h-full flex justify-center items-center">
-                            <span>{result?.address_name ?? ''}</span>
-                        </div>
-                    </div>
-
-                ))
-            }
+            <SearchPlaceList
+                searchResultList={searchResultList}
+            />
         </div >
     );
 }

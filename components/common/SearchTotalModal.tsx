@@ -1,4 +1,5 @@
 import React, { useCallback, useState } from "react";
+import axios from "axios";
 import { InputProps, SearchProps, SearchPlaceProps, SearchTotalModalProps } from "../types";
 import { CloseOutlined } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
@@ -6,6 +7,7 @@ import { toggleShowHeader, toggleShowSearchTotalModal, toggleSearchTotalModalInd
 import Button from "./Button";
 import { rootState } from "../../redux/rootReducer";
 import Input from "./Input";
+import SearchPlaceList from "./SearchPlaceList";
 
 const SearchTotalModal: React.FunctionComponent<SearchTotalModalProps> = ({
 }) => {
@@ -16,9 +18,19 @@ const SearchTotalModal: React.FunctionComponent<SearchTotalModalProps> = ({
         dispatch(toggleShowSearchTotalModal({ data: false }));
     }, []);
     const [searchPlace, setSearchPlace] = useState("");
+    const [searchResultList, setSearchResultList] = useState([]);
     const onChangeSearchPlace = useCallback((e) => {
         setSearchPlace(e?.target?.value ?? '');
-    }, [searchPlace]);
+        searchAddress();
+    }, [searchPlace, searchResultList]);
+    const searchAddress = useCallback(async () => {
+        const result = await axios.get(`https://dapi.kakao.com/v2/local/search/keyword.json?query=${searchPlace}`, {
+            headers: {
+                Authorization: `KakaoAK ${process.env.KAKAO_KEY}`
+            }
+        });
+        setSearchResultList(result?.data?.documents ?? []);
+    }, [searchPlace, searchResultList]);
     return (
         <div className="absolute w-full h-80p bottom-0 flex items-center justify-center">
             <div className="w-9/12 h-90p flex flex-col">
@@ -58,6 +70,13 @@ const SearchTotalModal: React.FunctionComponent<SearchTotalModalProps> = ({
                             showIcon={true}
                         />
                     </div>
+                </div>
+                <div className="w-full h-70p border border-black p-3">
+                    <SearchPlaceList
+                        searchResultList={searchResultList}
+                        width="w-30"
+                        height="h-25p"
+                    />
                 </div>
             </div>
 
