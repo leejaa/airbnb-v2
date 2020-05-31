@@ -40,3 +40,7 @@ export interface SearchPlaceListProps {
     height?: string,
     maxCnt?: number,
 }
+export interface PlusMinusInputProps {
+    labelText?: string,
+    descryptionText?: string,
+}

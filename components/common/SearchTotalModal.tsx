@@ -11,6 +11,7 @@ import SearchPlaceList from "./SearchPlaceList";
 import Calendar from "./Calendar";
 import _ from "lodash";
 import moment from "moment";
+import PlusMinusInput from "./PlusMinusInput";
 
 const SearchTotalModal: React.FunctionComponent<SearchTotalModalProps> = ({
 }) => {
@@ -73,14 +74,21 @@ const SearchTotalModal: React.FunctionComponent<SearchTotalModalProps> = ({
                             placeholder="날짜 추가"
                             labelText="체크인/체크아웃"
                             value={selectedDateText}
-                            setValue={() => dispatch(changeSelectedDateRange({ data: {startDate: null, endDate: null} }))}
-                            inputBackgroundColor={searchTotalModalIndex === 1 ? "bg-gray-100" : "bg-white"}
+                            setValue={() => dispatch(changeSelectedDateRange({ data: { startDate: null, endDate: null } }))}
+                            inputBackgroundColor={searchTotalModalIndex === 2 ? "bg-gray-100" : "bg-white"}
                             inputDisable={true}
                             isInputTextBold={true}
                         />
                     </div>
-                    <div className={`border-2 w-30 h-full rounded-lg ${searchTotalModalIndex === 3 ? "border-black" : "border-gray-100 hover:border-gray-400"}`} onClick={() => dispatch(toggleSearchTotalModalIndex({ data: 3 }))}>
-
+                    <div className={`border-2 w-30 h-full rounded-lg flex items-center ${searchTotalModalIndex === 3 ? "border-black" : "border-gray-100 hover:border-gray-400"}`} onClick={() => dispatch(toggleSearchTotalModalIndex({ data: 3 }))}>
+                        <Input
+                            inputType="005"
+                            placeholder="게스트 추가"
+                            labelText="인원"
+                            inputBackgroundColor={searchTotalModalIndex === 3 ? "bg-gray-100" : "bg-white"}
+                            inputDisable={true}
+                            isInputTextBold={true}
+                        />
                     </div>
                     <div className="w-10p h-full flex items-center justify-center">
                         <Button
@@ -109,6 +117,32 @@ const SearchTotalModal: React.FunctionComponent<SearchTotalModalProps> = ({
                                 calenderType="002"
                                 monthPageSize={3}
                             />
+                        </div>
+                    )
+                }
+                {
+                    searchTotalModalIndex === 3 && (
+                        <div className="w-full h-full border border-black p-3 flex justify-center items-center">
+                            <div className="w-70p h-40p flex flex justify-center items-center">
+                                <div className="border-r border-gray-300 w-1/3 h-full flex items-center">
+                                    <PlusMinusInput
+                                        labelText="성인"
+                                        descryptionText="만 13세 이상"
+                                    />
+                                </div>
+                                <div className="border-r border-gray-300 w-1/3 h-full flex items-center">
+                                    <PlusMinusInput
+                                        labelText="어린이"
+                                        descryptionText="2~12세"
+                                    />
+                                </div>
+                                <div className="w-1/3 h-full flex items-center">
+                                    <PlusMinusInput
+                                        labelText="유아"
+                                        descryptionText="2세 미만"
+                                    />
+                                </div>
+                            </div>
                         </div>
                     )
                 }
