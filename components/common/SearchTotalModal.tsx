@@ -1,18 +1,20 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useState, useMemo } from "react";
 import axios from "axios";
 import { InputProps, SearchProps, SearchPlaceProps, SearchTotalModalProps } from "../types";
 import { CloseOutlined } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
-import { toggleShowHeader, toggleShowSearchTotalModal, toggleSearchTotalModalIndex } from "../../redux/indexSlice";
+import { toggleShowHeader, toggleShowSearchTotalModal, toggleSearchTotalModalIndex, changeSelectedDateRange } from "../../redux/indexSlice";
 import Button from "./Button";
 import { rootState } from "../../redux/rootReducer";
 import Input from "./Input";
 import SearchPlaceList from "./SearchPlaceList";
 import Calendar from "./Calendar";
+import _ from "lodash";
+import moment from "moment";
 
 const SearchTotalModal: React.FunctionComponent<SearchTotalModalProps> = ({
 }) => {
-    const { searchTotalModalIndex = 1 } = useSelector((state: rootState) => state.indexReducer);
+    const { searchTotalModalIndex = 1, selectedDateRange } = useSelector((state: rootState) => state.indexReducer);
     const dispatch = useDispatch();
     const goBack = useCallback(() => {
         dispatch(toggleShowHeader({ data: true }));
@@ -32,6 +34,13 @@ const SearchTotalModal: React.FunctionComponent<SearchTotalModalProps> = ({
         });
         setSearchResultList(result?.data?.documents ?? []);
     }, [searchPlace, searchResultList]);
+    const selectedDateText = useMemo(() => {
+        let selectedDateText = "";
+        if (!_.isEmpty(selectedDateRange) && !_.isEmpty(selectedDateRange?.startDate) && !_.isEmpty(selectedDateRange?.endDate)) {
+            selectedDateText = `${moment(selectedDateRange.startDate).format('M월 D일')} ~ ${moment(selectedDateRange.endDate).format('M월 D일')}`;
+        }
+        return selectedDateText;
+    }, [selectedDateRange]);
     return (
         <div className="absolute w-full h-80p bottom-0 flex items-center justify-center">
             <div className="w-9/12 h-90p flex flex-col">
@@ -58,8 +67,17 @@ const SearchTotalModal: React.FunctionComponent<SearchTotalModalProps> = ({
                             inputBackgroundColor={searchTotalModalIndex === 1 ? "bg-gray-100" : "bg-white"}
                         />
                     </div>
-                    <div className={`border-2 w-30 h-full rounded-lg ${searchTotalModalIndex === 2 ? "border-black" : "border-gray-100 hover:border-gray-400"}`} onClick={() => dispatch(toggleSearchTotalModalIndex({ data: 2 }))}>
-
+                    <div className={`border-2 w-30 h-full rounded-lg flex justify-content items-center ${searchTotalModalIndex === 2 ? "border-black" : "border-gray-100 hover:border-gray-400"}`} onClick={() => dispatch(toggleSearchTotalModalIndex({ data: 2 }))}>
+                        <Input
+                            inputType="005"
+                            placeholder="날짜 추가"
+                            labelText="체크인/체크아웃"
+                            value={selectedDateText}
+                            setValue={() => dispatch(changeSelectedDateRange({ data: {startDate: null, endDate: null} }))}
+                            inputBackgroundColor={searchTotalModalIndex === 1 ? "bg-gray-100" : "bg-white"}
+                            inputDisable={true}
+                            isInputTextBold={true}
+                        />
                     </div>
                     <div className={`border-2 w-30 h-full rounded-lg ${searchTotalModalIndex === 3 ? "border-black" : "border-gray-100 hover:border-gray-400"}`} onClick={() => dispatch(toggleSearchTotalModalIndex({ data: 3 }))}>
 

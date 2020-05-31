@@ -16,6 +16,8 @@ const Input: React.FunctionComponent<InputProps> = ({
     placeholder = "어디로 여행가세요?",
     labelText = "",
     inputBackgroundColor = "bg-white",
+    inputDisable = false,
+    isInputTextBold = false,
 }) => {
     const dispatch = useDispatch();
     const [isFocused, setIsFocused] = useState(false);
@@ -91,8 +93,8 @@ const Input: React.FunctionComponent<InputProps> = ({
                 <div className="w-85p h-full flex flex-col">
                     <span className="text-xs font-bold">{labelText}</span>
                     <div className="w-full h-full">
-                        <input type="text" placeholder={placeholder} className={`focus:outline-none placeholder-gray-700 ${inputBackgroundColor}`}
-                            value={value} onChange={onChange} onKeyDown={onKeyDown}
+                        <input type="text" placeholder={placeholder} className={`focus:outline-none placeholder-gray-700 ${inputBackgroundColor} ${isInputTextBold && "font-bold"}`}
+                            value={value} onChange={onChange} onKeyDown={onKeyDown} disabled={inputDisable}
                         />
                     </div>
                 </div>

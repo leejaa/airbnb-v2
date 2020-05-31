@@ -8,6 +8,8 @@ export interface InputProps {
     placeholder?: string,
     labelText?: string,
     inputBackgroundColor?: string,
+    inputDisable?: boolean,
+    isInputTextBold?: boolean,
 }
 export interface SearchProps {
     
