@@ -20,6 +20,7 @@ export interface SearchCalendarProps {
 }
 export interface CalendarProps {
     calenderType?: string,
+    monthPageSize?: number,
 }
 export interface addGuestProps {
 }

@@ -8,6 +8,7 @@ import Button from "./Button";
 import { rootState } from "../../redux/rootReducer";
 import Input from "./Input";
 import SearchPlaceList from "./SearchPlaceList";
+import Calendar from "./Calendar";
 
 const SearchTotalModal: React.FunctionComponent<SearchTotalModalProps> = ({
 }) => {
@@ -71,14 +72,28 @@ const SearchTotalModal: React.FunctionComponent<SearchTotalModalProps> = ({
                         />
                     </div>
                 </div>
-                <div className="w-full h-70p border border-black p-3">
-                    <SearchPlaceList
-                        searchResultList={searchResultList}
-                        width="w-30"
-                        height="h-25p"
-                        maxCnt={4}
-                    />
-                </div>
+                {
+                    searchTotalModalIndex === 1 && (
+                        <div className="w-full h-70p border border-black p-3">
+                            <SearchPlaceList
+                                searchResultList={searchResultList}
+                                width="w-30"
+                                height="h-25p"
+                                maxCnt={4}
+                            />
+                        </div>
+                    )
+                }
+                {
+                    searchTotalModalIndex === 2 && (
+                        <div className="w-full h-70p border border-black p-3 flex justify-center items-center">
+                            <Calendar
+                                calenderType="002"
+                                monthPageSize={3}
+                            />
+                        </div>
+                    )
+                }
             </div>
 
         </div>
