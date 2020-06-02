@@ -43,4 +43,5 @@ export interface SearchPlaceListProps {
 export interface PlusMinusInputProps {
     labelText?: string,
     descryptionText?: string,
+    keyword?: string,
 }

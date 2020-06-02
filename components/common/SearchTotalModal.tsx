@@ -15,7 +15,27 @@ import PlusMinusInput from "./PlusMinusInput";
 
 const SearchTotalModal: React.FunctionComponent<SearchTotalModalProps> = ({
 }) => {
-    const { searchTotalModalIndex = 1, selectedDateRange } = useSelector((state: rootState) => state.indexReducer);
+    const { searchTotalModalIndex = 1, selectedDateRange, guestInfo } = useSelector((state: rootState) => state.indexReducer);
+    const guestInfoText = useMemo(() => {
+        let guestInfoText = "";
+        let guestCnt = 0;
+        let babyCnt = 0;
+        if (!_.isEqual(guestInfo?.adultCnt ?? 0, 0)) {
+            guestCnt += guestInfo.adultCnt;
+        }
+        if (!_.isEqual(guestInfo?.childCnt ?? 0, 0)) {
+            guestCnt += guestInfo.childCnt;
+        }
+        if (!_.isEqual(guestCnt, 0)) {
+            guestInfoText += `게스트 ${guestCnt}명`;
+        }
+        if (!_.isEqual(guestInfo?.babyCnt ?? 0, 0)) {
+            babyCnt += guestInfo?.babyCnt;
+        }
+        if (!_.isEqual(babyCnt, 0)) {
+            guestInfoText += ` 유아 ${babyCnt}명`;
+        }
+    }, [guestInfo]);
     const dispatch = useDispatch();
     const goBack = useCallback(() => {
         dispatch(toggleShowHeader({ data: true }));
@@ -86,8 +106,9 @@ const SearchTotalModal: React.FunctionComponent<SearchTotalModalProps> = ({
                             placeholder="게스트 추가"
                             labelText="인원"
                             inputBackgroundColor={searchTotalModalIndex === 3 ? "bg-gray-100" : "bg-white"}
-                            inputDisable={true}
+                            inputDisable={false}
                             isInputTextBold={true}
+                            value={guestInfoText}
                         />
                     </div>
                     <div className="w-10p h-full flex items-center justify-center">
@@ -128,18 +149,21 @@ const SearchTotalModal: React.FunctionComponent<SearchTotalModalProps> = ({
                                     <PlusMinusInput
                                         labelText="성인"
                                         descryptionText="만 13세 이상"
+                                        keyword="adultCnt"
                                     />
                                 </div>
                                 <div className="border-r border-gray-300 w-1/3 h-full flex items-center">
                                     <PlusMinusInput
                                         labelText="어린이"
                                         descryptionText="2~12세"
+                                        keyword="childCnt"
                                     />
                                 </div>
                                 <div className="w-1/3 h-full flex items-center">
                                     <PlusMinusInput
                                         labelText="유아"
                                         descryptionText="2세 미만"
+                                        keyword="babyCnt"
                                     />
                                 </div>
                             </div>

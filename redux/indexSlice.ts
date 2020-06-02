@@ -17,6 +17,11 @@ export type indexReducerType = {
     startDate: string,
     endDate: string,
   },
+  guestInfo: {
+    adultCnt: number,
+    childCnt: number,
+    babyCnt: number,
+  },
 }
 let initialState : indexReducerType = {
   test: false,
@@ -31,6 +36,11 @@ let initialState : indexReducerType = {
   searchTotalModalIndex: 1,
   isLogin: false,
   selectedDateRange: {startDate: null, endDate: null},
+  guestInfo: {
+    adultCnt: 0,
+    childCnt: 0,
+    babyCnt: 0,
+  },
 };
 
 const indexSlice = createSlice({
@@ -72,12 +82,15 @@ const indexSlice = createSlice({
     },
     changeSelectedDateRange(state, action) {
       state.selectedDateRange = action.payload.data;
-    }
+    },
+    changeGuestInfo(state, action) {
+      state.guestInfo = action.payload.data;
+    },
   }
 });
 
 export const { changeTest, toggleShowJoinModal, toggleShowLoginModal, toggleIsLogin, toggleShowSearchModal, toggleShowHeader, toggleShowSearchPlace, toggleShowSearchCalendar,
-  changeSelectedDateRange, toggleAddGuest, toggleShowSearchTotalModal, toggleSearchTotalModalIndex
+  changeSelectedDateRange, toggleAddGuest, toggleShowSearchTotalModal, toggleSearchTotalModalIndex, changeGuestInfo,
 } = indexSlice.actions;
 
 export default indexSlice.reducer;

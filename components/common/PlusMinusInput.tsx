@@ -1,14 +1,17 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useState, useEffect } from "react";
 import _ from "lodash";
 import { addGuestProps, PlusMinusInputProps } from "../types";
 import { CloseOutlined, SearchOutlined, CalendarOutlined, UsergroupAddOutlined, CloseCircleFilled, InstagramOutlined, LeftOutlined, PlusCircleOutlined, MinusCircleOutlined } from "@ant-design/icons";
-import { useDispatch } from "react-redux";
-import { toggleShowHeader, toggleAddGuest } from "../../redux/indexSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { toggleShowHeader, toggleAddGuest, changeGuestInfo } from "../../redux/indexSlice";
+import { rootState } from "../../redux/rootReducer";
 
 const PlusMinusInput: React.FunctionComponent<PlusMinusInputProps> = ({
     labelText = "성인",
-    descryptionText = "만 13세 이상"
+    descryptionText = "만 13세 이상",
+    keyword = ""
 }) => {
+    const { guestInfo } = useSelector((state: rootState) => state.indexReducer);
     const dispatch = useDispatch();
     const [adultCnt, setAdultCnt] = useState(0);
     const changeAdultCnt = useCallback((plusMinus) => {
@@ -19,6 +22,13 @@ const PlusMinusInput: React.FunctionComponent<PlusMinusInputProps> = ({
             newAdultCnt = newAdultCnt - 1 < 0 ? 0 : newAdultCnt - 1;
         }
         setAdultCnt(newAdultCnt);
+    }, [adultCnt]);
+    useEffect(() => {
+        if (!_.isEmpty(guestInfo)) {
+            const newGuestInfo = _.clone(guestInfo);
+            newGuestInfo[keyword] = adultCnt;
+            dispatch(changeGuestInfo({ data: newGuestInfo }));
+        }
     }, [adultCnt]);
     return (
         <div className="w-full h-56 mt-5 flex justify-center items-center">
