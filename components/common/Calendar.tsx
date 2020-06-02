@@ -24,6 +24,18 @@ const Calendar: React.FunctionComponent<CalendarProps> = ({
         setDates(newDates);
     }, [dates, baseDate]);
     const moveMonths = useCallback((flag) => {
+        let defaultAnimationClassName = "";
+        if (_.isEqual(flag, 'right')) {
+            defaultAnimationClassName = "cell_right";
+        } else if (_.isEqual(flag, 'left')) {
+            defaultAnimationClassName = "cell_left";
+        }
+        const animationCells = document.getElementsByClassName("animation");
+        _.forEach(animationCells, (cell : any, index) => {
+            cell.className = "";
+            void cell.offsetWidth;
+            cell.className = `animation w-1/4 h-full ${defaultAnimationClassName}${index}`;
+        });
         let pagination = 0;
         if (_.isEqual(flag, 'right')) {
             pagination = 1;
@@ -34,7 +46,7 @@ const Calendar: React.FunctionComponent<CalendarProps> = ({
         setBaseDate(newBaseDate);
         const newDates = getDatesEachMonths({ baseDate: newBaseDate, monthPageSize });
         setDates(newDates);
-    }, [dates, baseDate]);
+    }, [dates, baseDate, selectedDateRange]);
     useEffect(() => {
         dispatch(changeSelectedDateRange({ data: selectedDateRange }));
     }, [selectedDateRange]);
@@ -141,7 +153,7 @@ const Calendar: React.FunctionComponent<CalendarProps> = ({
                     {
                         dates.map((eachDates, index) => {
                             return (
-                                <div key={index} className="w-full h-65p">
+                                <div key={index} className="w-full h-65p relative">
                                     <div className="w-full h-10p flex items-center justify-center">
                                         <span className="font-bold">{moment(eachDates[0]).format('YYYY년 M월')}</span>
                                     </div>
@@ -161,28 +173,31 @@ const Calendar: React.FunctionComponent<CalendarProps> = ({
     }, [dates, baseDate, selectedDateRange]);
     const Calendar002 = useMemo(() => {
         return (
-            <div className="w-full h-full flex flex-row justify-around">
-                <div className="w-3p h-full flex items-center justify-center cursor-pointer" onClick={() => moveMonths('left')}>
+            <div className="w-full h-full flex flex-row justify-around relative">
+                <div className="w-3p h-full flex items-center justify-center cursor-pointer absolute left-0" onClick={() => moveMonths('left')}>
                     <ArrowLeftOutlined style={{ fontSize: 15 }} />
                 </div>
-                {
-                    dates.map((eachDates, index) => {
-                        return (
-                            <div className="w-1/4 h-full">
-                                <div key={index} className="w-full h-65p">
-                                    <div className="w-full h-10p flex items-center justify-center">
-                                        <span className="font-bold">{moment(eachDates[0]).format('YYYY년 M월')}</span>
-                                    </div>
-                                    {drawMondayToSunday()}
-                                    <div className="w-full h-62p flex flex-col">
-                                        {drawCells(eachDates)}
+                <div className="w-full h-full flex flex-row justify-around">
+                    {
+                        dates.map((eachDates, index) => {
+                            return (
+                                <div className={`animation w-1/4 h-full`}>
+                                    <div key={index} className="w-full h-65p">
+                                        <div className="w-full h-10p flex items-center justify-center">
+                                            <span className="font-bold">{moment(eachDates[0]).format('YYYY년 M월')}</span>
+                                        </div>
+                                        {drawMondayToSunday()}
+                                        <div className="w-full h-62p flex flex-col">
+                                            {drawCells(eachDates)}
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        )
-                    })
-                }
-                <div className="w-3p h-full flex items-center justify-center cursor-pointer" onClick={() => moveMonths('right')}>
+                            )
+                        })
+                    }
+
+                </div>
+                <div className="w-3p h-full flex items-center justify-center cursor-pointer absolute right-0" onClick={() => moveMonths('right')}>
                     <ArrowRightOutlined style={{ fontSize: 15 }} />
                 </div>
             </div>

@@ -3,7 +3,7 @@ import axios from "axios";
 import { InputProps, SearchProps, SearchPlaceProps, SearchTotalModalProps } from "../types";
 import { CloseOutlined } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
-import { toggleShowHeader, toggleShowSearchTotalModal, toggleSearchTotalModalIndex, changeSelectedDateRange } from "../../redux/indexSlice";
+import { toggleShowHeader, toggleShowSearchTotalModal, toggleSearchTotalModalIndex, changeSelectedDateRange, changeGuestInfo } from "../../redux/indexSlice";
 import Button from "./Button";
 import { rootState } from "../../redux/rootReducer";
 import Input from "./Input";
@@ -35,6 +35,7 @@ const SearchTotalModal: React.FunctionComponent<SearchTotalModalProps> = ({
         if (!_.isEqual(babyCnt, 0)) {
             guestInfoText += ` 유아 ${babyCnt}명`;
         }
+        return guestInfoText
     }, [guestInfo]);
     const dispatch = useDispatch();
     const goBack = useCallback(() => {
@@ -106,9 +107,10 @@ const SearchTotalModal: React.FunctionComponent<SearchTotalModalProps> = ({
                             placeholder="게스트 추가"
                             labelText="인원"
                             inputBackgroundColor={searchTotalModalIndex === 3 ? "bg-gray-100" : "bg-white"}
-                            inputDisable={false}
+                            inputDisable={true}
                             isInputTextBold={true}
                             value={guestInfoText}
+                            setValue={() => dispatch(changeGuestInfo({ data: { adultCnt: 0, childCnt: 0, babyCnt: 0 } }))}
                         />
                     </div>
                     <div className="w-10p h-full flex items-center justify-center">
