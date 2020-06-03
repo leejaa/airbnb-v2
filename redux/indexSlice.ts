@@ -76,6 +76,7 @@ const indexSlice = createSlice({
     },
     toggleShowSearchTotalModal(state, action) {
       state.showSearchTotalModal = action.payload.data;
+      state.searchTotalModalIndex = action.payload.searchTotalModalIndex;
     },
     toggleSearchTotalModalIndex(state, action) {
       state.searchTotalModalIndex = action.payload.data;

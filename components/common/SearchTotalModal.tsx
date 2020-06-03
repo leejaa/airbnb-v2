@@ -123,7 +123,7 @@ const SearchTotalModal: React.FunctionComponent<SearchTotalModalProps> = ({
                 </div>
                 {
                     searchTotalModalIndex === 1 && (
-                        <div className="w-full h-70p border border-black p-3">
+                        <div className="w-full h-70p p-3">
                             <SearchPlaceList
                                 searchResultList={searchResultList}
                                 width="w-30"
@@ -135,7 +135,7 @@ const SearchTotalModal: React.FunctionComponent<SearchTotalModalProps> = ({
                 }
                 {
                     searchTotalModalIndex === 2 && (
-                        <div className="w-full h-70p border border-black p-3 flex justify-center items-center">
+                        <div className="w-full h-70p p-3 flex justify-center items-center">
                             <Calendar
                                 calenderType="002"
                                 monthPageSize={3}
@@ -145,7 +145,7 @@ const SearchTotalModal: React.FunctionComponent<SearchTotalModalProps> = ({
                 }
                 {
                     searchTotalModalIndex === 3 && (
-                        <div className="w-full h-full border border-black p-3 flex justify-center items-center">
+                        <div className="w-full h-full p-3 flex justify-center items-center">
                             <div className="w-70p h-40p flex flex justify-center items-center">
                                 <div className="border-r border-gray-300 w-1/3 h-full flex items-center">
                                     <PlusMinusInput

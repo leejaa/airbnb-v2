@@ -71,13 +71,13 @@ const Input: React.FunctionComponent<InputProps> = ({
         return (
             <div className="w-full h-full flex flex-row items-center">
                 <div className="border border-gray-300 rounded-r-75 rounded-l-75 w-full h-70p shadow-md flex flex-row">
-                    <div className="border-r border-gray-300 w-1/3 h-full flex items-center justify-center" onClick={() => dispatch(toggleShowSearchTotalModal({ data: true, searchIndex: 1 }))}>
+                    <div className="border-r border-gray-300 w-1/3 h-full flex items-center justify-center" onClick={() => dispatch(toggleShowSearchTotalModal({ data: true, searchTotalModalIndex: 1 }))}>
                         <span className="text-gray-600 text-sm hover:text-black cursor-pointer">위치추가</span>
                     </div>
-                    <div className="border-r border-gray-300 w-1/3 h-full flex items-center justify-center" onClick={() => dispatch(toggleShowSearchTotalModal({ data: true, searchIndex: 2 }))}>
+                    <div className="border-r border-gray-300 w-1/3 h-full flex items-center justify-center" onClick={() => dispatch(toggleShowSearchTotalModal({ data: true, searchTotalModalIndex: 2 }))}>
                         <span className="text-gray-600 text-sm hover:text-black cursor-pointer">날짜추가</span>
                     </div>
-                    <div className="border-r border-gray-300 w-1/3 h-full flex items-center justify-center" onClick={() => dispatch(toggleShowSearchTotalModal({ data: true, searchIndex: 3 }))}>
+                    <div className="border-r border-gray-300 w-1/3 h-full flex items-center justify-center" onClick={() => dispatch(toggleShowSearchTotalModal({ data: true, searchTotalModalIndex: 3 }))}>
                         <span className="text-gray-600 text-sm hover:text-black cursor-pointer">게스트추가</span>
                     </div>
                     <div className="w-1/6 h-full flex items-center justify-center">

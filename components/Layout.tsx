@@ -3,7 +3,7 @@ import { useSelector, useDispatch, DefaultRootState } from "react-redux";
 import { useRouter } from 'next/router';
 import gql from "graphql-tag";
 import { useQuery } from "@apollo/react-hooks";
-import { toggleShowJoinModal, toggleShowLoginModal } from "../redux/indexSlice";
+import { toggleShowJoinModal, toggleShowLoginModal, toggleSearchTotalModalIndex, toggleShowSearchTotalModal } from "../redux/indexSlice";
 import Header from "./Header";
 import Join from "./index/Join";
 import Login from "./index/Login";
@@ -27,6 +27,7 @@ const Layout: React.FunctionComponent<Props> = ({ props, children }) => {
   const dispatch = useDispatch();
   const joinRef = useRef(null);
   const loginRef = useRef(null);
+  const totalModalRef = useRef(null);
   useEffect(() => {
     if ( (router?.query?.action ?? '') === 'login'  ) {
       dispatch(toggleShowLoginModal({ data: true }));
@@ -48,14 +49,17 @@ const Layout: React.FunctionComponent<Props> = ({ props, children }) => {
       if (loginRef.current && !loginRef.current.contains(event.target)) {
         dispatch(toggleShowLoginModal({}));
       }
+      if (totalModalRef.current && !totalModalRef.current.contains(event.target)) {
+        dispatch(toggleShowSearchTotalModal({ data: false }));
+      }
     }
     document.addEventListener('mousedown', handleClickOutside);
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [joinRef, loginRef]);
+  }, [joinRef, loginRef, totalModalRef]);
   return (
-    <div className={`w-full h-full relative ${(showJoinModal || showLoginModal) && 'bg-black bg-opacity-75'}`}>
+    <div className={`w-full h-full relative ${(showJoinModal || showLoginModal || showSearchTotalModal) && 'bg-black bg-opacity-75'}`}>
       <div className={`px-16 border-b border-gray-300 ${!showHeader && 'hidden'}`}>
         <Header />
       </div>
@@ -77,7 +81,7 @@ const Layout: React.FunctionComponent<Props> = ({ props, children }) => {
       <div className={`w-full h-full bg-white z-10 absolute relative ${!showAddGuest && 'hidden'}`}>
         <AddGuest />
       </div>
-      <div className={`w-full h-80p bg-white z-10 flex items-center justify-center absolute ${!showSearchTotalModal && 'hidden'} move003 `}>
+      <div className={`w-full h-80p bg-white z-10 flex items-center justify-center absolute ${!showSearchTotalModal && 'hidden'} move003 `} ref={showSearchTotalModal ? totalModalRef : null}>
         <SearchTotalModal />
       </div>
       {children}
