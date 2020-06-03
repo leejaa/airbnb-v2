@@ -97,7 +97,7 @@ const Calendar: React.FunctionComponent<CalendarProps> = ({
                                         const eachDateParam = _.clone(eachDates[dateIndex]);
                                         return (
                                             <div className={`w-1/7 h-12 flex items-center justify-center ${isSelectedDate && "bg-gray-200"} ${eachDates[dateIndex] === selectedDateRange.startDate && "rounded-l-full"} ${eachDates[dateIndex] === selectedDateRange.endDate && "rounded-r-full"}`}>
-                                                <div className={`w-full h-full rounded-full flex items-center justify-center ${_.includes([selectedDateRange.startDate, selectedDateRange.endDate], eachDates[dateIndex]) && "bg-black"}`} onClick={() => selectDate({ eachDateParam, isAble })}>
+                                                <div className={`hover:shadow-black w-full h-full rounded-full flex items-center justify-center ${_.includes([selectedDateRange.startDate, selectedDateRange.endDate], eachDates[dateIndex]) && "bg-black"}`} onClick={() => selectDate({ eachDateParam, isAble })}>
                                                     {
                                                         eachWeekIndex === 0 ? (
                                                             <span className={`text-sm font-bold ${fontColor}`}>{dayIndex > cellIndex ? "" : moment(eachDates[dateIndex++]).format('D')}</span>

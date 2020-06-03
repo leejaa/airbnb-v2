@@ -70,6 +70,9 @@ module.exports = {
         borderRadius: {
           75: '0.75rem'
         },
+        boxShadow: {
+          'black': '0 0 0 3px rgb(0, 0, 0)'
+        },
       },
     },
     variants: {},
