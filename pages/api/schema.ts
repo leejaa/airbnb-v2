@@ -10,6 +10,8 @@ import { testPhotos, testWords } from './testdata';
 const SELECT_USER = 'selectUser';
 const SELECT_USER2 = 'selectUser2';
 const SELECT_PHOTO = 'selectPhoto';
+const SELECT_ROOMS = 'selectRooms';
+const UPDATE_PHOTOS = 'updatePhotos';
 export const AUTH_LIST = [
   SELECT_USER,
 ];
@@ -24,6 +26,7 @@ const Photo = objectType({
     t.string('id')
     t.string('caption')
     t.string('file')
+    t.string('roomId')
   },
 });
 
@@ -47,6 +50,31 @@ const LoginResult = objectType({
   }
 });
 
+const UpdateResult = objectType({
+  name: 'UpdateResult',
+  definition(t) {
+    t.boolean('success')
+  }
+});
+
+const Room = objectType({
+  name: 'Room',
+  definition(t) {
+    t.string('id')
+    t.string('address')
+    t.string('country')
+    t.string('description')
+    t.string('name')
+    t.float('lat')
+    t.float('lng')
+    t.int('price')
+    t.int('score')
+    t.int('userId')
+    t.field('user', { type: 'User' })
+    t.list.field('photo', { type: 'Photo' })
+  },
+});
+
 const createUserResult = objectType({
   name: 'createUserResult',
   definition(t) {
@@ -55,7 +83,7 @@ const createUserResult = objectType({
   }
 });
 
-const Objects = [Photo, User, LoginResult, createUserResult];
+const Objects = [Photo, User, Room, LoginResult, createUserResult];
 
 const Query = objectType({
   name: 'Query',
@@ -67,6 +95,26 @@ const Query = objectType({
           first: 1,
           skip: 3
         })
+      },
+    })
+    t.list.field(SELECT_ROOMS, {
+      type: 'Room',
+      args: { first: intArg(), skip: intArg() },
+      resolve: async (_parent, { first = 1, skip = 10 }, ctx) => {
+        const rooms = await prisma.room.findMany({
+          include: {
+            photo: {
+              select: {
+                id: true,
+                file: true,
+                caption: true,
+              }
+            }
+          },
+          first,
+          skip,
+        });
+        return rooms;
       },
     })
     t.field(SELECT_USER, {
@@ -91,12 +139,13 @@ const Query = objectType({
     })
     t.list.field(SELECT_PHOTO, {
       type: 'Photo',
-      args: {},
-      resolve: async (_parent, { }, ctx) => {
+      args: { first: intArg(), skip: intArg() },
+      resolve: async (_parent, { first = 10, skip = 0 }, ctx) => {
         const photos = await prisma.photo.findMany({
-          first: 4,
-          skip: 1,
+          first,
+          skip,
         });
+        console.log('photos', JSON.stringify(photos));
         return photos;
       },
     })
@@ -157,6 +206,46 @@ const Mutation = objectType({
           return {
             success: false,
             error
+          };
+        }
+      },
+    })
+    t.field(UPDATE_PHOTOS, {
+      type: UpdateResult,
+      args: {
+      },
+      resolve: async (_, {}, ctx) => {
+        try {
+          let roomIds: any = await prisma.room.findMany();
+          roomIds = roomIds.map(item => item.id);
+          const photos = await prisma.photo.findMany({
+            where: {
+              roomId: null,
+            }
+          });
+          let cnt = 0;
+          for (const photo of photos) {
+            console.log('cnt', cnt++);
+            await prisma.photo.update({
+              data: {
+                room: {
+                  connect: {
+                    id: roomIds[Math.floor(Math.random() * roomIds.length)]
+                  }
+                }
+              },
+              where: {
+                id: photo.id
+              }
+            });
+          }
+          return {
+            success: true,
+          };
+        } catch (error) {
+          console.log('error', error);
+          return {
+            success: false,
           };
         }
       },
