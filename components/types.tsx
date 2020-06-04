@@ -1,3 +1,5 @@
+import { SelectRoomsQuery, Room } from "../generated/graphql";
+
 export interface InputProps {
     inputType?: string,
     value?: any,
@@ -44,4 +46,16 @@ export interface PlusMinusInputProps {
     labelText?: string,
     descryptionText?: string,
     keyword?: string,
+}
+export interface LoadingProps {
+    loadingType?: string,
+}
+export interface RoomSlideProps {
+    roomSlideType?: string,
+    data?: SelectRoomsQuery,
+}
+
+export interface RoomCardProps {
+    roomCardType?: string,
+    room?: Room,
 }

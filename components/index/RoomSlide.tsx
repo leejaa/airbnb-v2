@@ -1,24 +1,30 @@
 import React, { useCallback, useMemo, useState, useEffect } from "react";
-import moment from "moment";
-import { InputProps, CalendarProps } from "../types";
+import { RoomSlideProps } from "../types";
 import _ from "lodash";
-import { getDates, getDatesEachMonths } from "../../utils/utils";
-import { DownOutlined, ArrowLeftOutlined, ArrowRightOutlined } from "@ant-design/icons";
-import { useDispatch } from "react-redux";
-import { changeSelectedDateRange } from "../../redux/indexSlice";
+import { Room } from "../../generated/graphql";
+import RoomCard from "./RoomCard";
 
-const RoomSlide: React.FunctionComponent<CalendarProps> = ({
+const RoomSlide: React.FunctionComponent<RoomSlideProps> = ({
+    roomSlideType = '001',
+    data,
 }) => {
     const RoomSlide001 = useMemo(() => {
         return (
-            <div>
-                
+            <div className="w-full h-full flex flex-row relative overflow-x-hidden">
+                {
+                    (data?.selectRooms ?? []).map((room: Room) => {
+                        return (
+                            <div className="w-55p h-full absolute left-0">
+                                <RoomCard room={room} />
+                            </div>
+                        )
+                    })
+                }
             </div>
         );
     }, []);
-    
     let RoomSlide;
-    switch (RoomSlide) {
+    switch (roomSlideType) {
         case '001':
             RoomSlide = _.clone(RoomSlide001);
             break;
