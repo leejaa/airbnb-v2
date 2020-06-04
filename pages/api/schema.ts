@@ -224,6 +224,7 @@ const Mutation = objectType({
             }
           });
           let cnt = 0;
+          console.log('test');
           for (const photo of photos) {
             console.log('cnt', cnt++);
             await prisma.photo.update({
