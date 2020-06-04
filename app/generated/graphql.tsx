@@ -35,6 +35,7 @@ export type LoginResult = {
 export type Mutation = {
    __typename?: 'Mutation';
   createUser: CreateUserResult;
+  updatePhotos: UpdateResult;
   login: LoginResult;
 };
 
@@ -57,15 +58,23 @@ export type Photo = {
   id: Scalars['String'];
   caption: Scalars['String'];
   file: Scalars['String'];
+  roomId: Scalars['String'];
 };
 
 export type Query = {
    __typename?: 'Query';
   photo: Array<Photo>;
+  selectRooms: Array<Room>;
   selectUser: User;
   selectUser2: User;
   selectPhoto: Array<Photo>;
   createTestPhoto: Scalars['Boolean'];
+};
+
+
+export type QuerySelectRoomsArgs = {
+  first?: Maybe<Scalars['Int']>;
+  skip?: Maybe<Scalars['Int']>;
 };
 
 
@@ -78,10 +87,37 @@ export type QuerySelectUser2Args = {
   email?: Maybe<Scalars['String']>;
 };
 
+
+export type QuerySelectPhotoArgs = {
+  first?: Maybe<Scalars['Int']>;
+  skip?: Maybe<Scalars['Int']>;
+};
+
+export type Room = {
+   __typename?: 'Room';
+  id: Scalars['String'];
+  address: Scalars['String'];
+  country: Scalars['String'];
+  description: Scalars['String'];
+  name: Scalars['String'];
+  lat: Scalars['Float'];
+  lng: Scalars['Float'];
+  price: Scalars['Int'];
+  score: Scalars['Int'];
+  userId: Scalars['Int'];
+  user: User;
+  photo: Array<Photo>;
+};
+
+export type UpdateResult = {
+   __typename?: 'UpdateResult';
+  success: Scalars['Boolean'];
+};
+
 export type User = {
    __typename?: 'User';
   id: Scalars['Int'];
-  name: Scalars['String'];
+  name?: Maybe<Scalars['String']>;
   email: Scalars['String'];
   password: Scalars['String'];
 };
@@ -145,6 +181,24 @@ export type SelectPhotoQuery = (
   & { selectPhoto: Array<(
     { __typename?: 'Photo' }
     & Pick<Photo, 'id' | 'file' | 'caption'>
+  )> }
+);
+
+export type SelectRoomsQueryVariables = {
+  first?: Maybe<Scalars['Int']>;
+  skip?: Maybe<Scalars['Int']>;
+};
+
+
+export type SelectRoomsQuery = (
+  { __typename?: 'Query' }
+  & { selectRooms: Array<(
+    { __typename?: 'Room' }
+    & Pick<Room, 'id' | 'name' | 'address' | 'country' | 'description' | 'lat' | 'lng' | 'price' | 'score'>
+    & { photo: Array<(
+      { __typename?: 'Photo' }
+      & Pick<Photo, 'id' | 'file'>
+    )> }
   )> }
 );
 
@@ -298,3 +352,49 @@ export function useSelectPhotoLazyQuery(baseOptions?: ApolloReactHooks.LazyQuery
 export type SelectPhotoQueryHookResult = ReturnType<typeof useSelectPhotoQuery>;
 export type SelectPhotoLazyQueryHookResult = ReturnType<typeof useSelectPhotoLazyQuery>;
 export type SelectPhotoQueryResult = ApolloReactCommon.QueryResult<SelectPhotoQuery, SelectPhotoQueryVariables>;
+export const SelectRoomsDocument = gql`
+    query selectRooms($first: Int, $skip: Int) {
+  selectRooms(first: $first, skip: $skip) {
+    id
+    name
+    address
+    country
+    description
+    lat
+    lng
+    price
+    score
+    photo {
+      id
+      file
+    }
+  }
+}
+    `;
+
+/**
+ * __useSelectRoomsQuery__
+ *
+ * To run a query within a React component, call `useSelectRoomsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useSelectRoomsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useSelectRoomsQuery({
+ *   variables: {
+ *      first: // value for 'first'
+ *      skip: // value for 'skip'
+ *   },
+ * });
+ */
+export function useSelectRoomsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<SelectRoomsQuery, SelectRoomsQueryVariables>) {
+        return ApolloReactHooks.useQuery<SelectRoomsQuery, SelectRoomsQueryVariables>(SelectRoomsDocument, baseOptions);
+      }
+export function useSelectRoomsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<SelectRoomsQuery, SelectRoomsQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<SelectRoomsQuery, SelectRoomsQueryVariables>(SelectRoomsDocument, baseOptions);
+        }
+export type SelectRoomsQueryHookResult = ReturnType<typeof useSelectRoomsQuery>;
+export type SelectRoomsLazyQueryHookResult = ReturnType<typeof useSelectRoomsLazyQuery>;
+export type SelectRoomsQueryResult = ApolloReactCommon.QueryResult<SelectRoomsQuery, SelectRoomsQueryVariables>;

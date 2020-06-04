@@ -37,3 +37,25 @@ query selectPhoto{
     caption
   }
 }
+
+query selectRooms($first: Int, $skip: Int){
+  selectRooms(
+    first: $first,
+    skip: $skip,
+  ){
+    id
+    name
+    address
+    country
+    description
+    lat
+    lng
+    price
+    score
+    photo{
+      id
+      file
+     
+    }
+  }
+}
