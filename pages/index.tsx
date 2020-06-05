@@ -1,4 +1,5 @@
 import React from "react";
+import Draggable from 'react-draggable';
 import Layout from "../components/Layout";
 import { useSelectRoomsQuery } from "../generated/graphql";
 import Loading from "../components/common/Loading";
@@ -7,7 +8,7 @@ import RoomSlide from "../components/index/RoomSlide";
 const Index = (props) => {
   const { data, loading } = useSelectRoomsQuery({
     variables: {
-      first: 1,
+      first: 3,
       skip: 0,
     }
   });
@@ -19,12 +20,10 @@ const Index = (props) => {
     );
   }
   return (
-    <Layout props={ props }>
-      <div className="w-full h-56">
-        <RoomSlide
-          data={data}
-        />
-      </div>
+    <Layout props={props}>
+      <RoomSlide
+        data={data}
+      />
     </Layout>
   );
 };

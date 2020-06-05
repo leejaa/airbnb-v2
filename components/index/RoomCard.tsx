@@ -7,9 +7,13 @@ const RoomCard: React.FunctionComponent<RoomCardProps> = ({
     roomCardType = '001',
     room
 }) => {
+    const [css, setCss] = useState('w-full h-full flex flex-col transform transition duration-500 ease-in-out');
+    const testClick = () => {
+        setCss('w-full h-full flex flex-col transform translate-x-64 transition duration-500 ease-in-out');
+    }
     const RoomCard001 = useMemo(() => {
         return (
-            <div className="w-full h-full flex flex-col">
+            <div className={css}>
                 <div className="border border-black w-full h-70p rounded-lg" style={{ backgroundImage: `url(${room?.photo[0]?.file ?? ""})` }}>
 
                 </div>
@@ -34,7 +38,7 @@ const RoomCard: React.FunctionComponent<RoomCardProps> = ({
                 </div>
             </div>
         );
-    }, []);
+    }, [css]);
     let RoomCard;
     switch (roomCardType) {
         case '001':

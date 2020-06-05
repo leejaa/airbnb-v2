@@ -30,7 +30,7 @@ const Layout: React.FunctionComponent<Props> = ({ props, children }) => {
   const totalModalRef = useRef(null);
   useEffect(() => {
     if ( (router?.query?.action ?? '') === 'login'  ) {
-      dispatch(toggleShowLoginModal({ data: true }));
+      // dispatch(toggleShowLoginModal({ data: true }));
     }
     if (!isAuth) {
       router.push({
