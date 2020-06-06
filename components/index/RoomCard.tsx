@@ -21,7 +21,7 @@ const RoomCard: React.FunctionComponent<RoomCardProps> = ({
                     <div className="w-full h-50p flex flex-row items-center">
                         <div className="w-60p h-full flex items-center justify-between">
                             <div className="border border-black w-1/2 h-85p rounded-md flex items-center justify-center">
-                                <span className="text-xs font-bold">슈퍼호스트</span>
+                                <span className="text-01 font-bold">슈퍼호스트</span>
                             </div>
                             <div className="w-1/2 h-full rounded-md flex items-center justify-center">
                                 <span className="text-xs text-gray-600">{room?.name ?? ""}</span>

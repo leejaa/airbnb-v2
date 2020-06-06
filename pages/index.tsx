@@ -8,7 +8,7 @@ import RoomSlide from "../components/index/RoomSlide";
 const Index = (props) => {
   const { data, loading } = useSelectRoomsQuery({
     variables: {
-      first: 5,
+      first: 10,
       skip: 0,
     }
   });

@@ -77,6 +77,10 @@ module.exports = {
         boxShadow: {
           'black': '0 0 0 3px rgb(0, 0, 0)'
         },
+        fontSize: {
+          '01': '.1rem',
+          '05': '.5rem',
+        },
       },
     },
     variants: {},

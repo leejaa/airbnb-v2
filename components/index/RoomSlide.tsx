@@ -10,12 +10,13 @@ const RoomSlide: React.FunctionComponent<RoomSlideProps> = ({
     roomSlideType = '001',
     data,
 }) => {
-    const [clientWidth, setClientWidth] = useState(-((screen?.width ?? 200) / 2 * data.selectRooms.length * 0.9));
-    const slide001Ref = useRef(null);
+    const [clientWidth, setClientWidth] = useState(-((screen?.width ?? 200) / 2 * (data.selectRooms.length)));
+    const cardRef = useRef(null);
     useEffect(() => {
-        // setClientWidth(slide001Ref.current ? slide001Ref.current.clientWidth : 0);
-    }, [slide001Ref.current]);
-    console.log('clientWidth', clientWidth);
+        console.log('cardRef', cardRef);
+        const newClientWidth = (cardRef.current.offsetLeft * -1) + (screen.width / 2);
+        setClientWidth(newClientWidth);
+    }, [cardRef.current]);
     const RoomSlide001 = useMemo(() => {
         return (
             <Draggable
@@ -30,11 +31,11 @@ const RoomSlide: React.FunctionComponent<RoomSlideProps> = ({
             // onDrag={test2}
             // onStop={test3}
             >
-                <div className="h-56 flex flex-row absolute p-2 handle" ref={slide001Ref}>
+                <div className="h-56 flex flex-row absolute p-2 handle">
                     {
-                        (data?.selectRooms ?? []).map((room: Room) => {
+                        (data?.selectRooms ?? []).map((room: Room, index) => {
                             return (
-                                <div className="h-full mr-5" style={{ width: `${(screen?.width ?? 200) / 2}px` }}>
+                                <div className="h-full mr-5" style={{ width: `${(screen?.width ?? 200) / 2}px` }} ref={_.isEqual(index, _.size(data.selectRooms) - 1) ? cardRef : null}>
                                     <RoomCard key={room.id} room={room} />
                                 </div>
                             )
