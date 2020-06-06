@@ -21,6 +21,10 @@ const Index = (props) => {
   }
   return (
     <Layout props={props}>
+      <div className="w-full h-20 p-2 flex flex-col">
+        <span className="text-xl font-bold">최고 평점을 받은 숙소</span>
+        <span className="text-sm">최고의 평점을 받은 전세계 숙소를 둘러보세요</span>
+      </div>
       <RoomSlide
         data={data}
       />

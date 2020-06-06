@@ -113,6 +113,9 @@ const Query = objectType({
           },
           first,
           skip,
+          orderBy: {
+            id: 'desc'
+          }
         });
         return rooms;
       },
