@@ -13,7 +13,6 @@ const RoomSlide: React.FunctionComponent<RoomSlideProps> = ({
     const [clientWidth, setClientWidth] = useState(-((screen?.width ?? 200) / 2 * (data.selectRooms.length)));
     const cardRef = useRef(null);
     useEffect(() => {
-        console.log('cardRef', cardRef);
         const newClientWidth = (cardRef.current.offsetLeft * -1) + (screen.width / 2);
         setClientWidth(newClientWidth);
     }, [cardRef.current]);

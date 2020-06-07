@@ -58,4 +58,5 @@ export interface RoomSlideProps {
 export interface RoomCardProps {
     roomCardType?: string,
     room?: Room,
+    isVisibleHeart?: boolean,
 }

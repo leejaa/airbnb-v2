@@ -59,7 +59,7 @@ const Layout: React.FunctionComponent<Props> = ({ props, children }) => {
     };
   }, [joinRef, loginRef, totalModalRef]);
   return (
-    <div className={`w-full h-full relative ${(showJoinModal || showLoginModal || showSearchTotalModal) && 'bg-black bg-opacity-75'}`}>
+    <div className={`overflow-x-hidden overflow-y-scroll w-full h-full relative ${(showJoinModal || showLoginModal || showSearchTotalModal) && 'bg-black bg-opacity-75'}`}>
       <div className={`px-16 border-b border-gray-300 ${!showHeader && 'hidden'}`}>
         <Header />
       </div>

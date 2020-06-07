@@ -1,21 +1,25 @@
 import React, { useCallback, useMemo, useState, useEffect } from "react";
 import { RoomCardProps } from "../types";
 import _ from "lodash";
-import { StarFilled } from "@ant-design/icons";
+import { StarFilled, HeartOutlined } from "@ant-design/icons";
 
 const RoomCard: React.FunctionComponent<RoomCardProps> = ({
     roomCardType = '001',
-    room
+    room,
+    isVisibleHeart = false,
 }) => {
     const [css, setCss] = useState('w-full h-full flex flex-col transform transition duration-500 ease-in-out');
-    const testClick = () => {
-        setCss('w-full h-full flex flex-col transform translate-x-64 transition duration-500 ease-in-out');
-    }
     const RoomCard001 = useMemo(() => {
         return (
             <div className={css}>
-                <div className="border border-black w-full h-70p rounded-lg" style={{ backgroundImage: `url(${room?.photo[0]?.file ?? ""})` }}>
-
+                <div className="w-full h-70p rounded-lg relative" style={{ backgroundImage: `url(${room?.photo[0]?.file ?? ""})` }}>
+                    {
+                        isVisibleHeart && (
+                            <div className="w-8 h-8 rounded-full bg-white absolute right-3 top-3 flex justify-center items-center">
+                                <HeartOutlined style={{ fontSize: 17 }}/>
+                            </div>
+                        )
+                    }
                 </div>
                 <div className="w-full h-30p">
                     <div className="w-full h-50p flex flex-row items-center">
