@@ -34,7 +34,7 @@ const RoomSlide: React.FunctionComponent<RoomSlideProps> = ({
                     {
                         (data?.selectRooms ?? []).map((room: Room, index) => {
                             return (
-                                <div className="h-full mr-5" style={{ width: `${(screen?.width ?? 200) / 2}px` }} ref={_.isEqual(index, _.size(data.selectRooms) - 1) ? cardRef : null}>
+                                <div key={room.id} className="h-full mr-5" style={{ width: `${(screen?.width ?? 200) / 2}px` }} ref={_.isEqual(index, _.size(data.selectRooms) - 1) ? cardRef : null}>
                                     <RoomCard key={room.id} room={room} />
                                 </div>
                             )
