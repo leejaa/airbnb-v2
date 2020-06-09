@@ -35,7 +35,7 @@ const Index = (props) => {
         {
           data.selectRooms.map(room => {
             return (
-              <div key={room.id} className="w-full h-80 p-3 border border-black">
+              <div key={room.id} className="w-full h-80 p-6">
                 <RoomCard
                   room={room as any}
                   isVisibleHeart={true}

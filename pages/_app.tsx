@@ -3,6 +3,7 @@ import React from "react";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import { ApolloProvider } from "@apollo/react-hooks";
+import "react-responsive-carousel/lib/styles/carousel.min.css";
 import '../css/tailwind.css';
 import { withApollo } from "../apollo/client";
 import store, { persistor } from "../redux/store";

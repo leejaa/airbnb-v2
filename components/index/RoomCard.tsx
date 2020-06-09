@@ -1,4 +1,5 @@
 import React, { useCallback, useMemo, useState, useEffect } from "react";
+import { Carousel } from 'react-responsive-carousel';
 import { RoomCardProps } from "../types";
 import _ from "lodash";
 import { StarFilled, HeartOutlined } from "@ant-design/icons";
@@ -13,14 +14,8 @@ const RoomCard: React.FunctionComponent<RoomCardProps> = ({
     const RoomCard001 = useMemo(() => {
         return (
             <div className={css}>
-                <div className="w-full h-70p rounded-lg relative" style={{ backgroundImage: `url(${room?.photo[0]?.file ?? ""})` }}>
-                    {
-                        isVisibleHeart && (
-                            <div className="w-8 h-8 rounded-full bg-white absolute right-3 top-3 flex justify-center items-center">
-                                <HeartOutlined style={{ fontSize: 17 }} />
-                            </div>
-                        )
-                    }
+                <div className="w-full h-70p rounded-lg">
+                    <img src={`${room?.photo[0]?.file ?? ""}`} className="rounded-md h-32" />
                 </div>
                 <div className="w-full h-30p">
                     <div className="w-full h-50p flex flex-row items-center">
@@ -46,46 +41,34 @@ const RoomCard: React.FunctionComponent<RoomCardProps> = ({
     }, [css]);
     const RoomCard002 = useMemo(() => {
         return (
-            <div className="w-full h-full">
+            <div className="w-full h-full relative">
                 {
                     isVisibleHeart && (
-                        <div className="w-8 h-8 rounded-full bg-white absolute z-10 right-3 top-3 flex justify-center items-center">
+                        <div className="w-8 h-8 rounded-full bg-white absolute z-10 right-5 top-3 flex justify-center items-center">
                             <HeartOutlined style={{ fontSize: 17 }} />
                         </div>
                     )
                 }
-                <div className="border border-black w-screen h-70p absolute flex flex-row">
-                    <div className="h-full rounded-lg" style={{ backgroundImage: `url(${room?.photo[0]?.file ?? ""})` }}>
-                    </div>
-                    <div className="h-full rounded-lg" style={{ backgroundImage: `url(${room?.photo[0]?.file ?? ""})` }}>
-                    </div>
-                    <div className="h-full rounded-lg" style={{ backgroundImage: `url(${room?.photo[0]?.file ?? ""})` }}>
-                    </div>
-                </div>
-                {/* <Draggable
-                    axis="x"
-                    handle=".handle"
-                    bounds={{ right: 0 }}
-                    defaultPosition={{ x: 0, y: 0 }}
-                    position={null}
-                    grid={[25, 25]}
-                    scale={1}
-                // onStart={test1}
-                // onDrag={test2}
-                // onStop={test3}
-                >
-                    <div className="w-full h-full">
+                <div className="h-80p">
+                    <Carousel
+                        showArrows={false}
+                        showStatus={false}
+                        showIndicators={true}
+                        infiniteLoop={true}
+                        showThumbs={false}
+                    >
                         {
-                            room.photo.map(photo => {
+                            room.photo.slice(0, 5).map(photo => {
                                 return (
-                                    <div key={photo.id} className="w-full h-full rounded-lg" style={{ backgroundImage: `url(${photo.file ?? ""})` }}>
+                                    <div key={photo.id} className="w-full h-56">
+                                        <img src={`${photo.file ?? ""}`} className="rounded-md" />
                                     </div>
                                 )
                             })
                         }
-                    </div>
-                </Draggable> */}
-                <div className="w-full h-30p">
+                    </Carousel>
+                </div>
+                <div className="w-full h-30p mt-3">
                     <div className="w-full h-50p flex flex-row items-center">
                         <div className="w-60p h-full flex items-center justify-between">
                             <div className="border border-black w-1/2 h-85p rounded-md flex items-center justify-center">

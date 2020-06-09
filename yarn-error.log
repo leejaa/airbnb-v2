@@ -1,8 +1,8 @@
 Arguments: 
-  C:\Program Files\nodejs\node.exe C:\Users\Administrator\airbnb-v2\node_modules\yarn\bin\yarn.js add -D @types/infinite-react-carousel
+  C:\Program Files\nodejs\node.exe C:\Users\Administrator\airbnb-v2\node_modules\yarn\bin\yarn.js add -D @types/react-responsive-carousel
 
 PATH: 
-  C:\Users\Administrator\airbnb-v2\node_modules\.bin;C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files\nodejs\;C:\Program Files\Git\cmd;C:\Users\Administrator\AppData\Local\Microsoft\WindowsApps;C:\Program Files\Bandizip\;C:\Users\Administrator\AppData\Roaming\npm;C:\Users\Administrator\AppData\Local\Programs\Microsoft VS Code\bin
+  C:\Users\Administrator\airbnb-v2\node_modules\.bin;C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files\nodejs\;C:\Program Files\Git\cmd;C:\Users\Administrator\AppData\Local\Microsoft\WindowsApps;C:\Program Files\Bandizip\;C:\Users\Administrator\AppData\Roaming\npm;C:\Users\Administrator\AppData\Local\Programs\Microsoft VS Code\bin
 
 Yarn version: 
   1.22.4
@@ -14,7 +14,7 @@ Platform:
   win32 x64
 
 Trace: 
-  Error: https://registry.yarnpkg.com/@types%2finfinite-react-carousel: Not found
+  Error: https://registry.yarnpkg.com/@types%2freact-responsive-carousel: Not found
       at Request.params.callback [as _callback] (C:\Users\Administrator\airbnb-v2\node_modules\yarn\lib\cli.js:66987:18)
       at Request.self.callback (C:\Users\Administrator\airbnb-v2\node_modules\yarn\lib\cli.js:140748:22)
       at Request.emit (events.js:315:20)
@@ -101,6 +101,7 @@ npm manifest:
       "react-markdown": "4.3.1",
       "react-naver-login": "^0.1.3-alpha1",
       "react-redux": "^7.2.0",
+      "react-responsive-carousel": "^3.2.7",
       "react-spring": "^8.0.27",
       "react-with-gesture": "^4.0.8",
       "redux": "^4.0.5",
@@ -8091,6 +8092,13 @@ Lockfile:
       classnames "^2.2.5"
       prop-types "^15.6.0"
   
+  react-easy-swipe@^0.0.18:
+    version "0.0.18"
+    resolved "https://registry.yarnpkg.com/react-easy-swipe/-/react-easy-swipe-0.0.18.tgz#3f52a05dbe3f8817bb8db94e743f6d966bbe89aa"
+    integrity sha512-IddCZANbT0qVbGFEihfWOkZb/rFpeA3VV87SNOOqPzmSZ93G0nDSyHD28zuGhYJilwEP33MqYv/dwo+zaZha3Q==
+    dependencies:
+      prop-types "^15.5.8"
+  
   react-fast-compare@^2.0.1:
     version "2.0.4"
     resolved "https://registry.yarnpkg.com/react-fast-compare/-/react-fast-compare-2.0.4.tgz#e84b4d455b0fec113e0402c329352715196f81f9"
@@ -8148,6 +8156,15 @@ Lockfile:
       loose-envify "^1.4.0"
       prop-types "^15.7.2"
       react-is "^16.9.0"
+  
+  react-responsive-carousel@^3.2.7:
+    version "3.2.7"
+    resolved "https://registry.yarnpkg.com/react-responsive-carousel/-/react-responsive-carousel-3.2.7.tgz#a9a5b7efb5206f18a5de38d80826780acfc46ba0"
+    integrity sha512-uqGCnoZukU+U1relhTNe8eVX/hMT5ELh1uxHCOxR6cH+A67eG2aX68e1pJnohWqXqPj/u+Pupt1q5j8LGhDabA==
+    dependencies:
+      classnames "^2.2.5"
+      prop-types "^15.5.8"
+      react-easy-swipe "^0.0.18"
   
   react-spring@^8.0.27:
     version "8.0.27"
