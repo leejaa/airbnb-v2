@@ -8,6 +8,9 @@ const RoomCard: React.FunctionComponent<RoomCardProps> = ({
     roomCardType = '001',
     room,
     isVisibleHeart = false,
+    showDot = true,
+    imgHeight = 'h-56',
+    mt = 'mt-1',
 }) => {
     const [css, setCss] = useState('w-full h-full flex flex-col transform transition duration-500 ease-in-out');
     const RoomCard001 = useMemo(() => {
@@ -48,30 +51,30 @@ const RoomCard: React.FunctionComponent<RoomCardProps> = ({
                         </div>
                     )
                 }
-                <div className="h-80p">
+                <div className={`${imgHeight}`}>
                     <Carousel
                         showArrows={false}
                         showStatus={false}
-                        showIndicators={true}
+                        showIndicators={showDot}
                         infiniteLoop={true}
                         showThumbs={false}
                     >
                         {
                             room.photo.slice(0, 5).map(photo => {
                                 return (
-                                    <div key={photo.id} className="w-full h-56">
-                                        <img src={`${photo.file ?? ""}`} className="rounded-md" />
+                                    <div key={photo.id} className="w-full">
+                                        <img src={`${photo.file ?? ""}`} className={`rounded-md ${imgHeight}`} />
                                     </div>
                                 )
                             })
                         }
                     </Carousel>
                 </div>
-                <div className="w-full h-30p mt-3">
+                <div className={`w-full h-30p ${mt}`}>
                     <div className="w-full h-50p flex flex-row items-center">
                         <div className="w-60p h-full flex items-center justify-between">
-                            <div className="border border-black w-1/2 h-85p rounded-md flex items-center justify-center">
-                                <span className="text-01 font-bold">슈퍼호스트</span>
+                            <div className="border border-black  w-1/2 h-85p rounded-md flex items-center justify-center">
+                                <span className="text-05 font-bold">슈퍼호스트</span>
                             </div>
                             <div className="w-1/2 h-full rounded-md flex items-center justify-center">
                                 <span className="text-xs text-gray-600">{room?.name ?? ""}</span>
@@ -88,7 +91,7 @@ const RoomCard: React.FunctionComponent<RoomCardProps> = ({
                 </div>
             </div>
         );
-    }, [css, room]);
+    }, [css, room, showDot, imgHeight, mt]);
     let RoomCard;
     switch (roomCardType) {
         case '001':

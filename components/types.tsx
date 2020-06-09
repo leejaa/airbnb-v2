@@ -59,4 +59,7 @@ export interface RoomCardProps {
     roomCardType?: string,
     room?: Room,
     isVisibleHeart?: boolean,
+    showDot?: boolean,
+    imgHeight?: string,
+    mt?: string,
 }
