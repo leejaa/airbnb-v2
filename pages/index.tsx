@@ -55,9 +55,10 @@ const Index = (props) => {
                             room={room as any}
                             isVisibleHeart={true}
                             roomCardType="002"
-                            showDot={false}
+                            showDot={true}
                             imgHeight="h-64"
                             mt="mt-1"
+                            showArrows={true}
                           />
                         </div>
                       )

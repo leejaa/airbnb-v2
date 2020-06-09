@@ -62,4 +62,5 @@ export interface RoomCardProps {
     showDot?: boolean,
     imgHeight?: string,
     mt?: string,
+    showArrows?: boolean,
 }

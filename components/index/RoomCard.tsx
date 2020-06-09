@@ -11,6 +11,7 @@ const RoomCard: React.FunctionComponent<RoomCardProps> = ({
     showDot = true,
     imgHeight = 'h-56',
     mt = 'mt-1',
+    showArrows = false,
 }) => {
     const [css, setCss] = useState('w-full h-full flex flex-col transform transition duration-500 ease-in-out');
     const RoomCard001 = useMemo(() => {
@@ -53,7 +54,7 @@ const RoomCard: React.FunctionComponent<RoomCardProps> = ({
                 }
                 <div className={`${imgHeight}`}>
                     <Carousel
-                        showArrows={false}
+                        showArrows={showArrows}
                         showStatus={false}
                         showIndicators={showDot}
                         infiniteLoop={true}
@@ -91,7 +92,7 @@ const RoomCard: React.FunctionComponent<RoomCardProps> = ({
                 </div>
             </div>
         );
-    }, [css, room, showDot, imgHeight, mt]);
+    }, [css, room, showDot, imgHeight, mt, showArrows]);
     let RoomCard;
     switch (roomCardType) {
         case '001':
