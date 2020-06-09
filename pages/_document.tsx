@@ -10,6 +10,7 @@ export default class MyDocument extends Document {
           <meta charSet='utf-8' />
           <meta name='viewport' content='initial-scale=1.0, width=device-width' />
           <meta name="google-signin-client_id" content="856576729820-vgvbjdgki8nfqcgnhmljoksd5v2p2j9r.apps.googleusercontent.com" />
+          <link rel="stylesheet" href="/static/css/carousel.min.css" />
           <style global jsx>
             {`
               html, body, #__next {

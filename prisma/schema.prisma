@@ -68,7 +68,7 @@ model review {
   check_in      Int?    @default(0)
   cleanliness   Int?    @default(0)
   communication Int?    @default(0)
-  createdAt     String? @default("2020-05-04T12:12:19.400Z")
+  createdAt     String? @default("2020-05-22T02:10:17.039Z")
   id            Int     @default(autoincrement()) @id
   location      Int?    @default(0)
   review        String? @default("")

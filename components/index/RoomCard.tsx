@@ -3,7 +3,6 @@ import { Carousel } from 'react-responsive-carousel';
 import { RoomCardProps } from "../types";
 import _ from "lodash";
 import { StarFilled, HeartOutlined } from "@ant-design/icons";
-import Draggable from "react-draggable";
 
 const RoomCard: React.FunctionComponent<RoomCardProps> = ({
     roomCardType = '001',
