@@ -2,7 +2,7 @@ import React, { useCallback, useMemo, useState, useEffect } from "react";
 import { Carousel } from 'react-responsive-carousel';
 import { RoomCardProps } from "../types";
 import _ from "lodash";
-import { StarFilled, HeartOutlined } from "@ant-design/icons";
+import { StarFilled, HeartOutlined, ArrowLeftOutlined, ArrowRightOutlined, LeftOutlined, RightOutlined } from "@ant-design/icons";
 
 const RoomCard: React.FunctionComponent<RoomCardProps> = ({
     roomCardType = '001',
@@ -14,6 +14,40 @@ const RoomCard: React.FunctionComponent<RoomCardProps> = ({
     showArrows = false,
 }) => {
     const [css, setCss] = useState('w-full h-full flex flex-col transform transition duration-500 ease-in-out');
+    const [showLikeButton, setShowLikeButton] = useState(isVisibleHeart);
+    const arrowPrev = useCallback((clickHandler) => {
+        return (
+            <>
+                {
+                    showLikeButton && (
+                        <div onClick={clickHandler} className="bg-221 absolute cursor-pointer left-2 top-40 z-10 w-8 h-8 rounded-full shadow-lg flex items-center justify-center transition ease-in-out duration-300 hover:bg-white transform hover:scale-110">
+                            <LeftOutlined style={{ fontSize: 12 }} />
+                        </div>
+                    )
+                }
+            </>
+        );
+    }, [showLikeButton]);
+    const arrowNext = useCallback((clickHandler) => {
+        return (
+            <>
+                {
+                    showLikeButton && (
+                        <div onClick={clickHandler} className="bg-221 absolute cursor-pointer right-2 top-40 z-10 w-8 h-8 rounded-full shadow-lg flex items-center justify-center transition ease-in-out duration-300 hover:bg-white transform hover:scale-110">
+                            <RightOutlined style={{ fontSize: 12 }} />
+                        </div>
+
+                    )
+                }
+            </>
+        );
+    }, [showLikeButton]);
+    const onMouseOver = useCallback(() => {
+        setShowLikeButton(true);
+    }, []);
+    const onMouseLeave = useCallback(() => {
+        setShowLikeButton(false);
+    }, []);
     const RoomCard001 = useMemo(() => {
         return (
             <div className={css}>
@@ -44,10 +78,10 @@ const RoomCard: React.FunctionComponent<RoomCardProps> = ({
     }, [css]);
     const RoomCard002 = useMemo(() => {
         return (
-            <div className="w-full h-full relative">
+            <div className="w-full h-full relative" onMouseOver={onMouseOver} onMouseLeave={onMouseLeave}>
                 {
-                    isVisibleHeart && (
-                        <div className="w-8 h-8 rounded-full bg-white absolute z-10 right-5 top-3 flex justify-center items-center">
+                    showLikeButton && (
+                        <div className="w-8 h-8 rounded-full bg-221 absolute z-10 right-5 top-3 flex justify-center items-center cursor-pointer transition ease-in-out duration-300 hover:bg-white transform hover:scale-110">
                             <HeartOutlined style={{ fontSize: 17 }} />
                         </div>
                     )
@@ -59,6 +93,8 @@ const RoomCard: React.FunctionComponent<RoomCardProps> = ({
                         showIndicators={showDot}
                         infiniteLoop={true}
                         showThumbs={false}
+                        renderArrowPrev={arrowPrev}
+                        renderArrowNext={arrowNext}
                     >
                         {
                             room.photo.slice(0, 5).map(photo => {
@@ -92,7 +128,7 @@ const RoomCard: React.FunctionComponent<RoomCardProps> = ({
                 </div>
             </div>
         );
-    }, [css, room, showDot, imgHeight, mt, showArrows]);
+    }, [css, room, showDot, imgHeight, mt, showArrows, showLikeButton]);
     let RoomCard;
     switch (roomCardType) {
         case '001':

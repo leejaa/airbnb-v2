@@ -9,6 +9,7 @@ module.exports = {
     extend: {
       height: {
         7: '1.75rem',
+        9: '2.25rem',
         36: '9rem',
         38: '9.5rem',
         40: '10rem',
@@ -22,6 +23,7 @@ module.exports = {
         200: '50rem',
         '7p': '7%',
         '10p': '10%',
+        '12p': '12%',
         '15p': '15%',
         '25p': '25%',
         '30p': '30%',
@@ -41,6 +43,7 @@ module.exports = {
         '90p': '90%',
       },
       width: {
+        9: '2.25rem',
         '1/7': '14.285714%',
         '1/13': '7.6923076%',
         '3p': '3%',
@@ -72,6 +75,7 @@ module.exports = {
         25: '25%',
         30: '30%',
         35: '35%',
+        40: '40%',
         50: '50%',
       },
       backgroundColor: theme => ({
@@ -99,6 +103,9 @@ module.exports = {
       },
     },
   },
-  variants: {},
+  variants: {
+    width: ["responsive", "hover", "focus"],
+    height: ["responsive", "hover", "focus"],
+  },
   plugins: [],
 }

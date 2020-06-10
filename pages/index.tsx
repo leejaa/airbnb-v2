@@ -25,7 +25,7 @@ const Index = (props) => {
                 <div key={room.id} className="w-full h-48 mr-6">
                   <RoomCard
                     room={room as any}
-                    isVisibleHeart={true}
+                    isVisibleHeart={false}
                     roomCardType="002"
                     showDot={false}
                     imgHeight="h-40"
@@ -53,12 +53,12 @@ const Index = (props) => {
                         <div key={room.id} className="w-full h-48 mr-6 mt">
                           <RoomCard
                             room={room as any}
-                            isVisibleHeart={true}
+                            isVisibleHeart={false}
                             roomCardType="002"
                             showDot={true}
                             imgHeight="h-64"
                             mt="mt-1"
-                            showArrows={true}
+                            showArrows={false}
                           />
                         </div>
                       )
