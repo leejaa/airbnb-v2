@@ -2,7 +2,7 @@ import React, { useCallback, useMemo, useState, useEffect } from "react";
 import { Carousel } from 'react-responsive-carousel';
 import { RoomCardProps } from "../types";
 import _ from "lodash";
-import { StarFilled, HeartOutlined, ArrowLeftOutlined, ArrowRightOutlined, LeftOutlined, RightOutlined } from "@ant-design/icons";
+import { StarFilled, HeartOutlined, LeftOutlined, RightOutlined } from "@ant-design/icons";
 
 const RoomCard: React.FunctionComponent<RoomCardProps> = ({
     roomCardType = '001',
@@ -111,7 +111,7 @@ const RoomCard: React.FunctionComponent<RoomCardProps> = ({
                     <div className="w-full h-50p flex flex-row items-center">
                         <div className="w-60p h-full flex items-center justify-between">
                             <div className="border border-black  w-1/2 h-85p rounded-md flex items-center justify-center">
-                                <span className="text-05 font-bold">슈퍼호스트</span>
+                    <span className="text-05 font-bold">{`슈퍼호스트`}</span>
                             </div>
                             <div className="w-1/2 h-full rounded-md flex items-center justify-center">
                                 <span className="text-xs text-gray-600">{room?.name ?? ""}</span>

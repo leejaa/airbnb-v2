@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useCallback, useState } from "react";
 import Draggable from 'react-draggable';
 import Layout from "../components/Layout";
 import { useSelectRoomsQuery } from "../generated/graphql";
@@ -6,21 +6,65 @@ import Loading from "../components/common/Loading";
 import RoomSlide from "../components/index/RoomSlide";
 import RoomCard from "../components/index/RoomCard";
 import _ from "lodash";
+import { LeftOutlined, RightOutlined } from "@ant-design/icons";
 
 const cntForOneRow = 5;
+const pageSize = 30;
+const batchPageSize = 300;
 const Index = (props) => {
-  const { data, loading } = useSelectRoomsQuery({
+  const [cursor, setCursor] = useState(0);
+  const [accumulatedCnt, setAccumulatedCnt] = useState(batchPageSize);
+  const { data, loading, fetchMore } = useSelectRoomsQuery({
     variables: {
-      first: 30,
+      first: batchPageSize,
       skip: 0,
-    }
+    },
+    fetchPolicy: "cache-and-network",
   });
+  const [loading2, setLoading2] = useState(false);
+  const rooms = useMemo(() => {
+    let rooms = _.clone(data?.selectRooms ?? []);
+    rooms = rooms.slice(cursor, cursor + pageSize);
+    return rooms;
+  }, [data, cursor]);
+  const movePage = useCallback((flag) => {
+    setLoading2(true);
+    let newCursor = _.clone(cursor);
+    if (_.isEqual(flag, 'prev')) {
+      newCursor -= pageSize;
+      setCursor(newCursor);
+      setLoading2(false);
+      return;
+    } else if (_.isEqual(flag, 'next')) {
+      newCursor += pageSize;
+      if (!_.gte(newCursor, _.size(data.selectRooms))) {
+        setCursor(newCursor);
+        setLoading2(false);
+        return;
+      }
+    }
+    setCursor(newCursor);
+    fetchMore({
+      variables: {
+        first: batchPageSize,
+        skip: newCursor,
+      },
+      updateQuery: (prev, { fetchMoreResult }) => {
+        setAccumulatedCnt(_.clone(accumulatedCnt) + batchPageSize);
+        setLoading2(false);
+        if (!fetchMoreResult) return prev;
+        return Object.assign({}, prev, {
+          selectRooms: [...prev.selectRooms, ...fetchMoreResult.selectRooms]
+        });
+      }
+    });
+  }, [cursor, data, accumulatedCnt]);
   const roomList = useMemo(() => {
     if (!loading) {
       return (
         <>
           {
-            data.selectRooms.slice(0, 7).map(room => {
+            rooms.slice(0, 7).map(room => {
               return (
                 <div key={room.id} className="w-full h-48 mr-6">
                   <RoomCard
@@ -37,10 +81,17 @@ const Index = (props) => {
         </>
       );
     }
-  }, [loading]);
+  }, [loading, rooms]);
   const roomList02 = useMemo(() => {
     if (!loading) {
-      const array = _.range(0, _.size(data.selectRooms), cntForOneRow);
+      if (loading2) {
+        return (
+          <div className="w-full h-full flex items-center justify-center">
+            <Loading />
+          </div>
+        );
+      }
+      const array = _.range(0, _.size(rooms), cntForOneRow);
       return (
         <>
           {
@@ -48,7 +99,7 @@ const Index = (props) => {
               return (
                 <div className="h-90 pl-20 pt-3 w-full flex flex-row sm:hidden md:hidden lg:hidden">
                   {
-                    data.selectRooms.slice(first, first + cntForOneRow).map(room => {
+                    rooms.slice(first, first + cntForOneRow).map(room => {
                       return (
                         <div key={room.id} className="w-full h-48 mr-6 mt">
                           <RoomCard
@@ -71,7 +122,7 @@ const Index = (props) => {
         </>
       );
     }
-  }, [loading]);
+  }, [loading, rooms, loading2]);
   if (loading) {
     return (
       <div className="w-full h-full flex items-center justify-center">
@@ -114,6 +165,26 @@ const Index = (props) => {
       {
         roomList02
       }
+      <div className="w-full h-10p flex items-center justify-center">
+        <div className="w-17p h-60p flex flex-row items-center justify-between">
+          {
+            !_.isEqual(cursor, 0) && (
+              <div className="rounded-md w-35p h-full flex flex-row items-center justify-around cursor-pointer hover:bg-221" onClick={() => movePage('prev')}>
+                <LeftOutlined style={{ fontSize: 16 }} className="font-bold" />
+                <span className="font-bold"><u>이전페이지</u></span>
+              </div>
+            )
+          }
+          {
+            !_.lt(_.size(rooms), pageSize) && (
+              <div className="rounded-md w-35p h-full flex flex-row items-center justify-around cursor-pointer hover:bg-221" onClick={() => movePage('next')}>
+                <span className="font-bold"><u>다음페이지</u></span>
+                <RightOutlined style={{ fontSize: 16 }} className="font-bold" />
+              </div>
+            )
+          }
+        </div>
+      </div>
     </Layout>
   );
 };
