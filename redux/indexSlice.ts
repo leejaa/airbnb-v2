@@ -34,7 +34,7 @@ let initialState : indexReducerType = {
   showSearchCalendar: false,
   showAddGuest: false,
   showSearchTotalModal: false,
-  showLikeModal: true,
+  showLikeModal: false,
   searchTotalModalIndex: 1,
   isLogin: false,
   selectedDateRange: {startDate: null, endDate: null},
@@ -96,7 +96,7 @@ const indexSlice = createSlice({
 });
 
 export const { changeTest, toggleShowJoinModal, toggleShowLoginModal, toggleIsLogin, toggleShowSearchModal, toggleShowHeader, toggleShowSearchPlace, toggleShowSearchCalendar,
-  changeSelectedDateRange, toggleAddGuest, toggleShowSearchTotalModal, toggleSearchTotalModalIndex, changeGuestInfo,
+  changeSelectedDateRange, toggleAddGuest, toggleShowSearchTotalModal, toggleSearchTotalModalIndex, changeGuestInfo, toggleLikeModal
 } = indexSlice.actions;
 
 export default indexSlice.reducer;

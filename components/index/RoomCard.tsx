@@ -3,6 +3,8 @@ import { Carousel } from 'react-responsive-carousel';
 import { RoomCardProps } from "../types";
 import _ from "lodash";
 import { StarFilled, HeartOutlined, LeftOutlined, RightOutlined } from "@ant-design/icons";
+import { useDispatch } from "react-redux";
+import { toggleShowLoginModal, toggleLikeModal } from "../../redux/indexSlice";
 
 const RoomCard: React.FunctionComponent<RoomCardProps> = ({
     roomCardType = '001',
@@ -13,6 +15,7 @@ const RoomCard: React.FunctionComponent<RoomCardProps> = ({
     mt = 'mt-1',
     showArrows = false,
 }) => {
+    const dispatch = useDispatch();
     const [css, setCss] = useState('w-full h-full flex flex-col transform transition duration-500 ease-in-out');
     const [showLikeButton, setShowLikeButton] = useState(isVisibleHeart);
     const arrowPrev = useCallback((clickHandler) => {
@@ -48,6 +51,12 @@ const RoomCard: React.FunctionComponent<RoomCardProps> = ({
     const onMouseLeave = useCallback(() => {
         setShowLikeButton(false);
     }, []);
+    const fnLike = useCallback(() => {
+        dispatch(toggleLikeModal({ data: true }));
+        setTimeout(() => {
+            dispatch(toggleLikeModal({ data: false }));
+        }, 3000);
+    }, []);
     const RoomCard001 = useMemo(() => {
         return (
             <div className={css}>
@@ -81,7 +90,7 @@ const RoomCard: React.FunctionComponent<RoomCardProps> = ({
             <div className="w-full h-full relative" onMouseOver={onMouseOver} onMouseLeave={onMouseLeave}>
                 {
                     showLikeButton && (
-                        <div className="w-8 h-8 rounded-full bg-221 absolute z-10 right-5 top-3 flex justify-center items-center cursor-pointer transition ease-in-out duration-300 hover:bg-white transform hover:scale-110">
+                        <div onClick={fnLike} className="w-8 h-8 rounded-full bg-221 absolute z-10 right-5 top-3 flex justify-center items-center cursor-pointer transition ease-in-out duration-300 hover:bg-white transform hover:scale-110">
                             <HeartOutlined style={{ fontSize: 17 }} />
                         </div>
                     )
