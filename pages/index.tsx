@@ -10,7 +10,7 @@ import { LeftOutlined, RightOutlined } from "@ant-design/icons";
 
 const cntForOneRow = 5;
 const pageSize = 30;
-const batchPageSize = 300;
+const batchPageSize = 30;
 const Index = (props) => {
   const [cursor, setCursor] = useState(0);
   const [accumulatedCnt, setAccumulatedCnt] = useState(batchPageSize);
@@ -19,7 +19,7 @@ const Index = (props) => {
       first: batchPageSize,
       skip: 0,
     },
-    fetchPolicy: "cache-and-network",
+    fetchPolicy: "cache-first",
   });
   const [loading2, setLoading2] = useState(false);
   const rooms = useMemo(() => {

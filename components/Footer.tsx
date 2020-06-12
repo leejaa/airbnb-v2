@@ -18,7 +18,7 @@ const Footer: React.FunctionComponent<Props> = ({
     document.cookie = 'jid=';
   }, [ isLogin ]);
   return (
-    <div className="border-t border-gray-300 fixed bottom-0 w-full h-16 flex flex-row bg-white xl:hidden">
+    <div className="border-t border-gray-300 z-20 fixed bottom-0 w-full h-16 flex flex-row bg-white xl:hidden">
       <div className="w-1/5 h-full flex flex-col justify-center items-center">
         <AppleOutlined style={{ fontSize: 30, color: 'pink' }} />
         <span className="text-xs text-pink-400">둘러보기</span>

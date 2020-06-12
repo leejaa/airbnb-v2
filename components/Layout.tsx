@@ -14,6 +14,7 @@ import SearchPlace from "./common/SearchPlace";
 import SearchCalendar from "./common/SearchCalendar";
 import AddGuest from "./common/AddGuest";
 import SearchTotalModal from "./common/SearchTotalModal";
+import Modal from "./index/Modal";
 
 type Props = {
   props: any
@@ -29,7 +30,7 @@ const Layout: React.FunctionComponent<Props> = ({ props, children }) => {
   const loginRef = useRef(null);
   const totalModalRef = useRef(null);
   useEffect(() => {
-    if ( (router?.query?.action ?? '') === 'login'  ) {
+    if ((router?.query?.action ?? '') === 'login') {
       // dispatch(toggleShowLoginModal({ data: true }));
     }
     if (!isAuth) {
@@ -63,28 +64,29 @@ const Layout: React.FunctionComponent<Props> = ({ props, children }) => {
       <div className={`px-16 border-b border-gray-300 ${!showHeader && 'hidden'}`}>
         <Header />
       </div>
-      <div className={`w-30 h-200 bg-white z-10 absolute right-35 top-10 p-6 ${!showJoinModal && 'hidden'}`} ref={showJoinModal ? joinRef : null}>
+      <div className={`w-30 h-200 bg-white z-20 absolute right-35 top-10 p-6 ${!showJoinModal && 'hidden'}`} ref={showJoinModal ? joinRef : null}>
         <Join />
       </div>
-      <div className={`w-full h-160 bg-white z-10 absolute right-0 top-10 p-6 xl:w-30 xl:right-35 ${!showLoginModal && 'hidden'}`} ref={showLoginModal ? loginRef : null}>
+      <div className={`w-full h-160 bg-white z-20 absolute right-0 top-10 p-6 xl:w-30 xl:right-35 ${!showLoginModal && 'hidden'}`} ref={showLoginModal ? loginRef : null}>
         <Login />
       </div>
-      <div className={`w-full h-48 bg-white z-10 absolute top-0 border-b border-gray-300 p-3 ${!showSearchModal && 'hidden'}`}>
+      <div className={`w-full h-48 bg-white z-20 absolute top-0 border-b border-gray-300 p-3 ${!showSearchModal && 'hidden'}`}>
         <Search />
       </div>
-      <div className={`w-full h-full bg-white z-10 absolute relative ${!showSearchPlace && 'hidden'}`}>
+      <div className={`w-full h-full bg-white z-20 absolute relative ${!showSearchPlace && 'hidden'}`}>
         <SearchPlace />
       </div>
-      <div className={`w-full h-full bg-white z-10 absolute relative ${!showSearchCalendar && 'hidden'}`}>
+      <div className={`w-full h-full bg-white z-20 absolute relative ${!showSearchCalendar && 'hidden'}`}>
         <SearchCalendar />
       </div>
-      <div className={`w-full h-full bg-white z-10 absolute relative ${!showAddGuest && 'hidden'}`}>
+      <div className={`w-full h-full bg-white z-20 absolute relative ${!showAddGuest && 'hidden'}`}>
         <AddGuest />
       </div>
-      <div className={`w-full h-80p bg-white z-10 flex items-center justify-center absolute ${!showSearchTotalModal && 'hidden'} move003 `} ref={showSearchTotalModal ? totalModalRef : null}>
+      <div className={`w-full h-80p bg-white z-20 flex items-center justify-center absolute ${!showSearchTotalModal && 'hidden'} move003 `} ref={showSearchTotalModal ? totalModalRef : null}>
         <SearchTotalModal />
       </div>
       {children}
+      <Modal />
       <Footer />
     </div>
   );

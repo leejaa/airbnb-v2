@@ -11,6 +11,7 @@ export type indexReducerType = {
   showSearchCalendar: boolean,
   showAddGuest: boolean,
   showSearchTotalModal: boolean,
+  showLikeModal: boolean,
   searchTotalModalIndex: number,
   isLogin: boolean,
   selectedDateRange: {
@@ -33,6 +34,7 @@ let initialState : indexReducerType = {
   showSearchCalendar: false,
   showAddGuest: false,
   showSearchTotalModal: false,
+  showLikeModal: true,
   searchTotalModalIndex: 1,
   isLogin: false,
   selectedDateRange: {startDate: null, endDate: null},
@@ -80,6 +82,9 @@ const indexSlice = createSlice({
     },
     toggleSearchTotalModalIndex(state, action) {
       state.searchTotalModalIndex = action.payload.data;
+    },
+    toggleLikeModal(state, action) {
+      state.showLikeModal = action.payload.data;
     },
     changeSelectedDateRange(state, action) {
       state.selectedDateRange = action.payload.data;

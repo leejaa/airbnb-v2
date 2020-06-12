@@ -54,7 +54,6 @@ export interface RoomSlideProps {
     roomSlideType?: string,
     data?: SelectRoomsQuery,
 }
-
 export interface RoomCardProps {
     roomCardType?: string,
     room?: Room,
@@ -63,4 +62,8 @@ export interface RoomCardProps {
     imgHeight?: string,
     mt?: string,
     showArrows?: boolean,
+}
+export interface ModalProps {
+    ModalType?: string;
+    message?: string;
 }

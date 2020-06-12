@@ -68,7 +68,36 @@
     animation-delay: 0s;
     animation-fill-mode: both;
 }
-
+.show_modal {
+    box-shadow: 0 1px 3px 0 rgba(0.5, 0.5, 0.5, 0.5), 0 1px 2px 0 rgba(0.5, 0.5, 0.5, 0.5);
+    animation-name: show_modal;
+    animation-duration: 0.8s;
+    animation-delay: 0s;
+    animation-fill-mode: both;
+}
+.hide_modal {
+    box-shadow: 0 1px 3px 0 rgba(0.5, 0.5, 0.5, 0.5), 0 1px 2px 0 rgba(0.5, 0.5, 0.5, 0.5);
+    animation-name: hide_modal;
+    animation-duration: 3s;
+    animation-delay: 0s;
+    animation-fill-mode: both;
+}
+@keyframes show_modal {
+    from {
+        bottom: 0%;
+    }
+    to {
+        bottom: 10%;
+    }
+}
+@keyframes hide_modal {
+    from {
+        bottom: 10%;
+    }
+    to {
+        bottom: 0%;
+    }
+}
 @keyframes move001 {
     from {
         width: 100%;
@@ -85,7 +114,6 @@
         position: absolute;
     }
 }
-
 @keyframes move002 {
     from {
         width: 100%;
@@ -102,7 +130,6 @@
         top: 0%;
     }
 }
-
 @keyframes move003 {
     from {
         bottom: 100%;
@@ -111,7 +138,6 @@
         bottom: 35%;
     }
 }
-
 @keyframes cell_right0 {
     from {
         position: absolute;
@@ -122,7 +148,6 @@
         left: 5%;
     }
 }
-
 @keyframes cell_right1 {
     from {
         position: absolute;
@@ -133,7 +158,6 @@
         left: 35%;
     }
 }
-
 @keyframes cell_right2 {
     from {
         position: absolute;
@@ -144,7 +168,6 @@
         left: 65%;
     }
 }
-
 @keyframes cell_left0 {
     from {
         position: absolute;
@@ -155,7 +178,6 @@
         right: 65%;
     }
 }
-
 @keyframes cell_left1 {
     from {
         position: absolute;
@@ -166,7 +188,6 @@
         right: 35%;
     }
 }
-
 @keyframes cell_left2 {
     from {
         position: absolute;
