@@ -10,7 +10,7 @@ import { LeftOutlined, RightOutlined } from "@ant-design/icons";
 
 const cntForOneRow = 5;
 const pageSize = 30;
-const batchPageSize = 30;
+const batchPageSize = 300;
 const Index = (props) => {
   const [cursor, setCursor] = useState(0);
   const [accumulatedCnt, setAccumulatedCnt] = useState(batchPageSize);
