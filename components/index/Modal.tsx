@@ -6,9 +6,8 @@ import { rootState } from "../../redux/rootReducer";
 
 const Modal: React.FunctionComponent<ModalProps> = ({
     ModalType = "001",
-    message = "좋아요에 추가되었습니다.",
 }) => {
-    const { showLikeModal = false } = useSelector((state: rootState) => state.indexReducer);
+    const { showLikeModal = false, modalMessage = "" } = useSelector((state: rootState) => state.indexReducer);
     const style = useMemo(() => {
         let style = "";
         if (showLikeModal) {
@@ -20,11 +19,11 @@ const Modal: React.FunctionComponent<ModalProps> = ({
     }, [showLikeModal]);
     const Modal001 = useMemo(() => {
         return (
-            <div className={`bg-white w-8/12 h-16 rounded-lg fixed z-20 left-20 flex items-center justify-center ${style}`}>
-               <span className="font-bold text-base">{message}</span>
+            <div className={`bg-white w-8/12 h-16 rounded-lg fixed z-20 left-20 flex items-center justify-center ${style} xl:w-2/12 xl:left-5`}>
+               <span className="font-bold text-base">{modalMessage}</span>
             </div>
         );
-    }, [style]);
+    }, [style, modalMessage]);
     useEffect(() => {
 
     }, []);

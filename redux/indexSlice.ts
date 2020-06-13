@@ -23,6 +23,7 @@ export type indexReducerType = {
     childCnt: number,
     babyCnt: number,
   },
+  modalMessage: string,
 }
 let initialState : indexReducerType = {
   userId: undefined,
@@ -43,6 +44,7 @@ let initialState : indexReducerType = {
     childCnt: 0,
     babyCnt: 0,
   },
+  modalMessage: "좋아요에 추가되었습니다.",
 };
 
 const indexSlice = createSlice({
@@ -83,6 +85,7 @@ const indexSlice = createSlice({
     },
     toggleLikeModal(state, action) {
       state.showLikeModal = action.payload.data;
+      state.modalMessage = action.payload.message;
     },
     changeSelectedDateRange(state, action) {
       state.selectedDateRange = action.payload.data;

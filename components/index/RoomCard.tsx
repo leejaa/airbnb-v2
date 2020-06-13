@@ -5,8 +5,9 @@ import _ from "lodash";
 import { StarFilled, HeartOutlined, LeftOutlined, RightOutlined, HeartFilled } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleShowLoginModal, toggleLikeModal } from "../../redux/indexSlice";
-import { useUpdateLikeMutation } from "../../generated/graphql";
+import { useUpdateLikeMutation, useSelectRoomsQuery, SelectRoomsDocument } from "../../generated/graphql";
 import { rootState } from "../../redux/rootReducer";
+import { query } from "express";
 
 const RoomCard: React.FunctionComponent<RoomCardProps> = ({
     roomCardType = '001',
@@ -23,6 +24,7 @@ const RoomCard: React.FunctionComponent<RoomCardProps> = ({
         const isLike = _.some(userList, ['id', userId]);
         return isLike;
     }, [room]);
+    const [isLikeFast, setIsLikeFast] = useState(isLike);
     const [updateLikeMutation] = useUpdateLikeMutation();
     const dispatch = useDispatch();
     const [css, setCss] = useState('w-full h-full flex flex-col transform transition duration-500 ease-in-out');
@@ -61,21 +63,29 @@ const RoomCard: React.FunctionComponent<RoomCardProps> = ({
         setShowLikeButton(false);
     }, []);
     const fnLike = useCallback(async () => {
+        let message = "좋아요에 추가되었습니다";
+        if (isLikeFast) {
+            message = "좋아요가 취소되었습니다";
+        }
+        setIsLikeFast(!isLikeFast);
+        dispatch(toggleLikeModal({ data: true, message }));
+        setTimeout(() => {
+            dispatch(toggleLikeModal({ data: false }));
+        }, 3000);
         try {
             const result = await updateLikeMutation({
                 variables: {
                     roomId: parseInt(room.id, 10)
-                }
+                },
+                // refetchQueries: [{
+                //     query: SelectRoomsDocument
+                // }]
             });
         } catch (error) {
             console.log('error', error);
         } finally {
-            dispatch(toggleLikeModal({ data: true }));
-            setTimeout(() => {
-                dispatch(toggleLikeModal({ data: false }));
-            }, 3000);
         }
-    }, [room]);
+    }, [room, isLikeFast]);
     const RoomCard001 = useMemo(() => {
         return (
             <div className={css}>
@@ -111,7 +121,7 @@ const RoomCard: React.FunctionComponent<RoomCardProps> = ({
                     showLikeButton && (
                         <div onClick={fnLike} className="w-8 h-8 rounded-full bg-221 absolute z-10 right-5 top-3 flex justify-center items-center cursor-pointer transition ease-in-out duration-300 hover:bg-white transform hover:scale-110">
                             {
-                                isLike ? (
+                                isLikeFast ? (
                                     <HeartFilled style={{ fontSize: 17, color: "rgb(255, 56, 92)" }} />
                                 ) : (
                                     <HeartOutlined style={{ fontSize: 17, color: "rgb(34, 34, 34)" }} />
@@ -162,7 +172,7 @@ const RoomCard: React.FunctionComponent<RoomCardProps> = ({
                 </div>
             </div>
         );
-    }, [css, room, showDot, imgHeight, mt, showArrows, showLikeButton, isLike]);
+    }, [css, room, showDot, imgHeight, mt, showArrows, showLikeButton, isLikeFast]);
     let RoomCard;
     switch (roomCardType) {
         case '001':

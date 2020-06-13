@@ -84,18 +84,18 @@
 }
 @keyframes show_modal {
     from {
-        bottom: 0%;
+        bottom: -10%;
     }
     to {
-        bottom: 10%;
+        bottom: 5%;
     }
 }
 @keyframes hide_modal {
     from {
-        bottom: 10%;
+        bottom: 5%;
     }
     to {
-        bottom: 0%;
+        bottom: -10%;
     }
 }
 @keyframes move001 {
