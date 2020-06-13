@@ -46,7 +46,7 @@ const Login: React.FunctionComponent<Props> = ({
                 if (success) {
                     alert('로그인이 성공했습니다.');
                     document.cookie = `jid=${result?.data?.login?.refreshToken ?? ''}`;
-                    dispatch(toggleIsLogin({ data: true }));
+                    dispatch(toggleIsLogin({ data: true, userId: result?.data?.login?.user?.id ?? undefined }));
                 } else {
                     console.log('로그인 실패');
                 }
@@ -74,7 +74,7 @@ const Login: React.FunctionComponent<Props> = ({
             if (success) {
                 alert('로그인이 성공했습니다.');
                 document.cookie = `jid=${result?.data?.login?.refreshToken ?? ''}`;
-                dispatch(toggleIsLogin({ data: true }));
+                dispatch(toggleIsLogin({ data: true, userId: result?.data?.login?.user?.id ?? undefined }));
             } else {
                 console.log('로그인 실패');
             }

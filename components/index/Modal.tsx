@@ -10,7 +10,6 @@ const Modal: React.FunctionComponent<ModalProps> = ({
 }) => {
     const { showLikeModal = false } = useSelector((state: rootState) => state.indexReducer);
     const style = useMemo(() => {
-        console.log('showLikeModal', showLikeModal);
         let style = "";
         if (showLikeModal) {
             style = "show_modal";
@@ -20,7 +19,6 @@ const Modal: React.FunctionComponent<ModalProps> = ({
         return style;
     }, [showLikeModal]);
     const Modal001 = useMemo(() => {
-        console.log('style', style);
         return (
             <div className={`bg-white w-8/12 h-16 rounded-lg fixed z-20 left-20 flex items-center justify-center ${style}`}>
                <span className="font-bold text-base">{message}</span>

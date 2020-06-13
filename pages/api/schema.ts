@@ -110,7 +110,7 @@ const Query = objectType({
     t.list.field(SELECT_LIKES, {
       type: 'Like',
       args: {},
-      resolve: async (_parent, {}, ctx) => {
+      resolve: async (_parent, { }, ctx) => {
         const likes = prisma.like.findMany({
         });
         return likes;
@@ -242,7 +242,7 @@ const Mutation = objectType({
       type: UpdateResult,
       args: {
       },
-      resolve: async (_, {}, ctx) => {
+      resolve: async (_, { }, ctx) => {
         try {
           let roomIds: any = await prisma.room.findMany();
           roomIds = roomIds.map(item => item.id);
@@ -279,10 +279,25 @@ const Mutation = objectType({
     })
     t.field(UPDATE_LIKE, {
       type: UpdateResult,
-      args: { roomId: intArg(), userId: intArg(), likeId: intArg() },
-      resolve: async (_parent, { roomId, userId, likeId = undefined }, ctx) => {
+      args: { roomId: intArg() },
+      resolve: async (_parent, { roomId }, ctx) => {
+        if (_.isUndefined(ctx?.userId ?? undefined)) {
+          throw "ERROR-001";
+        }
         try {
-          if (_.isUndefined(likeId)) {
+          const result = await prisma.like.findMany({
+            where: {
+              AND: [
+                {
+                  roomId
+                },
+                {
+                  userId: ctx?.userId ?? ''
+                }
+              ]
+            }
+          });
+          if (_.isEmpty(result)) {
             await prisma.like.create({
               data: {
                 room: {
@@ -292,15 +307,17 @@ const Mutation = objectType({
                 },
                 user: {
                   connect: {
-                    id: userId
+                    id: ctx.userId
                   }
                 }
               }
             });
           } else {
-            await prisma.like.delete({
+            await prisma.like.deleteMany({
               where: {
-                id: likeId
+                id: {
+                  in: _.map(result, item => item.id)
+                }
               }
             });
           }
@@ -311,6 +328,7 @@ const Mutation = objectType({
           console.log('error', error);
           return {
             success: false,
+            message: error,
           };
         }
       },
@@ -383,8 +401,7 @@ const Mutation = objectType({
 
 export const checkAuth = ({ req }) => {
   const authorization = req?.headers?.authorization ?? '';
-  // const token = authorization?.split(" ")[1] ?? '';
-  const token = 'asdsdfdsf';
+  const token = authorization?.split(" ")[1] ?? '';
   try {
     const payload = verify(token, process.env.ACCESS_TOKEN_SECRET!);
     return {

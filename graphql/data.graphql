@@ -1,3 +1,8 @@
+mutation updateLike($roomId: Int) {
+  updateLike(roomId: $roomId){
+    success
+  }
+}
 mutation createUser($email: String!, $password: String!, $name: String) {
   createUser(email: $email, password: $password, name: $name){
     success
@@ -55,7 +60,12 @@ query selectRooms($first: Int, $skip: Int){
     photo{
       id
       file
-     
+    }
+    like{
+      id
+      user{
+        id
+      }
     }
   }
 }

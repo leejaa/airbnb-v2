@@ -24,6 +24,14 @@ export type CreateUserResult = {
 };
 
 
+export type Like = {
+   __typename?: 'Like';
+  id: Scalars['String'];
+  roomId: Scalars['String'];
+  userId: Scalars['String'];
+  user?: Maybe<User>;
+};
+
 export type LoginResult = {
    __typename?: 'LoginResult';
   success: Scalars['Boolean'];
@@ -36,6 +44,7 @@ export type Mutation = {
    __typename?: 'Mutation';
   createUser: CreateUserResult;
   updatePhotos: UpdateResult;
+  updateLike: UpdateResult;
   login: LoginResult;
 };
 
@@ -44,6 +53,12 @@ export type MutationCreateUserArgs = {
   email: Scalars['String'];
   name?: Maybe<Scalars['String']>;
   password?: Maybe<Scalars['String']>;
+};
+
+
+export type MutationUpdateLikeArgs = {
+  roomId?: Maybe<Scalars['Int']>;
+  likeId?: Maybe<Scalars['Int']>;
 };
 
 
@@ -64,6 +79,7 @@ export type Photo = {
 export type Query = {
    __typename?: 'Query';
   photo: Array<Photo>;
+  selectLikes: Array<Like>;
   selectRooms: Array<Room>;
   selectUser: User;
   selectUser2: User;
@@ -107,6 +123,7 @@ export type Room = {
   userId: Scalars['Int'];
   user: User;
   photo: Array<Photo>;
+  like?: Maybe<Array<Like>>;
 };
 
 export type UpdateResult = {
@@ -121,6 +138,19 @@ export type User = {
   email: Scalars['String'];
   password: Scalars['String'];
 };
+
+export type UpdateLikeMutationVariables = {
+  roomId?: Maybe<Scalars['Int']>;
+};
+
+
+export type UpdateLikeMutation = (
+  { __typename?: 'Mutation' }
+  & { updateLike: (
+    { __typename?: 'UpdateResult' }
+    & Pick<UpdateResult, 'success'>
+  ) }
+);
 
 export type CreateUserMutationVariables = {
   email: Scalars['String'];
@@ -198,11 +228,50 @@ export type SelectRoomsQuery = (
     & { photo: Array<(
       { __typename?: 'Photo' }
       & Pick<Photo, 'id' | 'file'>
-    )> }
+    )>, like?: Maybe<Array<(
+      { __typename?: 'Like' }
+      & Pick<Like, 'id'>
+      & { user?: Maybe<(
+        { __typename?: 'User' }
+        & Pick<User, 'id'>
+      )> }
+    )>> }
   )> }
 );
 
 
+export const UpdateLikeDocument = gql`
+    mutation updateLike($roomId: Int) {
+  updateLike(roomId: $roomId) {
+    success
+  }
+}
+    `;
+export type UpdateLikeMutationFn = ApolloReactCommon.MutationFunction<UpdateLikeMutation, UpdateLikeMutationVariables>;
+
+/**
+ * __useUpdateLikeMutation__
+ *
+ * To run a mutation, you first call `useUpdateLikeMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateLikeMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateLikeMutation, { data, loading, error }] = useUpdateLikeMutation({
+ *   variables: {
+ *      roomId: // value for 'roomId'
+ *   },
+ * });
+ */
+export function useUpdateLikeMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<UpdateLikeMutation, UpdateLikeMutationVariables>) {
+        return ApolloReactHooks.useMutation<UpdateLikeMutation, UpdateLikeMutationVariables>(UpdateLikeDocument, baseOptions);
+      }
+export type UpdateLikeMutationHookResult = ReturnType<typeof useUpdateLikeMutation>;
+export type UpdateLikeMutationResult = ApolloReactCommon.MutationResult<UpdateLikeMutation>;
+export type UpdateLikeMutationOptions = ApolloReactCommon.BaseMutationOptions<UpdateLikeMutation, UpdateLikeMutationVariables>;
 export const CreateUserDocument = gql`
     mutation createUser($email: String!, $password: String!, $name: String) {
   createUser(email: $email, password: $password, name: $name) {
@@ -367,6 +436,12 @@ export const SelectRoomsDocument = gql`
     photo {
       id
       file
+    }
+    like {
+      id
+      user {
+        id
+      }
     }
   }
 }

@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import _ from "lodash";
 
 export type indexReducerType = {
-  test: boolean,
+  userId: number,
   showJoinModal: boolean,
   showLoginModal: boolean,
   showSearchModal: boolean,
@@ -25,7 +25,7 @@ export type indexReducerType = {
   },
 }
 let initialState : indexReducerType = {
-  test: false,
+  userId: undefined,
   showJoinModal: false,
   showLoginModal: false,
   showSearchModal: false,
@@ -49,9 +49,6 @@ const indexSlice = createSlice({
   name: "index",
   initialState,
   reducers: {
-    changeTest(state, action) {
-      state.test = true;
-    },
     toggleShowJoinModal(state, action) {
       state.showJoinModal = action.payload.data ? action.payload.data : !state.showJoinModal;
     },
@@ -72,6 +69,7 @@ const indexSlice = createSlice({
     },
     toggleIsLogin(state, action) {
       state.isLogin = action.payload.data;
+      state.userId = action.payload.userId;
     },
     toggleAddGuest(state, action) {
       state.showAddGuest = action.payload.data;
@@ -95,7 +93,7 @@ const indexSlice = createSlice({
   }
 });
 
-export const { changeTest, toggleShowJoinModal, toggleShowLoginModal, toggleIsLogin, toggleShowSearchModal, toggleShowHeader, toggleShowSearchPlace, toggleShowSearchCalendar,
+export const { toggleShowJoinModal, toggleShowLoginModal, toggleIsLogin, toggleShowSearchModal, toggleShowHeader, toggleShowSearchPlace, toggleShowSearchCalendar,
   changeSelectedDateRange, toggleAddGuest, toggleShowSearchTotalModal, toggleSearchTotalModalIndex, changeGuestInfo, toggleLikeModal
 } = indexSlice.actions;
 

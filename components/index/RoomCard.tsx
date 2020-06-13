@@ -2,9 +2,11 @@ import React, { useCallback, useMemo, useState, useEffect } from "react";
 import { Carousel } from 'react-responsive-carousel';
 import { RoomCardProps } from "../types";
 import _ from "lodash";
-import { StarFilled, HeartOutlined, LeftOutlined, RightOutlined } from "@ant-design/icons";
-import { useDispatch } from "react-redux";
+import { StarFilled, HeartOutlined, LeftOutlined, RightOutlined, HeartFilled } from "@ant-design/icons";
+import { useDispatch, useSelector } from "react-redux";
 import { toggleShowLoginModal, toggleLikeModal } from "../../redux/indexSlice";
+import { useUpdateLikeMutation } from "../../generated/graphql";
+import { rootState } from "../../redux/rootReducer";
 
 const RoomCard: React.FunctionComponent<RoomCardProps> = ({
     roomCardType = '001',
@@ -15,6 +17,13 @@ const RoomCard: React.FunctionComponent<RoomCardProps> = ({
     mt = 'mt-1',
     showArrows = false,
 }) => {
+    const { userId = undefined } = useSelector((state: rootState) => state.indexReducer);
+    const isLike = useMemo(() => {
+        const userList = _.map(room.like, like => like.user);
+        const isLike = _.some(userList, ['id', userId]);
+        return isLike;
+    }, [room]);
+    const [updateLikeMutation] = useUpdateLikeMutation();
     const dispatch = useDispatch();
     const [css, setCss] = useState('w-full h-full flex flex-col transform transition duration-500 ease-in-out');
     const [showLikeButton, setShowLikeButton] = useState(isVisibleHeart);
@@ -51,12 +60,22 @@ const RoomCard: React.FunctionComponent<RoomCardProps> = ({
     const onMouseLeave = useCallback(() => {
         setShowLikeButton(false);
     }, []);
-    const fnLike = useCallback(() => {
-        dispatch(toggleLikeModal({ data: true }));
-        setTimeout(() => {
-            dispatch(toggleLikeModal({ data: false }));
-        }, 3000);
-    }, []);
+    const fnLike = useCallback(async () => {
+        try {
+            const result = await updateLikeMutation({
+                variables: {
+                    roomId: parseInt(room.id, 10)
+                }
+            });
+        } catch (error) {
+            console.log('error', error);
+        } finally {
+            dispatch(toggleLikeModal({ data: true }));
+            setTimeout(() => {
+                dispatch(toggleLikeModal({ data: false }));
+            }, 3000);
+        }
+    }, [room]);
     const RoomCard001 = useMemo(() => {
         return (
             <div className={css}>
@@ -74,7 +93,7 @@ const RoomCard: React.FunctionComponent<RoomCardProps> = ({
                             </div>
                         </div>
                         <div className="w-40p h-full flex flex-row justify-end items-center">
-                            <StarFilled style={{ fontSize: 15, color: '#FF385C' }} className="mr-1" />
+                            <StarFilled style={{ fontSize: 15, color: "#FF385C" }} className="mr-1" />
                             <span className="text-sm">{room?.score ?? 0}</span>
                         </div>
                     </div>
@@ -91,7 +110,13 @@ const RoomCard: React.FunctionComponent<RoomCardProps> = ({
                 {
                     showLikeButton && (
                         <div onClick={fnLike} className="w-8 h-8 rounded-full bg-221 absolute z-10 right-5 top-3 flex justify-center items-center cursor-pointer transition ease-in-out duration-300 hover:bg-white transform hover:scale-110">
-                            <HeartOutlined style={{ fontSize: 17 }} />
+                            {
+                                isLike ? (
+                                    <HeartFilled style={{ fontSize: 17, color: "rgb(255, 56, 92)" }} />
+                                ) : (
+                                    <HeartOutlined style={{ fontSize: 17, color: "rgb(34, 34, 34)" }} />
+                                )
+                            }
                         </div>
                     )
                 }
@@ -120,7 +145,7 @@ const RoomCard: React.FunctionComponent<RoomCardProps> = ({
                     <div className="w-full h-50p flex flex-row items-center">
                         <div className="w-60p h-full flex items-center justify-between">
                             <div className="border border-black  w-1/2 h-85p rounded-md flex items-center justify-center">
-                    <span className="text-05 font-bold">{`슈퍼호스트`}</span>
+                                <span className="text-05 font-bold">{`슈퍼호스트`}</span>
                             </div>
                             <div className="w-1/2 h-full rounded-md flex items-center justify-center">
                                 <span className="text-xs text-gray-600">{room?.name ?? ""}</span>
@@ -137,7 +162,7 @@ const RoomCard: React.FunctionComponent<RoomCardProps> = ({
                 </div>
             </div>
         );
-    }, [css, room, showDot, imgHeight, mt, showArrows, showLikeButton]);
+    }, [css, room, showDot, imgHeight, mt, showArrows, showLikeButton, isLike]);
     let RoomCard;
     switch (roomCardType) {
         case '001':
