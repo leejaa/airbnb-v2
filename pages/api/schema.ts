@@ -11,7 +11,9 @@ const SELECT_USER = 'selectUser';
 const SELECT_USER2 = 'selectUser2';
 const SELECT_PHOTO = 'selectPhoto';
 const SELECT_ROOMS = 'selectRooms';
+const SELECT_LIKES = 'selectLikes';
 const UPDATE_PHOTOS = 'updatePhotos';
+const UPDATE_LIKE = 'updateLike';
 export const AUTH_LIST = [
   SELECT_USER,
 ];
@@ -20,6 +22,15 @@ export const GQLDate = asNexusMethod(GraphQLDate, 'date')
 
 export const prisma = new PrismaClient();
 
+const Like = objectType({
+  name: 'Like',
+  definition(t) {
+    t.string('id')
+    t.string('roomId')
+    t.string('userId')
+    t.field('user', { type: 'User', nullable: true })
+  },
+});
 const Photo = objectType({
   name: 'Photo',
   definition(t) {
@@ -29,7 +40,6 @@ const Photo = objectType({
     t.string('roomId')
   },
 });
-
 export const User = objectType({
   name: 'User',
   definition(t) {
@@ -39,7 +49,6 @@ export const User = objectType({
     t.string('password')
   }
 });
-
 const LoginResult = objectType({
   name: 'LoginResult',
   definition(t) {
@@ -72,6 +81,7 @@ const Room = objectType({
     t.int('userId')
     t.field('user', { type: 'User' })
     t.list.field('photo', { type: 'Photo' })
+    t.list.field('like', { type: 'Like', nullable: true })
   },
 });
 
@@ -83,7 +93,7 @@ const createUserResult = objectType({
   }
 });
 
-const Objects = [Photo, User, Room, LoginResult, createUserResult];
+const Objects = [Photo, User, Room, Like, LoginResult, createUserResult];
 
 const Query = objectType({
   name: 'Query',
@@ -97,10 +107,19 @@ const Query = objectType({
         })
       },
     })
+    t.list.field(SELECT_LIKES, {
+      type: 'Like',
+      args: {},
+      resolve: async (_parent, {}, ctx) => {
+        const likes = prisma.like.findMany({
+        });
+        return likes;
+      },
+    })
     t.list.field(SELECT_ROOMS, {
       type: 'Room',
       args: { first: intArg(), skip: intArg() },
-      resolve: async (_parent, { first = 1, skip = 10 }, ctx) => {
+      resolve: async (_parent, { first = 10, skip = 0 }, ctx) => {
         const rooms = await prisma.room.findMany({
           include: {
             photo: {
@@ -108,6 +127,12 @@ const Query = objectType({
                 id: true,
                 file: true,
                 caption: true,
+              }
+            },
+            like: {
+              select: {
+                id: true,
+                user: true,
               }
             }
           },
@@ -238,6 +263,44 @@ const Mutation = objectType({
               },
               where: {
                 id: photo.id
+              }
+            });
+          }
+          return {
+            success: true,
+          };
+        } catch (error) {
+          console.log('error', error);
+          return {
+            success: false,
+          };
+        }
+      },
+    })
+    t.field(UPDATE_LIKE, {
+      type: UpdateResult,
+      args: { roomId: intArg(), userId: intArg(), likeId: intArg() },
+      resolve: async (_parent, { roomId, userId, likeId = undefined }, ctx) => {
+        try {
+          if (_.isUndefined(likeId)) {
+            await prisma.like.create({
+              data: {
+                room: {
+                  connect: {
+                    id: roomId
+                  }
+                },
+                user: {
+                  connect: {
+                    id: userId
+                  }
+                }
+              }
+            });
+          } else {
+            await prisma.like.delete({
+              where: {
+                id: likeId
               }
             });
           }
