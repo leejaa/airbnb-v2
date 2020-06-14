@@ -1,4 +1,3 @@
-  
 {
   "compilerOptions": {
     "module": "esnext",
@@ -25,6 +24,7 @@
   "include": [
     "next-env.d.ts",
     "**/*.ts",
-    "**/*.tsx"
+    "**/*.tsx",
+    "./public/electron.ts"
   ]
 }

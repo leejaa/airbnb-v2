@@ -5,13 +5,18 @@
   "scripts": {
     "dev": "next",
     "build": "npx prisma generate && npx prisma introspect && next build",
+    "export": "next build && next export",
     "start": "next start",
     "prisma": "npx prisma generate && npx prisma introspect",
     "generate:prisma": "npx prisma generate",
     "instrospect:prisma": "npx prisma introspect",
     "generate:nexus": "ts-node --transpile-only pages/api",
     "gen": "graphql-codegen --config codegen.yml",
-    "hook": "node hook.js"
+    "hook": "node hook.js",
+    "react-start": "yarn dev",
+    "react-build": "next build",
+    "electron": "electron .",
+    "electron-start": "nf start"
   },
   "keywords": [],
   "author": "",
@@ -111,8 +116,15 @@
     "@types/react-dnd": "^3.0.2",
     "@types/react-redux": "^7.1.7",
     "@types/yup": "^0.28.0",
+    "concurrently": "^5.2.0",
+    "cross-env": "^7.0.2",
+    "electron": "^9.0.4",
+    "electron-builder": "^22.7.0",
+    "electron-is-dev": "^1.2.0",
+    "foreman": "^3.0.1",
     "husky": "^4.2.5",
     "postcss-preset-env": "^6.7.0",
-    "typescript": "3.8.3"
+    "typescript": "3.8.3",
+    "wait-on": "^5.0.1"
   }
 }
