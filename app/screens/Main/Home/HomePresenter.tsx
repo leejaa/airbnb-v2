@@ -35,7 +35,7 @@ const Container4 = styled.View`
 const Container5 = styled.View`
     width: 85%;
     height: ${SCREEN_HEIGHT / 4}px;
-    margin-top: ${SCREEN_HEIGHT / 25}px;
+    margin-top: ${SCREEN_HEIGHT / 8}px;
 `;
 const Container6 = styled.View`
     width: 100%;
