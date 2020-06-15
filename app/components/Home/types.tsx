@@ -1,4 +1,4 @@
-import { Photo, SelectPhotoQuery } from "../../generated/graphql";
+import { Photo, SelectPhotoQuery, SelectRoomsQuery, Room } from "../../generated/graphql";
 
 export interface inputProps {
     value?: string,
@@ -11,7 +11,8 @@ export interface inputProps {
     cssType: string,
 }
 export interface sliderProps {
-    data: SelectPhotoQuery,
-    cssType: string,
+    data?: SelectRoomsQuery,
+    cssType?: string,
     factor?: any,
+    room?: Room,
 }

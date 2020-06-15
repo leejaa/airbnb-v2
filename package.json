@@ -15,8 +15,6 @@
     "generate:nexus": "ts-node --transpile-only pages/api",
     "gen": "graphql-codegen --config codegen.yml",
     "hook": "node hook.js",
-    "react-start": "yarn dev",
-    "react-build": "next build",
     "electron": "electron public/electron-starter.js",
     "dist": "electron-builder ."
   },

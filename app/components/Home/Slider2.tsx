@@ -29,17 +29,17 @@ const Image1: any = styled.Image`
 
 const Slider2: React.FC<sliderProps> = ({
     cssType = "css001",
-    data,
+    room,
 }) => {
     const [intervals, setIntervals] = useState(1);
     const [width, setWidth] = useState(0);
     const [page, setPage] = useState(0);
     const container2WidthList = useMemo(() => {
-        let container2WidthList = _.fill(Array(data?.selectPhoto?.length ?? 0), 1);
+        let container2WidthList = _.fill(Array(room?.photo.length ?? 0), 1);
         if (page === 0) {
             container2WidthList[page] = 0.8;
             container2WidthList[page+1] = 1.1;
-        } else if (page === (data?.selectPhoto?.length - 1)) {
+        } else if (page === ((room?.photo.length ?? 0) - 1)) {
             container2WidthList[page-1] = 1.1;
             container2WidthList[page] = 0.85;
         } else {
@@ -59,7 +59,7 @@ const Slider2: React.FC<sliderProps> = ({
         }
     }, [width]);
     useEffect(() => {
-        const newIntervals = data?.selectPhoto?.length ?? 1;
+        const newIntervals = room?.photo.length ?? 1;
         const newWidth = SCREEN_WIDTH * newIntervals;
         setIntervals(newIntervals);
         setWidth(newWidth);
@@ -77,7 +77,7 @@ const Slider2: React.FC<sliderProps> = ({
             scrollEventThrottle={200}
         >
             {
-                data?.selectPhoto?.map((photo, index) => {
+                room?.photo.map((photo, index) => {
                     const newContainer2Width = width / intervals * container2WidthList[index];
                     return (
                         <Container2

@@ -23,6 +23,7 @@ const Slider: React.FC<sliderProps> = ({
     cssType = "css001",
     data,
     factor = 4,
+    room
 }) => {
     return (
         <Container factor={factor}>
@@ -35,7 +36,7 @@ const Slider: React.FC<sliderProps> = ({
                     }
                 } as any}
             >
-                {data?.selectPhoto.map(photo => (
+                {room?.photo.map(photo => (
                     <SlideImage key={photo.id} source={{ uri: photo.file }} />
                 ))}
             </Swiper>

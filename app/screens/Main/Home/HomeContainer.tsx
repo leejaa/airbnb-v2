@@ -2,14 +2,20 @@ import React, { useState, useEffect } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { Keyboard, ActivityIndicator, View } from "react-native";
 import HomePresenter from "./HomePresenter";
-import { useSelectPhotoQuery } from "../../../generated/graphql";
+import { useSelectPhotoQuery, useSelectRoomsQuery } from "../../../generated/graphql";
 
 interface props {
   token: string,
 }
 
 export default ({ token }: props) => {
-  const { data, loading } = useSelectPhotoQuery();
+  const { data, loading, fetchMore } = useSelectRoomsQuery({
+    variables: {
+      first: 10,
+      skip: 0,
+    },
+    fetchPolicy: "cache-first",
+  });
   if (loading) {
     return (
       <View>
@@ -19,7 +25,7 @@ export default ({ token }: props) => {
   }
   return (
     <HomePresenter
-      data={data}
+      data={data as any}
     />
   );
 };

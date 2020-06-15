@@ -57,7 +57,7 @@ const Input: React.FC<inputProps> = ({
     return Container;
   }, [cssType]);
   const onFocus = () => {
-    dispatch(logOut({}));
+    // dispatch(logOut({}));
   }
   return (
     <Container2>
