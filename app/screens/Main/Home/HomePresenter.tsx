@@ -9,6 +9,7 @@ import Slider from "../../../components/Home/Slider";
 import Slider2 from "../../../components/Home/Slider2";
 import { SelectRoomsQuery } from "../../../generated/graphql";
 import Header from "../../../components/Common/Header";
+import ModalComponent from "../../../components/Common/Modal";
 
 const Container1 = styled.ScrollView`
     padding-top: ${SCREEN_HEIGHT / 60}px;
@@ -76,6 +77,7 @@ export default ({
                 >
                 </Slider2>
             </Container4> */}
+            <ModalComponent />
             <Container6>
                 {
                     data.selectRooms.map(room => (
