@@ -8,10 +8,12 @@ import { Ionicons } from "@expo/vector-icons";
 import Slider from "../../../components/Home/Slider";
 import Slider2 from "../../../components/Home/Slider2";
 import { SelectRoomsQuery } from "../../../generated/graphql";
+import Header from "../../../components/Common/Header";
 
 const Container1 = styled.ScrollView`
     padding-top: ${SCREEN_HEIGHT / 60}px;
     display: flex;
+    background-color: white;
 `;
 const Container2 = styled.View`
     width: 80%;
@@ -56,7 +58,8 @@ export default ({
     }, []);
     return (
         <Container1>
-            <Container3>
+            <Header />
+            {/* <Container3>
                 <Container2>
                     <Input
                         stateFn={onChangeSearchBox}
@@ -65,14 +68,14 @@ export default ({
                     >
                     </Input>
                 </Container2>
-            </Container3>
-            <Container4>
+            </Container3> */}
+            {/* <Container4>
                 <Slider2
                     cssType="css001"
                     room={data.selectRooms[0] as any}
                 >
                 </Slider2>
-            </Container4>
+            </Container4> */}
             <Container6>
                 {
                     data.selectRooms.map(room => (

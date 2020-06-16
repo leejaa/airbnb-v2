@@ -1,9 +1,9 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useCallback } from "react";
 import { TouchableOpacity, Dimensions, Text } from "react-native";
 import styled from "styled-components/native";
 import Swiper from "react-native-web-swiper";
 import { AntDesign } from '@expo/vector-icons';
-import { inputProps, sliderProps } from "./types";
+import { inputProps, sliderProps } from "../types";
 import { SCREEN_WIDTH, SCREEN_HEIGHT } from "../../utils";
 import _ from "lodash";
 
@@ -61,9 +61,16 @@ const TextContainer: any = styled.Text`
 const TextContainer2: any = styled.Text`
     font-size: 13px;
 `;
-const SlideImage = styled.Image`
+const SlideImage: any = styled.Image`
   width: 100%;
   height: 100%;
+`;
+const DotContainer: any = styled.View`
+  width: ${(props : any) => `${props.size}px`};
+  height: ${(props : any) => `${props.size}px`};
+  border-radius: 3px;
+  background-color: ${(props : any) => props.backgroundColor};
+  margin-right: 4px;
 `;
 
 const Slider: React.FC<sliderProps> = ({
@@ -72,6 +79,15 @@ const Slider: React.FC<sliderProps> = ({
     factor = 3,
     room
 }) => {
+    const DotComponent = useCallback(({ isActive }) => {
+        return (
+            <DotContainer
+                backgroundColor={ isActive ? "white" : "#CECBCB" }
+                size={ isActive ? "7" : "6" }
+            >
+            </DotContainer>
+        );
+    }, []);
     return (
         <Container factor={factor}>
             <Swiper
@@ -80,6 +96,13 @@ const Slider: React.FC<sliderProps> = ({
                     NextComponent: () => null,
                     dotActiveStyle: {
                         backgroundColor: "white"
+                    },
+                    DotComponent: ({ index, isActive, onPress }) => {
+                        return (
+                            <>
+                                {DotComponent({ isActive })}
+                            </>
+                        )
                     }
                 } as any}
             >

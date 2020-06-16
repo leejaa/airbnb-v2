@@ -7,9 +7,10 @@ import utils from "../utils";
 import Search from "../screens/Main/Search";
 import BackBtn from "../components/Auth/BackBtn";
 import { BlurView } from "expo-blur";
-import { StyleSheet } from "react-native";
+import { StyleSheet, View, Text } from "react-native";
 import Profile from "../screens/Main/Profile";
 import Home from "../screens/Main/Home";
+import Header from "../components/Common/Header";
 
 const TabsNavigator = createBottomTabNavigator();
 const Tabs = () => (
@@ -55,24 +56,27 @@ const Tabs = () => (
 );
 
 const MainNavigator = createStackNavigator();
-export default () => (
-  <MainNavigator.Navigator
-    mode="modal"
-    screenOptions={{
-      headerBackTitleVisible: false,
-      headerTitle: "",
-      headerBackImage: () => <BackBtn />
-    }}
-  >
-    <MainNavigator.Screen
-      name="Tabs"
-      component={Tabs}
-      options={{ headerShown: true }}
-    />
-    <MainNavigator.Screen
-      name="Search"
-      options={{ headerShown: false }}
-      component={Search}
-    />
-  </MainNavigator.Navigator>
-);
+export default () => {
+  return (
+    <MainNavigator.Navigator
+      mode="modal"
+      screenOptions={({ route }) => ({
+        headerBackTitleVisible: true,
+        headerBackImage: () => <BackBtn />
+      })}
+    >
+      <MainNavigator.Screen
+        name="Tabs"
+        component={Tabs}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <MainNavigator.Screen
+        name="Search"
+        options={{ headerShown: false }}
+        component={Search}
+      />
+    </MainNavigator.Navigator>
+  )
+};

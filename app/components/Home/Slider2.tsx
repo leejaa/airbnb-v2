@@ -2,7 +2,7 @@ import React, { useMemo, useState, useCallback, useEffect } from "react";
 import { TouchableOpacity, Dimensions, NativeSyntheticEvent, NativeScrollEvent, Image } from "react-native";
 import styled from "styled-components/native";
 import Swiper from "react-native-web-swiper";
-import { inputProps, sliderProps } from "./types";
+import { inputProps, sliderProps } from "../types";
 import { SCREEN_WIDTH, SCREEN_HEIGHT } from "../../utils";
 import _ from "lodash";
 

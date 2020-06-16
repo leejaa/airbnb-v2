@@ -2,7 +2,7 @@ import React, { useMemo } from "react";
 import { TouchableOpacity, Dimensions } from "react-native";
 import styled from "styled-components/native";
 import PropTypes from "prop-types";
-import { inputProps } from "./types";
+import { inputProps } from "../types";
 import utils, { SCREEN_WIDTH } from "../../utils";
 import _ from "lodash";
 import { Ionicons } from "@expo/vector-icons";
