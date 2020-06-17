@@ -258,11 +258,24 @@ const Header: React.FC<headerProps> = ({
                     <Container15 ref={searchTextInputRef} value={searchPlaceText} onChangeText={onChangeText}></Container15>
                 </Container13>
                 <Container14>
-                    <AntDesign name="closecircle" size={20} color="gray" />
+                    {
+                        !_.isEqual(searchPlaceText, "") && (
+                            <AntDesign name="closecircle" size={20} color="gray" onPress={() => setSearchPlaceText("")} />
+                        )
+                    }
                 </Container14>
             </Container11>
         );
     }, [searchPlaceText]);
+    const Header003 = useMemo(() => {
+        return (
+            <Container11>
+                <Container12>
+                    <BackBtn cssType="002"/>
+                </Container12>
+            </Container11>
+        );
+    }, []);
     let Header;
     switch (cssType) {
         case "001":
@@ -270,6 +283,9 @@ const Header: React.FC<headerProps> = ({
             break;
         case "002":
             Header = _.clone(Header002);
+            break;
+        case "003":
+            Header = _.clone(Header003);
             break;
         default:
             Header = _.clone(Header001);

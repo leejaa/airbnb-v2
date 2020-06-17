@@ -19,3 +19,6 @@ export interface sliderProps {
 export interface headerProps {
     cssType?: string,
 }
+export interface calendarProps {
+    cssType?: string,
+}

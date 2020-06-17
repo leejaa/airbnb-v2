@@ -12,6 +12,7 @@ import Profile from "../screens/Main/Profile";
 import Home from "../screens/Main/Home";
 import Header from "../components/Common/Header";
 import SearchPlace from "../screens/Main/SearchPlace";
+import SearchCalendar from "../screens/Main/SearchCalendar";
 
 const TabsNavigator = createBottomTabNavigator();
 const Tabs = () => (
@@ -66,6 +67,13 @@ export default () => {
         headerBackImage: () => <BackBtn />
       })}
     >
+      <MainNavigator.Screen
+        name="SearchCalendar"
+        component={SearchCalendar}
+        options={{
+          header: () => <Header cssType="003" />,
+        }}
+      />
       <MainNavigator.Screen
         name="Tabs"
         component={Tabs}

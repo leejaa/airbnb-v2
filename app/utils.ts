@@ -1,7 +1,9 @@
 import { Platform } from "react-native";
 import { Dimensions } from "react-native";
+import moment from "moment";
+import _ from "lodash";
 const { width, height } = Dimensions.get("screen");
-
+const format = 'YYYY-MM-DD';
 export default {
   isAndroid: () => Platform.OS === "android",
   isEmail: (email: string) => {
@@ -12,3 +14,22 @@ export default {
 
 export const SCREEN_WIDTH = width;
 export const SCREEN_HEIGHT = height;
+
+export const getDates = ({startDate, endDate} : any) => {
+  const dateArray = [];
+  let currentDate : any = moment(startDate);
+  while (currentDate <= moment(endDate)) {
+      dateArray.push(moment(currentDate).format('YYYY-MM-DD'))
+      currentDate = moment(currentDate).add(1, 'days');
+  }
+  return dateArray;
+}
+
+export const getDatesEachMonths = ({baseDate, monthPageSize} : any) => {
+  const dateArray: string[][] = [];
+  _.map(_.range(1, monthPageSize + 1), index => {
+      const newDateArray = getDates({startDate: moment(baseDate).add(index - 1, 'months').startOf('month').format(format), endDate: moment(baseDate).add(index - 1, 'months').endOf('month').format(format)});
+      dateArray.push(newDateArray);
+  });
+  return dateArray;
+}
