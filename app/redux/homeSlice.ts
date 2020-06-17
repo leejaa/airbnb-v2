@@ -1,12 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { setFavs, setFav } from "./roomsSlice";
-import { State } from "react-native-gesture-handler";
 
 export type homeReducerType = {
   showSearchModal: boolean,
+  searchPlaceList: Array<any>,
 }
 let initialState : homeReducerType = {
   showSearchModal: false,
+  searchPlaceList: [],
 };
 
 const homeSlice = createSlice({
@@ -16,9 +16,12 @@ const homeSlice = createSlice({
     toggleShowSearchModal(state, action) {
       state.showSearchModal = action.payload.data;
     },
+    setSearchPlaceList(state, action) {
+      state.searchPlaceList = action.payload.data;
+    },
   }
 });
 
-export const { toggleShowSearchModal } = homeSlice.actions;
+export const { toggleShowSearchModal, setSearchPlaceList } = homeSlice.actions;
 
 export default homeSlice.reducer;

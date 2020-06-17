@@ -55,6 +55,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.8.6",
+    "@types/axios": "^0.14.0",
     "@types/react": "~16.9.23",
     "@types/react-native": "~0.61.17",
     "@types/react-native-modal": "^4.1.1",

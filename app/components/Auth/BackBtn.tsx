@@ -1,17 +1,20 @@
-import React from "react";
+import React, { useCallback } from "react";
 import styled from "styled-components/native";
-import { Ionicons } from "@expo/vector-icons";
+import { Ionicons, AntDesign } from "@expo/vector-icons";
 import utils from "../../utils";
+import { useNavigation } from "@react-navigation/native";
 
-const Container = styled.View`
-  padding-left: 20px;
+const Container = styled.TouchableOpacity`
 `;
 
-export default () => (
-  <Container>
-    <Ionicons
-      name={utils.isAndroid() ? "md-arrow-down" : "ios-arrow-down"}
-      size={28}
-    />
-  </Container>
-);
+export default () => {
+  const navigation = useNavigation();
+  const goBack = useCallback(() => {
+    navigation.goBack();
+  }, []);
+  return (
+    <Container onPress={goBack}>
+      <AntDesign name="arrowleft" size={24} color="black" />
+    </Container>
+  );
+}

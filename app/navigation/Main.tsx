@@ -11,6 +11,7 @@ import { StyleSheet, View, Text } from "react-native";
 import Profile from "../screens/Main/Profile";
 import Home from "../screens/Main/Home";
 import Header from "../components/Common/Header";
+import SearchPlace from "../screens/Main/SearchPlace";
 
 const TabsNavigator = createBottomTabNavigator();
 const Tabs = () => (
@@ -70,6 +71,15 @@ export default () => {
         component={Tabs}
         options={{
           headerShown: false,
+        }}
+      />
+      <MainNavigator.Screen
+        name="SearchPlace"
+        component={SearchPlace}
+        options={{
+          headerShown: true,
+          headerBackTitleVisible: false,
+          header: () => <Header cssType="002" />,
         }}
       />
       <MainNavigator.Screen
