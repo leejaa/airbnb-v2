@@ -155,39 +155,13 @@ const Calendar: React.FC<calendarProps> = ({
                                     <Container6>
                                         <Text2>{moment(date[0]).format('M월 YYYY')}</Text2>
                                     </Container6>
-                                    <Container7>
-                                        {
-                                            _.map(_.range(0, 7), index => {
-                                                if (index < dayIndex) {
-                                                    return (
-                                                        <Container8 key={index}></Container8>
-                                                    );
-                                                } else {
-                                                    const dateParam = _.clone(date[dateIndex]);
-                                                    const isStartDate = !_.isEmpty(selectedDates) && (_.isEqual(selectedDates[0], date[dateIndex]));
-                                                    const isEndDate = !_.isEmpty(selectedDates) && (_.isEqual(selectedDates[_.size(selectedDates) - 1], date[dateIndex]));
-                                                    const isBetween = _.includes(selectedDates, date[dateIndex]) && !isStartDate && !isEndDate;
-                                                    const selected = isStartDate || isEndDate;
-                                                    return (
-                                                        <Container8 key={index} onPress={() => selectDate(dateParam)}>
-                                                            <Container10 selected={isEndDate || isBetween}></Container10>
-                                                            <Container11 selected={isStartDate || isBetween}></Container11>
-                                                            <Container9 selected={selected}>
-                                                                <Text3 date={date[dateIndex]} selected={selected}>{moment(date[dateIndex++]).format('D')}</Text3>
-                                                            </Container9>
-                                                        </Container8>
-                                                    );
-                                                }
-                                            })
-                                        }
-                                    </Container7>
                                     {
-                                        _.map(_.range(0, 5), index => (
-                                            <Container7 key={index}>
+                                        _.map(_.range(0, 6), index0 => (
+                                            <Container7 key={index0}>
                                                 {
                                                     _.map(_.range(0, 7), index => {
                                                         const dateParam = _.clone(date[dateIndex]);
-                                                        if (_.gte(dateIndex, _.size(date))) {
+                                                        if (_.gte(dateIndex, _.size(date)) || (_.isEqual(index0, 0) && index < dayIndex)) {
                                                             return (
                                                                 <Container8 key={index}></Container8>
                                                             );
