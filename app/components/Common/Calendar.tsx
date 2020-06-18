@@ -111,6 +111,7 @@ const pageSize = 3;
 const Calendar: React.FC<calendarProps> = ({
     cssType = "001"
 }: any) => {
+    const [page, setPage] = useState(pageSize);
     const [dates, setDates] = useState(getDatesEachMonths({ baseDate: moment().format(format), monthPageSize: pageSize }));
     const [selectedDates, setSelectedDates] = useState<Array<string>>([]);
     const selectDate = useCallback((date) => {
@@ -128,12 +129,19 @@ const Calendar: React.FC<calendarProps> = ({
             return;
         }
         if (moment(date).isBetween(moment(selectedDates[0]), moment(selectedDates[_.size(selectedDates) - 1]))
-        || (moment(date).isSameOrBefore(moment(selectedDates[0])) || moment(date).isSameOrAfter(moment(selectedDates[_.size(selectedDates) - 1])))
+            || (moment(date).isSameOrBefore(moment(selectedDates[0])) || moment(date).isSameOrAfter(moment(selectedDates[_.size(selectedDates) - 1])))
         ) {
             setSelectedDates(getDates({ startDate: date, endDate: date }));
             return;
         }
     }, [selectedDates]);
+    const getMoreData = useCallback(() => {
+        const currentDates = _.clone(dates);
+        const newDates = _.union(currentDates, getDatesEachMonths({ baseDate: moment().add(page, 'months').format(format), monthPageSize: pageSize }));
+        const newPage = page + pageSize;
+        setPage(newPage);
+        setDates(newDates);
+    }, [page, dates]);
     const Calendar001 = useMemo(() => {
         return (
             <Container>
@@ -146,7 +154,18 @@ const Calendar: React.FC<calendarProps> = ({
                     <Container3><Text1>금</Text1></Container3>
                     <Container3><Text1>토</Text1></Container3>
                 </Container2>
-                <Container4>
+                <Container4
+                    onScroll={
+                        (e: any) => {
+                            let paddingToBottom = 10;
+                            paddingToBottom += e.nativeEvent.layoutMeasurement.height;
+                            if (e.nativeEvent.contentOffset.y + paddingToBottom >= e.nativeEvent.contentSize.height) {
+                                getMoreData();
+                            }
+                        }
+                    }
+                    scrollEventThrottle={1000}
+                >
                     {
                         dates.map((date, index) => {
                             const dayIndex = moment(date[0]).day();
@@ -192,7 +211,7 @@ const Calendar: React.FC<calendarProps> = ({
                 </Container4>
             </Container>
         );
-    }, [selectedDates]);
+    }, [selectedDates, page, dates]);
     let Calendar;
     switch (cssType) {
         case "001":
