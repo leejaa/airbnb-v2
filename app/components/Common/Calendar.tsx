@@ -53,11 +53,13 @@ const Container7: any = styled.View`
     justify-content: center;
     align-items: center;
 `;
-const Container8: any = styled.View`
+const Container8: any = styled.TouchableOpacity`
     width: 14.2857%;
     height: 100%;
     justify-content: center;
     align-items: center;
+    display: flex;
+    flex-direction: row;
 `;
 const Container9: any = styled.View`
     width: 80%;
@@ -66,6 +68,21 @@ const Container9: any = styled.View`
     display: flex;
     justify-content: center;
     align-items: center;
+    background-color: ${(props: any) => props.selected ? "black" : "undefined"};
+`;
+const Container10: any = styled.View`
+    width: 50%;
+    height: 100%;
+    position: absolute;
+    background-color: ${(props: any) => props.selected ? "#E7E6E6" : "undefined"};
+    left: 0;
+`;
+const Container11: any = styled.View`
+    width: 50%;
+    height: 100%;
+    position: absolute;
+    background-color: ${(props: any) => props.selected ? "#E7E6E6" : "undefined"};
+    right: 0;
 `;
 const Text1: any = styled.Text`
 `;
@@ -76,7 +93,13 @@ const Text2: any = styled.Text`
 const Text3: any = styled.Text`
     font-size: ${SCREEN_WIDTH / 25}px;
     font-weight: 600;
-    color: ${(props: any) => moment(props.date).isBefore(moment()) ? "#DAD8D8" : "black"};
+    color: ${(props: any) => {
+        let color = props.selected ? "white" : "black";
+        if (moment(props.date).isBefore(moment())) {
+            color = "#DAD8D8";
+        }
+        return color;
+    }};
 `;
 
 const format = 'YYYY-MM-DD';
@@ -85,8 +108,31 @@ const pageSize = 3;
 const Calendar: React.FC<calendarProps> = ({
     cssType = "001"
 }: any) => {
-    // const [dates, setDates] = useState(getDates({startDate: moment().startOf('month').format(format), endDate: moment().add(pageSize, 'months').endOf('month').format(format)}));
     const [dates, setDates] = useState(getDatesEachMonths({ baseDate: moment().format(format), monthPageSize: pageSize }));
+    const [selectedDates, setSelectedDates] = useState<Array<string>>([]);
+    const selectDate = useCallback((date) => {
+        if (moment(date).isBefore(moment())) {
+            return;
+        }
+        if (_.isEmpty(selectedDates)) {
+            setSelectedDates(getDates({ startDate: date, endDate: date }));
+            return;
+        }
+        if (_.isEqual(_.size(selectedDates), 1)) {
+            const startDate = moment(selectedDates[0]).isBefore(moment(date)) ? selectedDates[0] : date;
+            const endDate = moment(selectedDates[0]).isBefore(moment(date)) ? date : startDate;
+            setSelectedDates(getDates({ startDate, endDate }));
+            return;
+        }
+        if (moment(date).isBetween(moment(selectedDates[0]), moment(selectedDates[_.size(selectedDates) - 1]))) {
+            setSelectedDates(getDates({ startDate: date, endDate: date }));
+            return;
+        }
+        if (moment(date).isBefore(moment(selectedDates[0])) || moment(date).isAfter(moment(selectedDates[_.size(selectedDates) - 1]))) {
+            setSelectedDates(getDates({ startDate: date, endDate: date }));
+            return;
+        }
+    }, [selectedDates]);
     const Calendar001 = useMemo(() => {
         return (
             <Container>
@@ -114,13 +160,20 @@ const Calendar: React.FC<calendarProps> = ({
                                             _.map(_.range(0, 7), index => {
                                                 if (index < dayIndex) {
                                                     return (
-                                                        <Container8></Container8>
+                                                        <Container8 key={index}></Container8>
                                                     );
                                                 } else {
+                                                    const dateParam = _.clone(date[dateIndex]);
+                                                    const isStartDate = !_.isEmpty(selectedDates) && (_.isEqual(selectedDates[0], date[dateIndex]));
+                                                    const isEndDate = !_.isEmpty(selectedDates) && (_.isEqual(selectedDates[_.size(selectedDates) - 1], date[dateIndex]));
+                                                    const isBetween = _.includes(selectedDates, date[dateIndex]) && !isStartDate && !isEndDate;
+                                                    const selected = isStartDate || isEndDate;
                                                     return (
-                                                        <Container8>
-                                                            <Container9>
-                                                                <Text3 date={date[dateIndex]}>{moment(date[dateIndex++]).format('D')}</Text3>
+                                                        <Container8 key={index} onPress={() => selectDate(dateParam)}>
+                                                            <Container10 selected={isEndDate || isBetween}></Container10>
+                                                            <Container11 selected={isStartDate || isBetween}></Container11>
+                                                            <Container9 selected={selected}>
+                                                                <Text3 date={date[dateIndex]} selected={selected}>{moment(date[dateIndex++]).format('D')}</Text3>
                                                             </Container9>
                                                         </Container8>
                                                     );
@@ -128,81 +181,35 @@ const Calendar: React.FC<calendarProps> = ({
                                             })
                                         }
                                     </Container7>
-                                    <Container7>
-                                        {
-                                            _.map(_.range(0, 7), index => {
-                                                return (
-                                                    <Container8>
-                                                        <Container9>
-                                                            <Text3 date={date[dateIndex]}>{moment(date[dateIndex++]).format('D')}</Text3>
-                                                        </Container9>
-                                                    </Container8>
-                                                );
-                                            })
-                                        }
-                                    </Container7>
-                                    <Container7>
-                                        {
-                                            _.map(_.range(0, 7), index => {
-                                                return (
-                                                    <Container8>
-                                                        <Container9>
-                                                            <Text3 date={date[dateIndex]}>{moment(date[dateIndex++]).format('D')}</Text3>
-                                                        </Container9>
-                                                    </Container8>
-                                                );
-                                            })
-                                        }
-                                    </Container7>
-                                    <Container7>
-                                        {
-                                            _.map(_.range(0, 7), index => {
-                                                return (
-                                                    <Container8>
-                                                        <Container9>
-                                                            <Text3 date={date[dateIndex]}>{moment(date[dateIndex++]).format('D')}</Text3>
-                                                        </Container9>
-                                                    </Container8>
-                                                );
-                                            })
-                                        }
-                                    </Container7>
-                                    <Container7>
-                                        {
-                                            _.map(_.range(0, 7), index => {
-                                                if (_.gte(dateIndex, _.size(date))) {
-                                                    return (
-                                                        <Container8></Container8>
-                                                    );
+                                    {
+                                        _.map(_.range(0, 5), index => (
+                                            <Container7 key={index}>
+                                                {
+                                                    _.map(_.range(0, 7), index => {
+                                                        const dateParam = _.clone(date[dateIndex]);
+                                                        if (_.gte(dateIndex, _.size(date))) {
+                                                            return (
+                                                                <Container8 key={index}></Container8>
+                                                            );
+                                                        }
+                                                        const isStartDate = !_.isEmpty(selectedDates) && (_.isEqual(selectedDates[0], date[dateIndex]));
+                                                        const isEndDate = !_.isEmpty(selectedDates) && (_.isEqual(selectedDates[_.size(selectedDates) - 1], date[dateIndex]));
+                                                        const isBetween = _.includes(selectedDates, date[dateIndex]) && !isStartDate && !isEndDate;
+                                                        const selected = isStartDate || isEndDate;
+                                                        return (
+                                                            <Container8 key={index} onPress={() => selectDate(dateParam)}>
+                                                                <Container10 selected={isEndDate || isBetween}></Container10>
+                                                                <Container11 selected={isStartDate || isBetween}></Container11>
+                                                                <Container9 selected={selected}>
+                                                                    <Text3 date={date[dateIndex]} selected={selected}>{moment(date[dateIndex++]).format('D')}</Text3>
+                                                                </Container9>
+                                                            </Container8>
+                                                        );
+                                                    })
                                                 }
-                                                return (
-                                                    <Container8>
-                                                        <Container9>
-                                                            <Text3 date={date[dateIndex]}>{moment(date[dateIndex++]).format('D')}</Text3>
-                                                        </Container9>
-                                                    </Container8>
-                                                );
-                                            })
-                                        }
-                                    </Container7>
-                                    <Container7>
-                                        {
-                                            _.map(_.range(0, 7), index => {
-                                                if (_.gte(dateIndex, _.size(date))) {
-                                                    return (
-                                                        <Container8></Container8>
-                                                    );
-                                                }
-                                                return (
-                                                    <Container8>
-                                                        <Container9>
-                                                            <Text3 date={date[dateIndex]}>{moment(date[dateIndex++]).format('D')}</Text3>
-                                                        </Container9>
-                                                    </Container8>
-                                                );
-                                            })
-                                        }
-                                    </Container7>
+                                            </Container7>
+                                        ))
+                                    }
                                 </Container5>
                             )
                         })
@@ -210,7 +217,7 @@ const Calendar: React.FC<calendarProps> = ({
                 </Container4>
             </Container>
         );
-    }, []);
+    }, [selectedDates]);
     let Calendar;
     switch (cssType) {
         case "001":
