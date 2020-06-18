@@ -64,7 +64,10 @@ const Container8: any = styled.TouchableOpacity`
 const Container9: any = styled.View`
     width: 80%;
     height: 100%;
-    border-radius: 50px;
+    border-top-right-radius: 50px;
+    border-top-left-radius: 50px;
+    border-bottom-right-radius: 50px;
+    border-bottom-left-radius: 50px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -92,7 +95,7 @@ const Text2: any = styled.Text`
 `;
 const Text3: any = styled.Text`
     font-size: ${SCREEN_WIDTH / 25}px;
-    font-weight: 600;
+    font-weight: bold;
     color: ${(props: any) => {
         let color = props.selected ? "white" : "black";
         if (moment(props.date).isBefore(moment())) {
@@ -124,11 +127,9 @@ const Calendar: React.FC<calendarProps> = ({
             setSelectedDates(getDates({ startDate, endDate }));
             return;
         }
-        if (moment(date).isBetween(moment(selectedDates[0]), moment(selectedDates[_.size(selectedDates) - 1]))) {
-            setSelectedDates(getDates({ startDate: date, endDate: date }));
-            return;
-        }
-        if (moment(date).isBefore(moment(selectedDates[0])) || moment(date).isAfter(moment(selectedDates[_.size(selectedDates) - 1]))) {
+        if (moment(date).isBetween(moment(selectedDates[0]), moment(selectedDates[_.size(selectedDates) - 1]))
+        || (moment(date).isSameOrBefore(moment(selectedDates[0])) || moment(date).isSameOrAfter(moment(selectedDates[_.size(selectedDates) - 1])))
+        ) {
             setSelectedDates(getDates({ startDate: date, endDate: date }));
             return;
         }
@@ -172,8 +173,8 @@ const Calendar: React.FC<calendarProps> = ({
                                                         const selected = isStartDate || isEndDate;
                                                         return (
                                                             <Container8 key={index} onPress={() => selectDate(dateParam)}>
-                                                                <Container10 selected={isEndDate || isBetween}></Container10>
-                                                                <Container11 selected={isStartDate || isBetween}></Container11>
+                                                                <Container10 selected={_.gt(_.size(selectedDates), 1) && (isEndDate || isBetween)}></Container10>
+                                                                <Container11 selected={_.gt(_.size(selectedDates), 1) && (isStartDate || isBetween)}></Container11>
                                                                 <Container9 selected={selected}>
                                                                     <Text3 date={date[dateIndex]} selected={selected}>{moment(date[dateIndex++]).format('D')}</Text3>
                                                                 </Container9>
