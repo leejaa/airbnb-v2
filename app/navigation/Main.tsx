@@ -68,17 +68,17 @@ export default () => {
       })}
     >
       <MainNavigator.Screen
-        name="SearchCalendar"
-        component={SearchCalendar}
-        options={{
-          header: () => <Header cssType="003" />,
-        }}
-      />
-      <MainNavigator.Screen
         name="Tabs"
         component={Tabs}
         options={{
           headerShown: false,
+        }}
+      />
+      <MainNavigator.Screen
+        name="SearchCalendar"
+        component={SearchCalendar}
+        options={{
+          header: () => <Header cssType="003" />,
         }}
       />
       <MainNavigator.Screen

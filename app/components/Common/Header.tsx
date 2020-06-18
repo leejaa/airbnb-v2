@@ -74,7 +74,7 @@ const Container7: any = styled.TouchableOpacity`
     flex-direction: row;
     align-items: center;
 `;
-const Container8: any = styled.View`
+const Container8: any = styled.TouchableOpacity`
     width: 100%;
     height: 50%;
     display: flex;
@@ -223,7 +223,7 @@ const Header: React.FC<headerProps> = ({
                             <Feather name="search" size={18} color="black" />
                             <Text4>지역 추가</Text4>
                         </Container7>
-                        <Container8>
+                        <Container8 onPress={() => navigation.navigate("SearchCalendar")}>
                             <Container9>
                                 <Entypo name="calendar" size={18} color="black" />
                                 <Text4>날짜 추가</Text4>
