@@ -9,8 +9,10 @@ import { TokenRefreshLink } from "apollo-link-token-refresh";
 import { setContext } from "apollo-link-context";
 import jwtDecode from "jwt-decode";
 import utils from "../utils";
+import { IS_PRODUCTION } from "../env";
 
-const ipAddress = utils.isAndroid() ? '192.168.0.167' : 'localhost';
+let ipAddress = utils.isAndroid() ? 'http://192.168.0.167:3000' : 'http://localhost:3000';
+ipAddress = IS_PRODUCTION ? "https://airbnb-v2.now.sh" : ipAddress;
 const cache = new InMemoryCache({});
 const requestLink = new ApolloLink(
   (operation, forward) =>
@@ -53,7 +55,7 @@ export const client = new ApolloClient({
         return true;
       },
       fetchAccessToken: () => {
-        return fetch(`http://${ipAddress}:3000/api/refresh_token`, {
+        return fetch(`${ipAddress}/api/refresh_token`, {
           method: "POST",
           credentials: "include"
         });
@@ -72,7 +74,7 @@ export const client = new ApolloClient({
     authLink,
     requestLink,
     new HttpLink({
-      uri: `http://${ipAddress}:3000/api/graphql`,
+      uri: `${ipAddress}/api/graphql`,
       credentials: "include"
     })
   ]),
