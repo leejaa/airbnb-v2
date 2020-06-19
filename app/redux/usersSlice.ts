@@ -7,7 +7,7 @@ export type usersReducerType = {
   token: string,
 }
 let initialState : usersReducerType = {
-  isLoggedIn: false,
+  isLoggedIn: true,
   token: '',
 };
 

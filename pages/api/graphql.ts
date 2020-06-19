@@ -3,7 +3,7 @@ import Cors from "micro-cors";
 import { schema } from "./schema";
 
 const cors = Cors({
-    allowMethods: ["GET", "POST", "OPTIONS"]
+    allowMethods: ["GET", "POST", "OPTIONS"],
 });
 
 const apolloServer = new ApolloServer({

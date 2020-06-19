@@ -1,4 +1,5 @@
 import React from "react";
+import { Platform } from "react-native";
 import { ApolloProvider } from "@apollo/react-hooks";
 import { ApolloClient } from "apollo-client";
 import { InMemoryCache } from "apollo-cache-inmemory";
@@ -11,8 +12,7 @@ import jwtDecode from "jwt-decode";
 import utils from "../utils";
 import { IS_PRODUCTION } from "../env";
 
-let ipAddress = utils.isAndroid() ? 'http://192.168.0.167:3000' : 'http://localhost:3000';
-ipAddress = IS_PRODUCTION ? "https://airbnb-v2.now.sh" : ipAddress;
+const ipAddress = (IS_PRODUCTION && Platform.OS !== 'web') ? "https://airbnb-v2.now.sh" : "http://localhost:3000";
 const cache = new InMemoryCache({});
 const requestLink = new ApolloLink(
   (operation, forward) =>
