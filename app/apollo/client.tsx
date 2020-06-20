@@ -8,7 +8,6 @@ import { onError } from "apollo-link-error";
 import { ApolloLink, Observable } from "apollo-link";
 import { TokenRefreshLink } from "apollo-link-token-refresh";
 import { setContext } from "apollo-link-context";
-import jwtDecode from "jwt-decode";
 import utils from "../utils";
 import { IS_PRODUCTION } from "../env";
 
