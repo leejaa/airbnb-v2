@@ -13,6 +13,7 @@ import Home from "../screens/Main/Home";
 import Header from "../components/Common/Header";
 import SearchPlace from "../screens/Main/SearchPlace";
 import SearchCalendar from "../screens/Main/SearchCalendar";
+import AddGuests from "../screens/Main/AddGuests";
 
 const TabsNavigator = createBottomTabNavigator();
 const Tabs = () => (
@@ -77,6 +78,13 @@ export default () => {
       <MainNavigator.Screen
         name="SearchCalendar"
         component={SearchCalendar}
+        options={{
+          header: () => <Header cssType="003" />,
+        }}
+      />
+      <MainNavigator.Screen
+        name="AddGuests"
+        component={AddGuests}
         options={{
           header: () => <Header cssType="003" />,
         }}

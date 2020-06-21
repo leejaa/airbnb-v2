@@ -9,8 +9,9 @@ import { SCREEN_HEIGHT, SCREEN_WIDTH } from "../../utils";
 import { useNavigation } from "@react-navigation/native";
 import BackBtn from "../Auth/BackBtn";
 import { KAKAO_KEY } from "../../env";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setSearchPlaceList } from "../../redux/homeSlice";
+import { rootState } from "../../redux/rootReducer";
 
 const Container: any = styled.TouchableOpacity`
     width: 100%;
@@ -74,13 +75,13 @@ const Container7: any = styled.TouchableOpacity`
     flex-direction: row;
     align-items: center;
 `;
-const Container8: any = styled.TouchableOpacity`
+const Container8: any = styled.View`
     width: 100%;
     height: 50%;
     display: flex;
     flex-direction: row;
 `;
-const Container9: any = styled.View`
+const Container9: any = styled.TouchableOpacity`
     width: 50%;
     height: 100%;
     border-right-width: 1px;
@@ -90,7 +91,7 @@ const Container9: any = styled.View`
     align-items: center;
     padding-left: 13px;
 `;
-const Container10: any = styled.View`
+const Container10: any = styled.TouchableOpacity`
     width: 50%;
     height: 100%;
     display: flex;
@@ -165,6 +166,7 @@ const styles = StyleSheet.create({
 const Header: React.FC<headerProps> = ({
     cssType = "001"
 }: any) => {
+    const { selectedSearchPlace = "" } = useSelector((state: rootState) => state.homeReducer);
     const dispatch = useDispatch();
     const navigation = useNavigation();
     const [showSearchBox, setShowSearchBox] = useState(false);
@@ -221,14 +223,14 @@ const Header: React.FC<headerProps> = ({
                     <Container6>
                         <Container7 onPress={() => navigation.navigate("SearchPlace")}>
                             <Feather name="search" size={18} color="black" />
-                            <Text4>지역 추가</Text4>
+                            <Text4>{_.isEqual(selectedSearchPlace, "") ? "지역 추가" : selectedSearchPlace}</Text4>
                         </Container7>
-                        <Container8 onPress={() => navigation.navigate("SearchCalendar")}>
-                            <Container9>
+                        <Container8>
+                            <Container9 onPress={() => navigation.navigate("SearchCalendar")}>
                                 <Entypo name="calendar" size={18} color="black" />
                                 <Text4>날짜 추가</Text4>
                             </Container9>
-                            <Container10>
+                            <Container10 onPress={() => navigation.navigate("AddGuests")}>
                                 <AntDesign name="team" size={18} color="black" />
                                 <Text4>게스트 추가</Text4>
                             </Container10>
@@ -247,7 +249,7 @@ const Header: React.FC<headerProps> = ({
                 </Container>
             </>
         );
-    }, [showSearchBox, top]);
+    }, [showSearchBox, top, selectedSearchPlace]);
     const Header002 = useMemo(() => {
         return (
             <Container11>
@@ -271,7 +273,7 @@ const Header: React.FC<headerProps> = ({
         return (
             <Container11>
                 <Container12>
-                    <BackBtn cssType="002"/>
+                    <BackBtn cssType="002" />
                 </Container12>
             </Container11>
         );

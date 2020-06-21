@@ -1,4 +1,4 @@
-import React, { useMemo, useCallback, useState } from "react";
+import React, { useMemo, useCallback, useState, useEffect } from "react";
 import { View, Text } from "react-native";
 import Modal from 'react-native-modal';
 import styled from "styled-components/native";
@@ -142,6 +142,9 @@ const Calendar: React.FC<calendarProps> = ({
         setPage(newPage);
         setDates(newDates);
     }, [page, dates]);
+    useEffect(() => {
+        
+    }, []);
     const Calendar001 = useMemo(() => {
         return (
             <Container>

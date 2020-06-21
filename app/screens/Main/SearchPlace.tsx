@@ -3,8 +3,10 @@ import { Dimensions } from 'react-native';
 import styled from "styled-components/native";
 import { SCREEN_HEIGHT, SCREEN_WIDTH } from "../../utils";
 import { Feather } from "@expo/vector-icons";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { rootState } from "../../redux/rootReducer";
+import { setSelectedSearchPlace } from "../../redux/homeSlice";
+import { useNavigation } from "@react-navigation/native";
 
 const Container1 = styled.View`
     padding-top: ${SCREEN_HEIGHT / 20}px;
@@ -21,7 +23,7 @@ const Container3 = styled.Text`
     font-size: 10px;
     font-weight: 700;
 `;
-const Container4 = styled.View`
+const Container4 = styled.TouchableOpacity`
     width: 100%;
     height: ${SCREEN_HEIGHT / 13}px;
     display: flex;
@@ -60,6 +62,12 @@ interface props {
 export default ({
 }: props) => {
     const { searchPlaceList = [] } = useSelector((state: rootState) => state.homeReducer);
+    const dispatch = useDispatch();
+    const navigation = useNavigation();
+    const selectSearchPlace = useCallback((place_name) => {
+        dispatch(setSelectedSearchPlace({data: place_name}));
+        navigation.navigate("Home");
+    }, []);
     return (
         <Container1>
             <Container2>
@@ -67,7 +75,7 @@ export default ({
             </Container2>
             {
                 searchPlaceList.slice(0,10).map((place, index) => (
-                    <Container4 key={index}>
+                    <Container4 key={index} onPress={() => selectSearchPlace(place.place_name)}>
                         <Container5>
                             <Container7>
                                 <Feather name="watch" size={22} color="black" />
