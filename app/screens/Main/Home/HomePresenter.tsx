@@ -1,5 +1,5 @@
-import React, { useCallback } from "react";
-import { Dimensions } from 'react-native';
+import React, { useCallback, useState } from "react";
+import { Dimensions, ActivityIndicator } from 'react-native';
 import styled from "styled-components/native";
 import { View, Text } from "react-native";
 import Input from "../../../components/Home/Input";
@@ -10,6 +10,7 @@ import Slider2 from "../../../components/Home/Slider2";
 import { SelectRoomsQuery } from "../../../generated/graphql";
 import Header from "../../../components/Common/Header";
 import ModalComponent from "../../../components/Common/Modal";
+import _ from "lodash";
 
 const Container1 = styled.ScrollView`
     padding-top: ${SCREEN_HEIGHT / 60}px;
@@ -47,41 +48,61 @@ const Container6 = styled.View`
     align-items: center;
     justify-content: center;
 `;
+const Container7 = styled.View`
+    width: 100%;
+    height: ${SCREEN_HEIGHT / 12}px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+    z-index: 100;
+`;
 
 interface props {
-    data: SelectRoomsQuery
+    data: SelectRoomsQuery,
+    fetchMore: any,
+    pageSize: number,
+    skip: number,
+    loading: boolean,
 }
 
 export default ({
-    data
+    data,
+    fetchMore,
+    pageSize,
+    skip,
+    loading,
 }: props) => {
-    const onChangeSearchBox = useCallback(() => {
-    }, []);
     return (
-        <Container1>
+        <Container1
+            onScroll={
+                (e: any) => {
+                    const newSkip = _.clone(skip) + pageSize;
+                    let paddingToBottom = 10;
+                    paddingToBottom += e.nativeEvent.layoutMeasurement.height;
+                    if (e.nativeEvent.contentOffset.y + paddingToBottom >= e.nativeEvent.contentSize.height) {
+                        fetchMore({
+                            variables: {
+                                first: pageSize,
+                                skip: newSkip,
+                            },
+                            updateQuery: (prev: { selectRooms: any; }, { fetchMoreResult }: any) => {
+                                return Object.assign({}, prev, {
+                                    selectRooms: [...prev.selectRooms, ...fetchMoreResult.selectRooms]
+                                });
+                            }
+                        });
+                    }
+                }
+            }
+            scrollEventThrottle={500}
+        >
             <Header />
-            {/* <Container3>
-                <Container2>
-                    <Input
-                        stateFn={onChangeSearchBox}
-                        cssType="css001"
-                        placeholder="위치, 명소 또는 주소를 입력하세요."
-                    >
-                    </Input>
-                </Container2>
-            </Container3> */}
-            {/* <Container4>
-                <Slider2
-                    cssType="css001"
-                    room={data.selectRooms[0] as any}
-                >
-                </Slider2>
-            </Container4> */}
             <ModalComponent />
             <Container6>
                 {
-                    data.selectRooms.map(room => (
-                        <Container5 key={room.id}>
+                    data.selectRooms.map((room, index) => (
+                        <Container5 key={index}>
                             <Slider
                                 cssType="css001"
                                 room={room as any}
@@ -89,6 +110,13 @@ export default ({
                             </Slider>
                         </Container5>
                     ))
+                }
+                {
+                    loading && (
+                        <Container7>
+                            <ActivityIndicator size="large" color="#0000ff" />
+                        </Container7>
+                    )
                 }
             </Container6>
         </Container1>

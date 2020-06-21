@@ -7,25 +7,31 @@ import { useSelectPhotoQuery, useSelectRoomsQuery } from "../../../generated/gra
 interface props {
   token: string,
 }
-
+const pageSize = 5;
 export default ({ token }: props) => {
-  const { data, loading, fetchMore } = useSelectRoomsQuery({
+  const [skip, setSkip] = useState(0);
+  const { data = [], loading = false, fetchMore, networkStatus } = useSelectRoomsQuery({
     variables: {
-      first: 10,
-      skip: 0,
+      first: pageSize,
+      skip: 0
     },
     fetchPolicy: "cache-first",
+    notifyOnNetworkStatusChange: true,
   });
-  if (loading) {
-    return (
-      <View>
-        <ActivityIndicator size="large" color="#0000ff" />
-      </View>
-    );
-  }
+  // if (loading) {
+  //   return (
+  //     <View>
+  //       <ActivityIndicator size="large" color="#0000ff" />
+  //     </View>
+  //   );
+  // }
   return (
     <HomePresenter
       data={data as any}
+      fetchMore={fetchMore}
+      pageSize={pageSize}
+      skip={skip}
+      loading={loading}
     />
   );
 };
