@@ -12,6 +12,7 @@ import { KAKAO_KEY } from "../../env";
 import { useDispatch, useSelector } from "react-redux";
 import { setSearchPlaceList } from "../../redux/homeSlice";
 import { rootState } from "../../redux/rootReducer";
+import moment from "moment";
 
 const Container: any = styled.TouchableOpacity`
     width: 100%;
@@ -166,7 +167,7 @@ const styles = StyleSheet.create({
 const Header: React.FC<headerProps> = ({
     cssType = "001"
 }: any) => {
-    const { selectedSearchPlace = "" } = useSelector((state: rootState) => state.homeReducer);
+    const { selectedSearchPlace = "", selectedSearchDates = [], personCnt = undefined } = useSelector((state: rootState) => state.homeReducer);
     const dispatch = useDispatch();
     const navigation = useNavigation();
     const [showSearchBox, setShowSearchBox] = useState(false);
@@ -228,11 +229,11 @@ const Header: React.FC<headerProps> = ({
                         <Container8>
                             <Container9 onPress={() => navigation.navigate("SearchCalendar")}>
                                 <Entypo name="calendar" size={18} color="black" />
-                                <Text4>날짜 추가</Text4>
+                                <Text4>{_.isEmpty(selectedSearchDates) ? "날짜 추가" : `${moment(selectedSearchDates[0]).format('M월 D일')} - ${moment(selectedSearchDates[_.size(selectedSearchDates) - 1]).format('M월 D일')}`}</Text4>
                             </Container9>
                             <Container10 onPress={() => navigation.navigate("AddGuests")}>
                                 <AntDesign name="team" size={18} color="black" />
-                                <Text4>게스트 추가</Text4>
+                                <Text4>게스트 {!_.isUndefined(personCnt) &&_.sum(Object.values(personCnt))}명</Text4>
                             </Container10>
                         </Container8>
                     </Container6>
@@ -249,7 +250,7 @@ const Header: React.FC<headerProps> = ({
                 </Container>
             </>
         );
-    }, [showSearchBox, top, selectedSearchPlace]);
+    }, [showSearchBox, top, selectedSearchPlace, selectedSearchDates, personCnt]);
     const Header002 = useMemo(() => {
         return (
             <Container11>

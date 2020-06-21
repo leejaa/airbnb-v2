@@ -5,11 +5,19 @@ export type homeReducerType = {
   showSearchModal: boolean,
   searchPlaceList: Array<any>,
   selectedSearchPlace: string,
+  selectedSearchDates: Array<any>,
+  personCnt: Object,
 }
 let initialState : homeReducerType = {
   showSearchModal: false,
   searchPlaceList: [],
   selectedSearchPlace: "",
+  selectedSearchDates: [],
+  personCnt: {
+    adultCnt: 0,
+    childCnt: 0,
+    babyCnt: 0
+  }
 };
 
 const homeSlice = createSlice({
@@ -25,9 +33,15 @@ const homeSlice = createSlice({
     setSelectedSearchPlace(state, action) {
       state.selectedSearchPlace = action.payload.data;
     },
+    setSelectedSearchDates(state, action) {
+      state.selectedSearchDates = action.payload.data;
+    },
+    setPersonCnt(state, action) {
+      state.personCnt = action.payload.data;
+    },
   }
 });
 
-export const { toggleShowSearchModal, setSearchPlaceList, setSelectedSearchPlace } = homeSlice.actions;
+export const { toggleShowSearchModal, setSearchPlaceList, setSelectedSearchPlace, setSelectedSearchDates, setPersonCnt } = homeSlice.actions;
 
 export default homeSlice.reducer;

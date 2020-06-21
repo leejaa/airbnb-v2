@@ -83,19 +83,19 @@ export default () => {
         }}
       />
       <MainNavigator.Screen
-        name="AddGuests"
-        component={AddGuests}
-        options={{
-          header: () => <Header cssType="003" />,
-        }}
-      />
-      <MainNavigator.Screen
         name="SearchPlace"
         component={SearchPlace}
         options={{
           headerShown: true,
           headerBackTitleVisible: false,
           header: () => <Header cssType="002" />,
+        }}
+      />
+      <MainNavigator.Screen
+        name="AddGuests"
+        component={AddGuests}
+        options={{
+          header: () => <Header cssType="003" />,
         }}
       />
       <MainNavigator.Screen

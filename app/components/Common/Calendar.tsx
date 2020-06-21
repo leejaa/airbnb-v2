@@ -8,7 +8,7 @@ import { headerProps, calendarProps } from "../types";
 import { SCREEN_HEIGHT, SCREEN_WIDTH, getDates, getDatesEachMonths } from "../../utils";
 import { rootState } from "../../redux/rootReducer";
 import { useSelector, useDispatch } from "react-redux";
-import { toggleShowSearchModal } from "../../redux/homeSlice";
+import { toggleShowSearchModal, setSelectedSearchDates } from "../../redux/homeSlice";
 import moment from "moment";
 
 const Container: any = styled.View`
@@ -111,6 +111,7 @@ const pageSize = 3;
 const Calendar: React.FC<calendarProps> = ({
     cssType = "001"
 }: any) => {
+    const dispatch = useDispatch();
     const [page, setPage] = useState(pageSize);
     const [dates, setDates] = useState(getDatesEachMonths({ baseDate: moment().format(format), monthPageSize: pageSize }));
     const [selectedDates, setSelectedDates] = useState<Array<string>>([]);
@@ -143,8 +144,10 @@ const Calendar: React.FC<calendarProps> = ({
         setDates(newDates);
     }, [page, dates]);
     useEffect(() => {
-        
-    }, []);
+        if (!_.isEmpty(selectedDates)) {
+            dispatch(setSelectedSearchDates({data: selectedDates} as any));
+        }
+    }, [selectedDates]);
     const Calendar001 = useMemo(() => {
         return (
             <Container>
