@@ -1,11 +1,14 @@
-import React, { useMemo, useCallback } from "react";
+import React, { useMemo, useCallback, useState } from "react";
 import { TouchableOpacity, Dimensions, Text } from "react-native";
 import styled from "styled-components/native";
 import Swiper from "react-native-web-swiper";
-import { AntDesign } from '@expo/vector-icons';
+import { AntDesign, FontAwesome5, FontAwesome } from '@expo/vector-icons';
 import { inputProps, sliderProps } from "../types";
 import { SCREEN_WIDTH, SCREEN_HEIGHT } from "../../utils";
 import _ from "lodash";
+import { useSelector } from "react-redux";
+import { rootState } from "../../redux/rootReducer";
+import { useUpdateLikeMutation, SelectRoomsDocument } from "../../generated/graphql";
 
 const Container: any = styled.View`
     margin-bottom: 10px;
@@ -54,6 +57,19 @@ const Container6: any = styled.View`
     border-color: black;
     border-radius: 5px;
 `;
+const Container7: any = styled.TouchableOpacity`
+    width: 10%;
+    height: 12%;
+    background-color: white;
+    border-radius: 50px;
+    position: absolute;
+    right: 3%;
+    top: 3%;
+    z-index: 100;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+`;
 const TextContainer: any = styled.Text`
     font-size: 12px;
     font-weight: bold;
@@ -64,12 +80,13 @@ const TextContainer2: any = styled.Text`
 const SlideImage: any = styled.Image`
   width: 100%;
   height: 100%;
+  border-radius: 5px;
 `;
 const DotContainer: any = styled.View`
-  width: ${(props : any) => `${props.size}px`};
-  height: ${(props : any) => `${props.size}px`};
+  width: ${(props: any) => `${props.size}px`};
+  height: ${(props: any) => `${props.size}px`};
   border-radius: 3px;
-  background-color: ${(props : any) => props.backgroundColor};
+  background-color: ${(props: any) => props.backgroundColor};
   margin-right: 4px;
 `;
 
@@ -79,17 +96,58 @@ const Slider: React.FC<sliderProps> = ({
     factor = 3,
     room
 }) => {
+    const { userId = 0 } = useSelector((state: rootState) => state.usersReducer);
+    const [updateLikeMutation] = useUpdateLikeMutation();
+    const isLike = useMemo(() => {
+        const userList = _.map(room?.like, like => like.user);
+        const isLike = _.some(userList, ['id', userId]);
+        return isLike;
+    }, [room, userId]);
+    const [isLikeFast, setIsLikeFast] = useState(isLike);
     const DotComponent = useCallback(({ isActive }) => {
         return (
             <DotContainer
-                backgroundColor={ isActive ? "white" : "#CECBCB" }
-                size={ isActive ? "7" : "6" }
+                backgroundColor={isActive ? "white" : "#CECBCB"}
+                size={isActive ? "7" : "6"}
             >
             </DotContainer>
         );
     }, []);
+    const fnLike = useCallback(async () => {
+        let message = "좋아요에 추가되었습니다";
+        if (isLikeFast) {
+            message = "좋아요가 취소되었습니다";
+        }
+        setIsLikeFast(!isLikeFast);
+        // dispatch(toggleLikeModal({ data: true, message }));
+        // setTimeout(() => {
+        //     dispatch(toggleLikeModal({ data: false }));
+        // }, 3000);
+        try {
+            const result = await updateLikeMutation({
+                variables: {
+                    roomId: parseInt(room?.id ?? "", 10)
+                },
+                refetchQueries: [{
+                    query: SelectRoomsDocument
+                }]
+            });
+        } catch (error) {
+            console.log('error', error);
+        } finally {
+        }
+    }, [room, isLikeFast]);
     return (
         <Container factor={factor}>
+            <Container7 onPress={fnLike}>
+                {
+                    isLikeFast ? (
+                        <FontAwesome name="heart" size={20} color="#F04848" />
+                    ) : (
+                            <FontAwesome5 name="heart" size={20} color="black" />
+                        )
+                }
+            </Container7>
             <Swiper
                 controlsProps={{
                     PrevComponent: () => null,
@@ -106,7 +164,7 @@ const Slider: React.FC<sliderProps> = ({
                     }
                 } as any}
             >
-                {room?.photo.map(photo => (
+                {room?.photo.slice(0, 6).map(photo => (
                     <SlideImage key={photo.id} source={{ uri: photo.file }} />
                 ))}
             </Swiper>

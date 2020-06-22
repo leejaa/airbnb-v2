@@ -1,5 +1,5 @@
 import React from "react";
-import { Platform } from "react-native";
+import { Platform, AsyncStorage } from "react-native";
 import { ApolloProvider } from "@apollo/react-hooks";
 import { ApolloClient } from "apollo-client";
 import { InMemoryCache } from "apollo-cache-inmemory";
@@ -11,7 +11,7 @@ import { setContext } from "apollo-link-context";
 import utils from "../utils";
 import { IS_PRODUCTION } from "../env";
 
-const ipAddress = (IS_PRODUCTION && Platform.OS !== 'web') ? "https://airbnb-v2.now.sh" : "http://localhost:3000";
+const ipAddress = IS_PRODUCTION ? "https://airbnb-v2.now.sh" : "http://localhost:3000";
 const cache = new InMemoryCache({});
 const requestLink = new ApolloLink(
   (operation, forward) =>
@@ -36,8 +36,8 @@ const requestLink = new ApolloLink(
     })
 );
 
-const authLink = setContext((_request, { headers }) => {
-  const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTU4MjE4MTE0OCwiZXhwIjoxNTgzOTA5MTQ4fQ.BP14nc4IbJmtPgIu39pnGSjtzgId2WqRhtZtKDX7b-E';
+const authLink = setContext(async (_request, { headers }) => {
+  const token = await AsyncStorage.getItem('accessToken');
   return {
     headers: {
       ...headers,
@@ -73,7 +73,7 @@ export const client = new ApolloClient({
     authLink,
     requestLink,
     new HttpLink({
-      uri: `${ipAddress}/api/graphql`,
+      uri: `${ipAddress}/api`,
       credentials: "include"
     })
   ]),

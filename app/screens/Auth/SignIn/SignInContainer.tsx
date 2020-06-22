@@ -76,7 +76,8 @@ export default ({ route }: any) => {
         });
         if (result?.data?.login?.success ?? false) {
           Alert.alert('로그인 성공');
-          dispatch(logIn({ token: result?.data?.login?.refreshToken ?? '' }));
+          dispatch(logIn({ token: result?.data?.login?.accessToken ?? '', userId: result?.data?.login?.user?.id ?? 0 }));
+          AsyncStorage.setItem('accessToken', result?.data?.login?.accessToken ?? '');
         } else {
           Alert.alert('로그인 실패');
         }

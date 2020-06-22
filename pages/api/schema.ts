@@ -351,7 +351,7 @@ const Mutation = objectType({
             return {
               success: true,
               accessToken: sign({ userId: newUser[0].id }, process.env.ACCESS_TOKEN_SECRET!, {
-                expiresIn: "1s"
+                expiresIn: "300d"
               }),
               refreshToken: sign({ userId: newUser[0].id }, process.env.REFRESH_TOKEN_SECRET!, {
                 expiresIn: "300d"
@@ -368,7 +368,7 @@ const Mutation = objectType({
           return {
             success: true,
             accessToken: sign({ userId: user[0].id }, process.env.ACCESS_TOKEN_SECRET!, {
-              expiresIn: "1s"
+              expiresIn: "300d"
             }),
             refreshToken: sign({ userId: user[0].id }, process.env.REFRESH_TOKEN_SECRET!, {
               expiresIn: "300d"
@@ -381,10 +381,10 @@ const Mutation = objectType({
           return {
             success: true,
             accessToken: sign({ userId: user[0].id }, process.env.ACCESS_TOKEN_SECRET!, {
-              expiresIn: "1s"
+              expiresIn: "300d"
             }),
             refreshToken: sign({ userId: user[0].id }, process.env.REFRESH_TOKEN_SECRET!, {
-              expiresIn: "30d"
+              expiresIn: "300d"
             }),
             user: user[0]
           };
@@ -409,6 +409,7 @@ export const checkAuth = ({ req }) => {
       payload,
     };
   } catch (error) {
+    console.log('error', error);
     return {
       isAuth: false,
       error

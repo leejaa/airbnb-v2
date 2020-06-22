@@ -12,6 +12,8 @@ import Header from "../../../components/Common/Header";
 import ModalComponent from "../../../components/Common/Modal";
 import _ from "lodash";
 
+const Container0 = styled.View`
+`;
 const Container1 = styled.ScrollView`
     padding-top: ${SCREEN_HEIGHT / 60}px;
     display: flex;
@@ -57,6 +59,20 @@ const Container7 = styled.View`
     background-color: white;
     z-index: 100;
 `;
+const Container8 = styled.View`
+    width: 70%;
+    height: ${SCREEN_HEIGHT / 12}px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+    z-index: 100;
+    flex: 1;
+    position: absolute;
+    bottom: ${SCREEN_HEIGHT / 30}px;
+    left: ${SCREEN_WIDTH / 7}px;
+    border-width: 1px;
+`;
 
 interface props {
     data: SelectRoomsQuery,
@@ -74,51 +90,54 @@ export default ({
     loading,
 }: props) => {
     return (
-        <Container1
-            onScroll={
-                (e: any) => {
-                    const newSkip = _.clone(skip) + pageSize;
-                    let paddingToBottom = 10;
-                    paddingToBottom += e.nativeEvent.layoutMeasurement.height;
-                    if (e.nativeEvent.contentOffset.y + paddingToBottom >= e.nativeEvent.contentSize.height) {
-                        fetchMore({
-                            variables: {
-                                first: pageSize,
-                                skip: newSkip,
-                            },
-                            updateQuery: (prev: { selectRooms: any; }, { fetchMoreResult }: any) => {
-                                return Object.assign({}, prev, {
-                                    selectRooms: [...prev.selectRooms, ...fetchMoreResult.selectRooms]
-                                });
-                            }
-                        });
+        <Container0>
+            <Container1
+                onScroll={
+                    (e: any) => {
+                        const newSkip = _.clone(skip) + pageSize;
+                        let paddingToBottom = 10;
+                        paddingToBottom += e.nativeEvent.layoutMeasurement.height;
+                        if (e.nativeEvent.contentOffset.y + paddingToBottom >= e.nativeEvent.contentSize.height) {
+                            fetchMore({
+                                variables: {
+                                    first: pageSize,
+                                    skip: newSkip,
+                                },
+                                updateQuery: (prev: { selectRooms: any; }, { fetchMoreResult }: any) => {
+                                    return Object.assign({}, prev, {
+                                        selectRooms: [...prev.selectRooms, ...fetchMoreResult.selectRooms]
+                                    });
+                                }
+                            });
+                        }
                     }
                 }
-            }
-            scrollEventThrottle={500}
-        >
-            <Header />
-            <ModalComponent />
-            <Container6>
-                {
-                    data.selectRooms.map((room, index) => (
-                        <Container5 key={index}>
-                            <Slider
-                                cssType="css001"
-                                room={room as any}
-                            >
-                            </Slider>
-                        </Container5>
-                    ))
-                }
-                {
-                    loading && (
-                        <Container7>
-                            <ActivityIndicator size="large" color="#0000ff" />
-                        </Container7>
-                    )
-                }
-            </Container6>
-        </Container1>
+                scrollEventThrottle={500}
+            >
+                <Header />
+                <ModalComponent />
+                <Container6>
+                    {
+                        data.selectRooms.map((room, index) => (
+                            <Container5 key={index}>
+                                <Slider
+                                    cssType="css001"
+                                    room={room as any}
+                                >
+                                </Slider>
+                            </Container5>
+                        ))
+                    }
+                    {
+                        loading && (
+                            <Container7>
+                                <ActivityIndicator size="large" color="#0000ff" />
+                            </Container7>
+                        )
+                    }
+                </Container6>
+            </Container1>
+            <Container8></Container8>
+        </Container0>
     )
 }

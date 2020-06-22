@@ -5,10 +5,12 @@ import { State } from "react-native-gesture-handler";
 export type usersReducerType = {
   isLoggedIn: boolean,
   token: string,
+  userId: number,
 }
 let initialState : usersReducerType = {
-  isLoggedIn: true,
+  isLoggedIn: false,
   token: '',
+  userId: 0,
 };
 
 const userSlice = createSlice({
@@ -18,6 +20,8 @@ const userSlice = createSlice({
     logIn(state, action) {
       state.isLoggedIn = true;
       state.token = action.payload.token;
+      state.userId = action.payload.userId;
+      
     },
     logOut(state, action) {
       state.isLoggedIn = false;
