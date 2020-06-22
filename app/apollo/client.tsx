@@ -77,5 +77,6 @@ export const client = new ApolloClient({
       credentials: "include"
     })
   ]),
-  cache
+  cache,
+  connectToDevTools: true,
 });

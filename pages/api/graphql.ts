@@ -10,7 +10,8 @@ const apolloServer = new ApolloServer({
     schema,
     context: () => {
         // console.log('apollo server...');
-    }
+    },
+    introspection: true,
 });
 
 const handler = apolloServer.createHandler({ path: "/api/graphql" });
