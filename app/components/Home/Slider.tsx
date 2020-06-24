@@ -10,12 +10,13 @@ import { useSelector, useDispatch } from "react-redux";
 import { rootState } from "../../redux/rootReducer";
 import { useUpdateLikeMutation, SelectRoomsDocument } from "../../generated/graphql";
 import { toggleShowLikeModal } from "../../redux/homeSlice";
+import { useNavigation } from "@react-navigation/native";
 
-const Container: any = styled.View`
+const Container: any = styled.TouchableOpacity`
     margin-bottom: 10px;
     overflow: hidden;
     width: 100%;
-    height: ${props => `${SCREEN_HEIGHT / props.factor}`}px;
+    height: ${(props : any) => `${SCREEN_HEIGHT / props.factor}`}px;
     border-radius: 4px;
 `;
 const Container2: any = styled.View`
@@ -97,6 +98,7 @@ const Slider: React.FC<sliderProps> = ({
     factor = 3,
     room
 }) => {
+    const navigation = useNavigation();
     const dispatch = useDispatch();
     const { userId = 0 } = useSelector((state: rootState) => state.usersReducer);
     const [updateLikeMutation] = useUpdateLikeMutation();
@@ -140,7 +142,7 @@ const Slider: React.FC<sliderProps> = ({
         }
     }, [room, isLikeFast]);
     return (
-        <Container factor={factor}>
+        <Container factor={factor} onPress={() => navigation.navigate("RoomDetail", { id: room?.id })}>
             <Container7 onPress={fnLike}>
                 {
                     isLikeFast ? (

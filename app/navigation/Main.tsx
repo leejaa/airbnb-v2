@@ -1,15 +1,14 @@
 import React from "react";
-import { createStackNavigator } from "@react-navigation/stack";
+import { createStackNavigator, CardStyleInterpolators } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons } from "@expo/vector-icons";
 import colors from "../colors";
 import utils from "../utils";
 import Search from "../screens/Main/Search";
 import BackBtn from "../components/Auth/BackBtn";
-import { BlurView } from "expo-blur";
-import { StyleSheet, View, Text } from "react-native";
 import Profile from "../screens/Main/Profile";
 import Home from "../screens/Main/Home";
+import RoomDetail from "../screens/Room/RoomDetail";
 import Header from "../components/Common/Header";
 import SearchPlace from "../screens/Main/SearchPlace";
 import SearchCalendar from "../screens/Main/SearchCalendar";
@@ -57,6 +56,20 @@ const Tabs = () => (
     <TabsNavigator.Screen name="Profile" component={Profile} />
   </TabsNavigator.Navigator>
 );
+const RoomNavigator = createStackNavigator();
+const Room = () => (
+  <RoomNavigator.Navigator
+    mode="card"
+  >
+    <RoomNavigator.Screen
+      name="RoomDetail"
+      component={RoomDetail}
+      options={{
+        headerShown: false
+      }}
+    />
+  </RoomNavigator.Navigator>
+);
 
 const MainNavigator = createStackNavigator();
 export default () => {
@@ -65,7 +78,7 @@ export default () => {
       mode="modal"
       screenOptions={({ route }) => ({
         headerBackTitleVisible: true,
-        headerBackImage: () => <BackBtn />
+        headerBackImage: () => <BackBtn />,
       })}
     >
       <MainNavigator.Screen
@@ -96,6 +109,14 @@ export default () => {
         component={AddGuests}
         options={{
           header: () => <Header cssType="003" />,
+        }}
+      />
+      <MainNavigator.Screen
+        name="RoomDetail"
+        component={RoomDetail}
+        options={{
+          header: () => <Header cssType="003" />,
+          cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS
         }}
       />
       <MainNavigator.Screen

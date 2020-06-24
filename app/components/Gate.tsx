@@ -9,6 +9,7 @@ import Main from "../navigation/Main";
 import { rootState } from "../redux/rootReducer";
 import _ from "lodash";
 
+
 export default () => {
   const { isLoggedIn = false } = useSelector((state: rootState) => state.usersReducer);
   const [isLogin, setIsLogin] = useState(false);
@@ -26,10 +27,10 @@ export default () => {
     <NavigationContainer>
       {
         isLogin ? (
-          <Main />
+            <Main />
         ) : (
-          <Auth />
-        )
+            <Auth />
+          )
       }
     </NavigationContainer>
   );
