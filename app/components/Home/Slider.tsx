@@ -6,9 +6,10 @@ import { AntDesign, FontAwesome5, FontAwesome } from '@expo/vector-icons';
 import { inputProps, sliderProps } from "../types";
 import { SCREEN_WIDTH, SCREEN_HEIGHT } from "../../utils";
 import _ from "lodash";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { rootState } from "../../redux/rootReducer";
 import { useUpdateLikeMutation, SelectRoomsDocument } from "../../generated/graphql";
+import { toggleShowLikeModal } from "../../redux/homeSlice";
 
 const Container: any = styled.View`
     margin-bottom: 10px;
@@ -96,6 +97,7 @@ const Slider: React.FC<sliderProps> = ({
     factor = 3,
     room
 }) => {
+    const dispatch = useDispatch();
     const { userId = 0 } = useSelector((state: rootState) => state.usersReducer);
     const [updateLikeMutation] = useUpdateLikeMutation();
     const isLike = useMemo(() => {
@@ -119,10 +121,10 @@ const Slider: React.FC<sliderProps> = ({
             message = "좋아요가 취소되었습니다";
         }
         setIsLikeFast(!isLikeFast);
-        // dispatch(toggleLikeModal({ data: true, message }));
-        // setTimeout(() => {
-        //     dispatch(toggleLikeModal({ data: false }));
-        // }, 3000);
+        dispatch(toggleShowLikeModal({ data: true, message }));
+        setTimeout(() => {
+            dispatch(toggleShowLikeModal({ data: false, message }));
+        }, 3000);
         try {
             const result = await updateLikeMutation({
                 variables: {

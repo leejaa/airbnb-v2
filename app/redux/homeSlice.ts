@@ -7,6 +7,8 @@ export type homeReducerType = {
   selectedSearchPlace: string,
   selectedSearchDates: Array<any>,
   personCnt: Object,
+  showLikeModal: boolean,
+  modalMessage: string,
 }
 let initialState : homeReducerType = {
   showSearchModal: false,
@@ -17,7 +19,9 @@ let initialState : homeReducerType = {
     adultCnt: 0,
     childCnt: 0,
     babyCnt: 0
-  }
+  },
+  showLikeModal: false,
+  modalMessage: "",
 };
 
 const homeSlice = createSlice({
@@ -39,9 +43,14 @@ const homeSlice = createSlice({
     setPersonCnt(state, action) {
       state.personCnt = action.payload.data;
     },
+    toggleShowLikeModal(state, action) {
+      state.showLikeModal = action.payload.data;
+      state.modalMessage = action.payload.message;
+    },
   }
 });
 
-export const { toggleShowSearchModal, setSearchPlaceList, setSelectedSearchPlace, setSelectedSearchDates, setPersonCnt } = homeSlice.actions;
+export const { toggleShowSearchModal, setSearchPlaceList, setSelectedSearchPlace, setSelectedSearchDates, setPersonCnt, toggleShowLikeModal,
+} = homeSlice.actions;
 
 export default homeSlice.reducer;

@@ -1,5 +1,5 @@
-import React, { useCallback, useState } from "react";
-import { Dimensions, ActivityIndicator } from 'react-native';
+import React, { useCallback, useState, useRef, useEffect } from "react";
+import { Dimensions, ActivityIndicator, StyleSheet, Animated } from 'react-native';
 import styled from "styled-components/native";
 import { View, Text } from "react-native";
 import Input from "../../../components/Home/Input";
@@ -11,6 +11,8 @@ import { SelectRoomsQuery } from "../../../generated/graphql";
 import Header from "../../../components/Common/Header";
 import ModalComponent from "../../../components/Common/Modal";
 import _ from "lodash";
+import { useSelector } from "react-redux";
+import { rootState } from "../../../redux/rootReducer";
 
 const Container0 = styled.View`
 `;
@@ -59,20 +61,26 @@ const Container7 = styled.View`
     background-color: white;
     z-index: 100;
 `;
-const Container8 = styled.View`
-    width: 70%;
-    height: ${SCREEN_HEIGHT / 12}px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: white;
-    z-index: 100;
-    flex: 1;
-    position: absolute;
-    bottom: ${SCREEN_HEIGHT / 30}px;
-    left: ${SCREEN_WIDTH / 7}px;
-    border-width: 1px;
+const Text1 = styled.Text`
+    font-weight: 600;
+    font-size: ${SCREEN_WIDTH / 20}px;
 `;
+
+const styles = StyleSheet.create({
+    Container8: {
+        width: '70%',
+        height: SCREEN_HEIGHT / 12,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: 'white',
+        zIndex: 100,
+        flex: 1,
+        position: 'absolute',
+        left: SCREEN_WIDTH / 7,
+        borderRadius: 10,
+    }
+});
 
 interface props {
     data: SelectRoomsQuery,
@@ -89,6 +97,21 @@ export default ({
     skip,
     loading,
 }: props) => {
+    const { showLikeModal = false, modalMessage = "" } = useSelector((state: rootState) => state.homeReducer);
+    const animateRef = useRef(new Animated.Value(-100)).current;
+    useEffect(() => {
+        if (showLikeModal) {
+            Animated.timing(animateRef, {
+                toValue: SCREEN_HEIGHT / 20,
+                duration: 600,
+            }).start();
+        } else {
+            Animated.timing(animateRef, {
+                toValue: -100,
+                duration: 600,
+            }).start();
+        }
+    }, [showLikeModal]);
     return (
         <Container0>
             <Container1
@@ -137,7 +160,9 @@ export default ({
                     }
                 </Container6>
             </Container1>
-            <Container8></Container8>
+            <Animated.View style={[styles.Container8, { bottom: animateRef }]}>
+                <Text1>{modalMessage}</Text1>
+            </Animated.View>
         </Container0>
     )
 }
