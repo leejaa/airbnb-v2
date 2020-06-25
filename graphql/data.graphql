@@ -69,3 +69,29 @@ query selectRooms($first: Int, $skip: Int){
     }
   }
 }
+
+query selectRoom($id: Int!){
+  selectRoom(
+    id: $id,
+  ){
+    id
+    name
+    address
+    country
+    description
+    lat
+    lng
+    price
+    score
+    photo{
+      id
+      file
+    }
+    like{
+      id
+      user{
+        id
+      }
+    }
+  }
+}

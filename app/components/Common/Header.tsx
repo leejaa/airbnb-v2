@@ -233,7 +233,7 @@ const Header: React.FC<headerProps> = ({
                             </Container9>
                             <Container10 onPress={() => navigation.navigate("AddGuests")}>
                                 <AntDesign name="team" size={18} color="black" />
-                                <Text4>게스트 {!_.isUndefined(personCnt) &&_.sum(Object.values(personCnt))}명</Text4>
+                                <Text4>게스트 {!_.isUndefined(personCnt) && _.sum(Object.values(personCnt))}명</Text4>
                             </Container10>
                         </Container8>
                     </Container6>

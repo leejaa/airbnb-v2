@@ -15,6 +15,10 @@ export interface sliderProps {
     cssType?: string,
     factor?: any,
     room?: Room,
+    showLikeButton?: boolean,
+    showDescryption?: boolean,
+    showDots?: boolean,
+    showPageLabel?: boolean,
 }
 export interface headerProps {
     cssType?: string,

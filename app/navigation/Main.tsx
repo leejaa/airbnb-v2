@@ -115,7 +115,7 @@ export default () => {
         name="RoomDetail"
         component={RoomDetail}
         options={{
-          header: () => <Header cssType="003" />,
+          headerShown: false,
           cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS
         }}
       />

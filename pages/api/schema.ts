@@ -11,6 +11,7 @@ const SELECT_USER = 'selectUser';
 const SELECT_USER2 = 'selectUser2';
 const SELECT_PHOTO = 'selectPhoto';
 const SELECT_ROOMS = 'selectRooms';
+const SELECT_ROOM = 'selectRoom';
 const SELECT_LIKES = 'selectLikes';
 const UPDATE_PHOTOS = 'updatePhotos';
 const UPDATE_LIKE = 'updateLike';
@@ -114,6 +115,31 @@ const Query = objectType({
         const likes = prisma.like.findMany({
         });
         return likes;
+      },
+    })
+    t.field(SELECT_ROOM, {
+      type: 'Room',
+      args: { id: intArg({ required: true }) },
+      resolve: async (_parent, { id }, ctx) => {
+        const room = await prisma.room.findOne({
+          where: { id },
+          include: {
+            photo: {
+              select: {
+                id: true,
+                file: true,
+                caption: true,
+              }
+            },
+            like: {
+              select: {
+                id: true,
+                user: true,
+              }
+            }
+          },
+        });
+        return room;
       },
     })
     t.list.field(SELECT_ROOMS, {

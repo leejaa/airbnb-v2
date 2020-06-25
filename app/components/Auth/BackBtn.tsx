@@ -7,6 +7,10 @@ import _ from "lodash";
 
 const Container = styled.TouchableOpacity`
 `;
+const Container2 = styled.TouchableOpacity`
+  border-radius: 50;
+  background-color: white;
+`;
 
 export default ({
   cssType = "001"

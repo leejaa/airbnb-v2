@@ -58,7 +58,6 @@ export type MutationCreateUserArgs = {
 
 export type MutationUpdateLikeArgs = {
   roomId?: Maybe<Scalars['Int']>;
-  likeId?: Maybe<Scalars['Int']>;
 };
 
 
@@ -80,11 +79,17 @@ export type Query = {
    __typename?: 'Query';
   photo: Array<Photo>;
   selectLikes: Array<Like>;
+  selectRoom: Room;
   selectRooms: Array<Room>;
   selectUser: User;
   selectUser2: User;
   selectPhoto: Array<Photo>;
   createTestPhoto: Scalars['Boolean'];
+};
+
+
+export type QuerySelectRoomArgs = {
+  id: Scalars['Int'];
 };
 
 
@@ -237,6 +242,30 @@ export type SelectRoomsQuery = (
       )> }
     )>> }
   )> }
+);
+
+export type SelectRoomQueryVariables = {
+  id: Scalars['Int'];
+};
+
+
+export type SelectRoomQuery = (
+  { __typename?: 'Query' }
+  & { selectRoom: (
+    { __typename?: 'Room' }
+    & Pick<Room, 'id' | 'name' | 'address' | 'country' | 'description' | 'lat' | 'lng' | 'price' | 'score'>
+    & { photo: Array<(
+      { __typename?: 'Photo' }
+      & Pick<Photo, 'id' | 'file'>
+    )>, like?: Maybe<Array<(
+      { __typename?: 'Like' }
+      & Pick<Like, 'id'>
+      & { user?: Maybe<(
+        { __typename?: 'User' }
+        & Pick<User, 'id'>
+      )> }
+    )>> }
+  ) }
 );
 
 
@@ -473,3 +502,54 @@ export function useSelectRoomsLazyQuery(baseOptions?: ApolloReactHooks.LazyQuery
 export type SelectRoomsQueryHookResult = ReturnType<typeof useSelectRoomsQuery>;
 export type SelectRoomsLazyQueryHookResult = ReturnType<typeof useSelectRoomsLazyQuery>;
 export type SelectRoomsQueryResult = ApolloReactCommon.QueryResult<SelectRoomsQuery, SelectRoomsQueryVariables>;
+export const SelectRoomDocument = gql`
+    query selectRoom($id: Int!) {
+  selectRoom(id: $id) {
+    id
+    name
+    address
+    country
+    description
+    lat
+    lng
+    price
+    score
+    photo {
+      id
+      file
+    }
+    like {
+      id
+      user {
+        id
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useSelectRoomQuery__
+ *
+ * To run a query within a React component, call `useSelectRoomQuery` and pass it any options that fit your needs.
+ * When your component renders, `useSelectRoomQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useSelectRoomQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useSelectRoomQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<SelectRoomQuery, SelectRoomQueryVariables>) {
+        return ApolloReactHooks.useQuery<SelectRoomQuery, SelectRoomQueryVariables>(SelectRoomDocument, baseOptions);
+      }
+export function useSelectRoomLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<SelectRoomQuery, SelectRoomQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<SelectRoomQuery, SelectRoomQueryVariables>(SelectRoomDocument, baseOptions);
+        }
+export type SelectRoomQueryHookResult = ReturnType<typeof useSelectRoomQuery>;
+export type SelectRoomLazyQueryHookResult = ReturnType<typeof useSelectRoomLazyQuery>;
+export type SelectRoomQueryResult = ApolloReactCommon.QueryResult<SelectRoomQuery, SelectRoomQueryVariables>;

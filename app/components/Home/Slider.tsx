@@ -16,7 +16,7 @@ const Container: any = styled.TouchableOpacity`
     margin-bottom: 10px;
     overflow: hidden;
     width: 100%;
-    height: ${(props : any) => `${SCREEN_HEIGHT / props.factor}`}px;
+    height: ${(props: any) => `${SCREEN_HEIGHT / props.factor}`}px;
     border-radius: 4px;
 `;
 const Container2: any = styled.View`
@@ -94,9 +94,12 @@ const DotContainer: any = styled.View`
 
 const Slider: React.FC<sliderProps> = ({
     cssType = "css001",
-    data,
     factor = 3,
-    room
+    room,
+    showLikeButton = true,
+    showDots = true,
+    showDescryption = true,
+    showPageLabel = false,
 }) => {
     const navigation = useNavigation();
     const dispatch = useDispatch();
@@ -143,15 +146,19 @@ const Slider: React.FC<sliderProps> = ({
     }, [room, isLikeFast]);
     return (
         <Container factor={factor} onPress={() => navigation.navigate("RoomDetail", { id: room?.id })}>
-            <Container7 onPress={fnLike}>
-                {
-                    isLikeFast ? (
-                        <FontAwesome name="heart" size={20} color="#F04848" />
-                    ) : (
-                            <FontAwesome5 name="heart" size={20} color="black" />
-                        )
-                }
-            </Container7>
+            {
+                showLikeButton && (
+                    <Container7 onPress={fnLike}>
+                        {
+                            isLikeFast ? (
+                                <FontAwesome name="heart" size={20} color="#F04848" />
+                            ) : (
+                                    <FontAwesome5 name="heart" size={20} color="black" />
+                                )
+                        }
+                    </Container7>
+                )
+            }
             <Swiper
                 controlsProps={{
                     PrevComponent: () => null,
@@ -172,23 +179,27 @@ const Slider: React.FC<sliderProps> = ({
                     <SlideImage key={photo.id} source={{ uri: photo.file }} />
                 ))}
             </Swiper>
-            <Container3>
-                <Container2>
-                    <Container4>
-                        <Container6>
-                            <TextContainer>슈퍼호스트</TextContainer>
-                        </Container6>
-                        <TextContainer2>{room?.name}</TextContainer2>
-                    </Container4>
-                    <Container5>
-                        <AntDesign name="star" size={15} color="rgb(255, 56, 92)" />
-                        <TextContainer2>{room?.score}</TextContainer2>
-                    </Container5>
-                </Container2>
-                <Container2>
-                    <TextContainer2>{room?.description}</TextContainer2>
-                </Container2>
-            </Container3>
+            {
+                showDescryption && (
+                    <Container3>
+                        <Container2>
+                            <Container4>
+                                <Container6>
+                                    <TextContainer>슈퍼호스트</TextContainer>
+                                </Container6>
+                                <TextContainer2>{room?.name}</TextContainer2>
+                            </Container4>
+                            <Container5>
+                                <AntDesign name="star" size={15} color="rgb(255, 56, 92)" />
+                                <TextContainer2>{room?.score}</TextContainer2>
+                            </Container5>
+                        </Container2>
+                        <Container2>
+                            <TextContainer2>{room?.description}</TextContainer2>
+                        </Container2>
+                    </Container3>
+                )
+            }
         </Container>
     );
 }
