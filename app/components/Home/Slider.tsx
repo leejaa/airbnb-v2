@@ -197,7 +197,7 @@ const Slider: React.FC<sliderProps> = ({
                     } as any}
                 >
                     {room?.photo.slice(0, 6).map(photo => (
-                        <TouchableOpacity key={photo.id} onPress={() => navigation.navigate(destination, { id: room?.id })}>
+                        <TouchableOpacity key={photo.id} onPress={() => navigation.navigate(destination, { id: room?.id })} activeOpacity={1}>
                             <SlideImage source={{ uri: photo.file }} isRadius={isRadius} />
                         </TouchableOpacity>
                     ))}
