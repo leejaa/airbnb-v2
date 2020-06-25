@@ -13,6 +13,8 @@ import ModalComponent from "../../../components/Common/Modal";
 import _ from "lodash";
 import { useSelector } from "react-redux";
 import { rootState } from "../../../redux/rootReducer";
+import { useNavigation } from "@react-navigation/native";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 const Container0 = styled.View`
 `;
@@ -97,6 +99,7 @@ export default ({
     skip,
     loading,
 }: props) => {
+    const navigation = useNavigation();
     const { showLikeModal = false, modalMessage = "" } = useSelector((state: rootState) => state.homeReducer);
     const animateRef = useRef(new Animated.Value(-100)).current;
     useEffect(() => {

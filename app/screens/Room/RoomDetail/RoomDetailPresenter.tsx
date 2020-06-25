@@ -1,5 +1,5 @@
 import React, { useCallback, useState, useRef, useEffect } from "react";
-import { Dimensions, ActivityIndicator, StyleSheet, Animated } from 'react-native';
+import { Dimensions, ActivityIndicator, StyleSheet, Animated, Alert } from 'react-native';
 import styled from "styled-components/native";
 import { View, Text } from "react-native";
 import Input from "../../../components/Home/Input";
@@ -13,8 +13,9 @@ import ModalComponent from "../../../components/Common/Modal";
 import _ from "lodash";
 import { useSelector } from "react-redux";
 import { rootState } from "../../../redux/rootReducer";
+import { useNavigation } from "@react-navigation/native";
 
-const Container0 = styled.SafeAreaView`
+const Container0 = styled.View`
     width: 100%;
 `;
 const Container = styled.ScrollView`
@@ -27,12 +28,13 @@ const Container2 = styled.View`
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+    top: ${SCREEN_HEIGHT / 50}px;
     padding-left: ${SCREEN_WIDTH / 60}px;
     padding-right: ${SCREEN_WIDTH / 60}px;
     position: absolute;
     z-index: 100;
 `;
-const Container3 = styled.TouchableOpacity`
+const Container3 : any = styled.TouchableOpacity`
     width: ${SCREEN_WIDTH / 10}px;
     height: ${SCREEN_WIDTH / 10}px;
     border-radius: ${SCREEN_WIDTH / 20}px;
@@ -51,7 +53,7 @@ const Container4 = styled.View`
 `;
 const Container5 = styled.View`
     width: 100%;
-    height: ${SCREEN_HEIGHT / 3.4}px;
+    height: ${SCREEN_HEIGHT / 3}px;
 `;
 
 interface props {
@@ -61,11 +63,12 @@ interface props {
 export default ({
     room
 }: props) => {
+    const navigation = useNavigation();
     return (
         <Container0>
             <Container>
                 <Container2>
-                    <Container3>
+                    <Container3 onPress={() => navigation.goBack()}>
                         <AntDesign name="arrowleft" size={18} color="black" />
                     </Container3>
                     <Container4>
@@ -82,8 +85,9 @@ export default ({
                         room={room as any}
                         showLikeButton={false}
                         showDescryption={false}
-                        showDots={true}
+                        showDots={false}
                         showPageLabel={true}
+                        isRadius={false}
                     />
                 </Container5>
             </Container>

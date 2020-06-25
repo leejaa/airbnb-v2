@@ -19,6 +19,8 @@ export interface sliderProps {
     showDescryption?: boolean,
     showDots?: boolean,
     showPageLabel?: boolean,
+    isRadius?: boolean,
+    destination?: string,
 }
 export interface headerProps {
     cssType?: string,

@@ -1,5 +1,5 @@
 import React, { useMemo, useCallback, useState } from "react";
-import { TouchableOpacity, Dimensions, Text } from "react-native";
+import { TouchableOpacity, Dimensions, Text, View, Alert } from "react-native";
 import styled from "styled-components/native";
 import Swiper from "react-native-web-swiper";
 import { AntDesign, FontAwesome5, FontAwesome } from '@expo/vector-icons';
@@ -12,12 +12,19 @@ import { useUpdateLikeMutation, SelectRoomsDocument } from "../../generated/grap
 import { toggleShowLikeModal } from "../../redux/homeSlice";
 import { useNavigation } from "@react-navigation/native";
 
-const Container: any = styled.TouchableOpacity`
+const Container: any = styled.View`
     margin-bottom: 10px;
     overflow: hidden;
     width: 100%;
     height: ${(props: any) => `${SCREEN_HEIGHT / props.factor}`}px;
-    border-radius: 4px;
+    border-radius: ${(props: any) => props.isRadius ? 4 : 0}px;
+`;
+const Container0: any = styled.TouchableOpacity`
+    margin-bottom: 10px;
+    overflow: hidden;
+    width: 100%;
+    height: ${(props: any) => `${SCREEN_HEIGHT / props.factor}`}px;
+    border-radius: ${(props: any) => props.isRadius ? 4 : 0}px;
 `;
 const Container2: any = styled.View`
     width: 100%;
@@ -82,7 +89,7 @@ const TextContainer2: any = styled.Text`
 const SlideImage: any = styled.Image`
   width: 100%;
   height: 100%;
-  border-radius: 5px;
+  border-radius: ${(props: any) => props.isRadius ? 5 : 0}px;
 `;
 const DotContainer: any = styled.View`
   width: ${(props: any) => `${props.size}px`};
@@ -90,6 +97,11 @@ const DotContainer: any = styled.View`
   border-radius: 3px;
   background-color: ${(props: any) => props.backgroundColor};
   margin-right: 4px;
+`;
+const TouchableContainer: any = styled.TouchableOpacity`
+    width: ${(props : any) => SCREEN_WIDTH / props.width}px;
+    height: ${(props : any) => SCREEN_WIDTH / props.height}px;
+    background-color: pink;
 `;
 
 const Slider: React.FC<sliderProps> = ({
@@ -100,6 +112,8 @@ const Slider: React.FC<sliderProps> = ({
     showDots = true,
     showDescryption = true,
     showPageLabel = false,
+    isRadius = true,
+    destination = "RoomDetail",
 }) => {
     const navigation = useNavigation();
     const dispatch = useDispatch();
@@ -113,13 +127,19 @@ const Slider: React.FC<sliderProps> = ({
     const [isLikeFast, setIsLikeFast] = useState(isLike);
     const DotComponent = useCallback(({ isActive }) => {
         return (
-            <DotContainer
-                backgroundColor={isActive ? "white" : "#CECBCB"}
-                size={isActive ? "7" : "6"}
-            >
-            </DotContainer>
+            <>
+                {
+                    showDots && (
+                        <DotContainer
+                            backgroundColor={isActive ? "white" : "#CECBCB"}
+                            size={isActive ? "7" : "6"}
+                        >
+                        </DotContainer>
+                    )
+                }
+            </>
         );
-    }, []);
+    }, [showDots]);
     const fnLike = useCallback(async () => {
         let message = "좋아요에 추가되었습니다";
         if (isLikeFast) {
@@ -144,62 +164,71 @@ const Slider: React.FC<sliderProps> = ({
         } finally {
         }
     }, [room, isLikeFast]);
+    const renderContents = () => {
+        return (
+            <>
+                {
+                    showLikeButton && (
+                        <Container7 onPress={fnLike}>
+                            {
+                                isLikeFast ? (
+                                    <FontAwesome name="heart" size={20} color="#F04848" />
+                                ) : (
+                                        <FontAwesome5 name="heart" size={20} color="black" />
+                                    )
+                            }
+                        </Container7>
+                    )
+                }
+                <Swiper
+                    controlsProps={{
+                        PrevComponent: () => null,
+                        NextComponent: () => null,
+                        dotActiveStyle: {
+                            backgroundColor: "white"
+                        },
+                        DotComponent: ({ index, isActive, onPress }) => {
+                            return (
+                                <>
+                                    {DotComponent({ isActive })}
+                                </>
+                            )
+                        },
+                    } as any}
+                >
+                    {room?.photo.slice(0, 6).map(photo => (
+                        <TouchableOpacity key={photo.id} onPress={() => navigation.navigate(destination, { id: room?.id })}>
+                            <SlideImage source={{ uri: photo.file }} isRadius={isRadius} />
+                        </TouchableOpacity>
+                    ))}
+                </Swiper>
+                {
+                    showDescryption && (
+                        <Container3>
+                            <Container2>
+                                <Container4>
+                                    <Container6 isRadius={isRadius}>
+                                        <TextContainer>슈퍼호스트</TextContainer>
+                                    </Container6>
+                                    <TextContainer2>{room?.name}</TextContainer2>
+                                </Container4>
+                                <Container5>
+                                    <AntDesign name="star" size={15} color="rgb(255, 56, 92)" />
+                                    <TextContainer2>{room?.score}</TextContainer2>
+                                </Container5>
+                            </Container2>
+                            <Container2>
+                                <TextContainer2>{room?.description}</TextContainer2>
+                            </Container2>
+                        </Container3>
+                    )
+                }
+            </>
+        );
+    };
     return (
-        <Container factor={factor} onPress={() => navigation.navigate("RoomDetail", { id: room?.id })}>
-            {
-                showLikeButton && (
-                    <Container7 onPress={fnLike}>
-                        {
-                            isLikeFast ? (
-                                <FontAwesome name="heart" size={20} color="#F04848" />
-                            ) : (
-                                    <FontAwesome5 name="heart" size={20} color="black" />
-                                )
-                        }
-                    </Container7>
-                )
-            }
-            <Swiper
-                controlsProps={{
-                    PrevComponent: () => null,
-                    NextComponent: () => null,
-                    dotActiveStyle: {
-                        backgroundColor: "white"
-                    },
-                    DotComponent: ({ index, isActive, onPress }) => {
-                        return (
-                            <>
-                                {DotComponent({ isActive })}
-                            </>
-                        )
-                    }
-                } as any}
-            >
-                {room?.photo.slice(0, 6).map(photo => (
-                    <SlideImage key={photo.id} source={{ uri: photo.file }} />
-                ))}
-            </Swiper>
-            {
-                showDescryption && (
-                    <Container3>
-                        <Container2>
-                            <Container4>
-                                <Container6>
-                                    <TextContainer>슈퍼호스트</TextContainer>
-                                </Container6>
-                                <TextContainer2>{room?.name}</TextContainer2>
-                            </Container4>
-                            <Container5>
-                                <AntDesign name="star" size={15} color="rgb(255, 56, 92)" />
-                                <TextContainer2>{room?.score}</TextContainer2>
-                            </Container5>
-                        </Container2>
-                        <Container2>
-                            <TextContainer2>{room?.description}</TextContainer2>
-                        </Container2>
-                    </Container3>
-                )
-            }
+        <Container factor={factor} isRadius={isRadius}>
+            {renderContents()}
         </Container>
     );
 }
