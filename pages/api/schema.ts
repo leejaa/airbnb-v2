@@ -161,51 +161,44 @@ const Query = objectType({
       type: 'Room',
       args: { id: intArg({ required: true }) },
       resolve: async (_parent, { id }, ctx) => {
-        const room = await prisma.room.findOne({
-          where: { id },
-          include: {
-            photo: {
-              select: {
-                id: true,
-                file: true,
-                caption: true,
-              }
-            },
-            like: {
-              select: {
-                id: true,
-                user: true,
-              }
-            },
-            user: {
-              select: {
-                id: true,
-                avatar: true,
-                email: true,
-                gender: true,
-                name: true,
-              }
-            },
-            review: {
-              select: {
-                id: true,
-                review: true,
-                createdAt: true,
+        try {
+          const room = await prisma.room.findOne({
+            where: { id },
+            include: {
+              photo: {
+                select: {
+                  id: true,
+                  file: true,
+                  caption: true,
+                }
               },
-              include: {
-                user: {
-                  select: {
-                    id: true,
-                    avatar: true,
-                    email: true,
-                    name: true
-                  }
+              like: {
+                select: {
+                  id: true,
+                  user: true,
+                }
+              },
+              user: {
+                select: {
+                  id: true,
+                  avatar: true,
+                  email: true,
+                  gender: true,
+                  name: true,
+                }
+              },
+              review: {
+                select: {
+                  id: true,
+                  user: true
                 }
               }
-            }
-          },
-        });
-        return room;
+            },
+          });
+          return room;
+        } catch (error) {
+          console.log('error', error);
+        }
       },
     })
     t.list.field(SELECT_ROOMS, {
