@@ -77,6 +77,7 @@ export type Photo = {
 
 export type Query = {
    __typename?: 'Query';
+  selectReviews: Array<Review>;
   photo: Array<Photo>;
   selectLikes: Array<Like>;
   selectRoom: Room;
@@ -120,6 +121,17 @@ export type QuerySelectPhotoArgs = {
   skip?: Maybe<Scalars['Int']>;
 };
 
+export type Review = {
+   __typename?: 'Review';
+  id: Scalars['String'];
+  review: Scalars['String'];
+  createdAt: Scalars['String'];
+  roomId: Scalars['Int'];
+  userId: Scalars['Int'];
+  user?: Maybe<User>;
+  room?: Maybe<Room>;
+};
+
 export type Room = {
    __typename?: 'Room';
   id: Scalars['String'];
@@ -135,6 +147,7 @@ export type Room = {
   user: User;
   photo: Array<Photo>;
   like?: Maybe<Array<Like>>;
+  review?: Maybe<Array<Review>>;
 };
 
 export type UpdateResult = {
@@ -275,7 +288,14 @@ export type SelectRoomQuery = (
     )>>, user: (
       { __typename?: 'User' }
       & Pick<User, 'id' | 'name' | 'avatar' | 'email'>
-    ) }
+    ), review?: Maybe<Array<(
+      { __typename?: 'Review' }
+      & Pick<Review, 'id' | 'review' | 'createdAt'>
+      & { user?: Maybe<(
+        { __typename?: 'User' }
+        & Pick<User, 'id' | 'avatar' | 'name' | 'email'>
+      )> }
+    )>> }
   ) }
 );
 
@@ -540,6 +560,17 @@ export const SelectRoomDocument = gql`
       name
       avatar
       email
+    }
+    review {
+      id
+      review
+      createdAt
+      user {
+        id
+        avatar
+        name
+        email
+      }
     }
   }
 }

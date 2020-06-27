@@ -190,6 +190,8 @@ const Query = objectType({
               review: {
                 select: {
                   id: true,
+                  review: true,
+                  createdAt: true,
                   user: true
                 }
               }
@@ -198,6 +200,7 @@ const Query = objectType({
           return room;
         } catch (error) {
           console.log('error', error);
+          return null;
         }
       },
     })

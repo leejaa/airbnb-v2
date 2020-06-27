@@ -99,5 +99,16 @@ query selectRoom($id: Int!){
       avatar
       email
     }
+    review{
+      id
+      review
+      createdAt
+      user{
+        id
+        avatar
+        name
+        email
+      }
+    }
   }
 }
