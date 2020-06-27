@@ -83,6 +83,7 @@ export type Query = {
   selectRooms: Array<Room>;
   selectUser: User;
   selectUser2: User;
+  selectAllUsers: Array<User>;
   selectPhoto: Array<Photo>;
   createTestPhoto: Scalars['Boolean'];
 };
@@ -105,6 +106,11 @@ export type QuerySelectUserArgs = {
 
 
 export type QuerySelectUser2Args = {
+  email?: Maybe<Scalars['String']>;
+};
+
+
+export type QuerySelectAllUsersArgs = {
   email?: Maybe<Scalars['String']>;
 };
 
@@ -142,6 +148,8 @@ export type User = {
   name?: Maybe<Scalars['String']>;
   email: Scalars['String'];
   password: Scalars['String'];
+  avatar?: Maybe<Scalars['String']>;
+  gender?: Maybe<Scalars['String']>;
 };
 
 export type UpdateLikeMutationVariables = {
@@ -264,7 +272,10 @@ export type SelectRoomQuery = (
         { __typename?: 'User' }
         & Pick<User, 'id'>
       )> }
-    )>> }
+    )>>, user: (
+      { __typename?: 'User' }
+      & Pick<User, 'id' | 'name' | 'avatar' | 'email'>
+    ) }
   ) }
 );
 
@@ -523,6 +534,12 @@ export const SelectRoomDocument = gql`
       user {
         id
       }
+    }
+    user {
+      id
+      name
+      avatar
+      email
     }
   }
 }

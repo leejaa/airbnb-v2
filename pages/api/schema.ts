@@ -5,7 +5,7 @@ import { hash, compare } from "bcryptjs";
 import { sign, verify } from "jsonwebtoken";
 import _ from "lodash";
 import q from 'q';
-import { testPhotos, testWords } from './testdata';
+import { testPhotos, testWords, testAvatars } from './testdata';
 
 const SELECT_USER = 'selectUser';
 const SELECT_USER2 = 'selectUser2';
@@ -48,6 +48,9 @@ export const User = objectType({
     t.string('name', { nullable: true })
     t.string('email')
     t.string('password')
+    t.string('avatar', { nullable: true })
+    t.string('gender', { nullable: true })
+
   }
 });
 const LoginResult = objectType({
@@ -136,6 +139,15 @@ const Query = objectType({
                 id: true,
                 user: true,
               }
+            },
+            user: {
+              select: {
+                id: true,
+                avatar: true,
+                email: true,
+                gender: true,
+                name: true,
+              }
             }
           },
         });
@@ -159,6 +171,15 @@ const Query = objectType({
               select: {
                 id: true,
                 user: true,
+              }
+            },
+            user: {
+              select: {
+                id: true,
+                avatar: true,
+                email: true,
+                gender: true,
+                name: true,
               }
             }
           },
@@ -189,6 +210,15 @@ const Query = objectType({
           where: { email }
         });
         return user[0];
+      },
+    })
+    t.list.field("selectAllUsers", {
+      type: 'User',
+      args: { email: stringArg({ default: '' }) },
+      resolve: async (_parent, { email }, ctx) => {
+        const users = await prisma.user.findMany({
+        });
+        return users;
       },
     })
     t.list.field(SELECT_PHOTO, {
@@ -268,29 +298,27 @@ const Mutation = objectType({
       type: UpdateResult,
       args: {
       },
-      resolve: async (_, { }, ctx) => {
+      resolve: async (d, { }, ctx) => {
         try {
-          let roomIds: any = await prisma.room.findMany();
-          roomIds = roomIds.map(item => item.id);
-          const photos = await prisma.photo.findMany({
-            where: {
-              roomId: null,
-            }
+          const users = await prisma.user.findMany({
           });
+          let pictureIndex = 0;
           let cnt = 0;
-          for (const photo of photos) {
-            await prisma.photo.update({
+          for (const user of users) {
+            await prisma.user.update({
               data: {
-                room: {
-                  connect: {
-                    id: roomIds[Math.floor(Math.random() * roomIds.length)]
-                  }
-                }
+                avatar: testAvatars[pictureIndex]
               },
               where: {
-                id: photo.id
+                id: user.id
               }
             });
+            console.log('cnt', cnt);
+            cnt ++;
+            pictureIndex ++;
+            if (_.gte(pictureIndex, _.size(testAvatars))) {
+              pictureIndex = 0;
+            }
           }
           return {
             success: true,

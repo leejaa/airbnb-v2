@@ -93,5 +93,11 @@ query selectRoom($id: Int!){
         id
       }
     }
+    user{
+      id
+      name
+      avatar
+      email
+    }
   }
 }

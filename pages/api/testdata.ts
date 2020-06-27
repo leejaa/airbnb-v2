@@ -35,3 +35,26 @@ export const testPhotos = [
 export const testWords = [
     "가", "나", "다", "라", "마", "바", "사", "아", "자", "차", "카", "타", "파", "하", " "
 ];
+
+export const testAvatars = [
+    "https://pds.joins.com/news/component/betanews/201705/18/bd3752cb.jpg",
+    "https://i.imgur.com/geKKzZr.jpg",
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSwWURXQHW7QLFf2Svel4uztg_vtuCeAJq9aQ&usqp=CAU",
+    "https://cafeptthumb-phinf.pstatic.net/MjAyMDA2MDNfMTI0/MDAxNTkxMTgxODE1NjAy.6VZrcCnjuiy-aObVDTm3v9f0AIZkO7OMOI3gxhn7oVYg.B9ErP2PplciqKgcizm7gu0RO6lWTzOIzUSstmZE1bsYg.JPEG/externalFile.jpg?type=w800",
+    "https://cafeptthumb-phinf.pstatic.net/MjAyMDA1MjlfMzkg/MDAxNTkwNjgxNjQwNjUw.o5Ga0oWIiTyAvbDLVhmFcZ589Z61OkQ7_u6hVFyGNsIg.lihKFVG8AccuZ5nE65xr8XeRAbz7YSZ1dy8AdjQDgigg.JPEG/externalFile.jpg?type=w800",
+    "https://cafeptthumb-phinf.pstatic.net/MjAyMDA0MTVfMjg1/MDAxNTg2OTM1NTgyMDA2.f2C3GL7CCRPaQ0kBqwA5EzH0VupQnSae4LZ94zaU1d0g.9wiNy_Ght86Xa0jLz7siC69cKjurGFW3H-pzrklYtVog.JPEG/Screenshot_20200414-105302_Destiny_Child.jpg?type=w800",
+    "https://cafeptthumb-phinf.pstatic.net/MjAyMDA0MDRfNTQg/MDAxNTg1OTc1ODA5Mjgy.HF5Kvh4KBHgDTr6FjDxwSr1YohoZISEwCk-Rmxop9Gwg.0TD4Ss_hRNjsK4_8VZS4_MBrbBepmpYkjH3f99TGjncg.PNG/Screenshot_2020-04-04-13-48-28.png?type=w800",
+    "https://cafeptthumb-phinf.pstatic.net/MjAyMDAzMjNfMTUw/MDAxNTg0OTM0NjEwODY3.p7dvozws5NBgYFxh73wvTVvvg5lKNsvjt1kVqEXZlT0g.5ASVcm1hvUBa8kja1Ap7tWwDeodUwd09Rr3sUClFErIg.JPEG/externalFile.jpg?type=w740",
+    "https://cafeptthumb-phinf.pstatic.net/MjAyMDAzMTdfMjc2/MDAxNTg0MzczNjQ0NzQ1.5PEKH4nlLrNwOrKfODbuQSod-79SJV_7C1_pKk-fLGUg.4fgZ2NXvbz3wHs3zCkevv4YyVXkj751gJXRjkgKuemwg.JPEG/externalFile.jpg?type=w740",
+    "https://cafeptthumb-phinf.pstatic.net/MjAyMDAzMTRfMSAg/MDAxNTg0MTI3MzQzNDEw.EfXFbzAhW07xHvNHq0a91yx3qFVHkNUOVsJYJa2EeLgg.NY40hIg4meTszhw2viPMxJhyrlYjFp9tQF6uhfMPx8Ag.JPEG/Screenshot_20200314-042033_Destiny_Child.jpg?type=w740",
+    "https://cafeptthumb-phinf.pstatic.net/MjAyMDAzMDFfMjI3/MDAxNTgzMDMzODEwNjc5.8JVH-y0QXlJeuCn9LAF2Da8ZlZmr-YM0me-1DmalQHkg.g9V9oD71cPC8KVVVsmjoUDtpSA5Whyo_ox-PHxn0HMsg.JPEG/%EB%8D%B0%EC%8A%A4%ED%8B%B0%EB%8B%88_%EC%B0%A8%EC%9D%BC%EB%93%9C_2020-03-01-06-46-39.jpg?type=w740",
+    "https://cafeptthumb-phinf.pstatic.net/MjAyMDAxMTFfMTc0/MDAxNTc4NzA1MzYyNDU3.2GNkH_oI6JtDXkOwDpGy5IcK2ABIAtKZjou_YFlJwJYg._yAgJWJbsLBj8YnkJCPn5aQK_Wz_ZhnA8VaqnCXDmTYg.PNG/Screenshot_20200111-101502.png?type=w740",
+    "https://cafeptthumb-phinf.pstatic.net/MjAxOTEyMjNfMTgy/MDAxNTc3MDUyMTYxMDc4.Ng36wC9cwPEraAufC1nyvdaTbZX7tMpszKsaGQzDIfcg.J3ueLgsQhZ9Ew4IVk2q3ZsD7SlTzg74FC1jAPYiH8Hog.JPEG/Screenshot_20191223-062438_Destiny_Child.jpg?type=w740",
+    "https://cafeptthumb-phinf.pstatic.net/MjAxOTEyMTZfNDgg/MDAxNTc2NDU1Nzg0MjEz.gHqeOHjyBXX0OkRXuP3CX2KvXayT9so9LT20hem9hsQg.KHd6HZvepKKzmjshpqHLRfWXydjJUB-U23xNH4j9SDcg.JPEG/Screenshot_20191214-224546_Destiny_Child.jpg?type=w740",
+    "https://cafeptthumb-phinf.pstatic.net/MjAxOTEwMjlfMTkx/MDAxNTcyMzU5ODE3OTcy.-MENUbSCOLXrt_MxE5RvpmLQEw6feKyb0-xD6ifzIG4g.x6zZwY7-HlzUPBv3ljNR671vnlv6N1lSqSKjTfNx5Lkg.PNG/Screenshot_20191029-233543.png?type=w740",
+    "https://cafeptthumb-phinf.pstatic.net/MjAxOTEwMjlfMzMg/MDAxNTcyMjk0NjgwODk0.tsSUzA4C3mCHfh2tfurBCkw102encuTDlEsNAyw0Fz4g.rO7BkRUF6X-cc9U2bPqC_b3UQ63xEpEDBq1ec5ucpUkg.PNG/Screenshot_2019-10-29-05-30-05.png?type=w740",
+    "https://cafeptthumb-phinf.pstatic.net/MjAxOTEwMTZfMTY4/MDAxNTcxMjMzNzI5Nzk1.5A_irIK7a_iB98z5_bzuAl5tBpPjqSDnSOSVCL6EsmQg.sa96TfoKECK3bzLt0PTDzPXw2CfRn2i2oRdsEKzoZwUg.JPEG/Screenshot_20191016-224612_Destiny_Child.jpg?type=w740",
+    "https://cafeptthumb-phinf.pstatic.net/MjAxOTEwMTdfMjcx/MDAxNTcxMjQ1ODEwNDA2.XY52iKmGCfNXG0wL5ClniJ4YTv6NVhEegux557PVRAgg.HMWuAYy_RVjbMjeEX8JwXhHPknvopydJ2OeBp1ZEtDMg.JPEG/Screenshot_20191017-020757_Destiny_Child.jpg?type=w740",
+    "https://cafeptthumb-phinf.pstatic.net/MjAxOTA4MTJfMTE5/MDAxNTY1NTQ3MjkyOTQ3.bl9fFtU3Hd7B38KK2kRcaktTQeA4rtU63C2t2r89PIsg.XsJbfn-fB6uj-zAEYzR6XB0JrHt9hSrkg4gVcKWq9mMg.JPEG/Screenshot_20190812-022930_Destiny_Child.jpg?type=w740",
+    "https://cafeptthumb-phinf.pstatic.net/MjAxOTA1MjJfOTIg/MDAxNTU4NDUyNzYwNjcy.QBUzYsuOSqDP46Px0gfunz02zhdOd26OKzd0w5DlAEYg.JSfdNLrh2wIaoKZz9FSJej2q0-_xJZwZngYruvhL33gg.JPEG.bissada3000/externalFile.jpg?type=w740",
+];
