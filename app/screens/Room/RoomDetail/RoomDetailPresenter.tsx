@@ -175,10 +175,47 @@ const FourthContainer3 = styled.View`
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-
 `;
 const FourthContainer3Text = styled.Text`
     font-size: ${SCREEN_WIDTH / 26}px;
+`;
+const LocationContainer = styled.View`
+    margin-top: ${SCREEN_HEIGHT / 20}px;
+    width: 100%;
+    height: ${SCREEN_HEIGHT / 2}px;
+    border-bottom-width: 1px;
+    border-color: #D3D1D1;
+`;
+const LocationContainerText = styled.Text`
+    font-size: ${SCREEN_WIDTH / 15}px;
+    font-weight: 500;
+`;
+const CommentContainer = styled.View`
+    margin-top: ${SCREEN_HEIGHT / 25}px;
+    width: 100%;
+    height: ${SCREEN_HEIGHT / 2.4}px;
+    border-bottom-width: 1px;
+    border-color: #D3D1D1;
+    display: flex;
+`;
+const CommentContainerTitleContainer = styled.View`
+    width: 100%;
+    height: 14%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    border-width: 1px;
+`;
+const CommentAvatarContainer = styled.View`
+    width: 100%;
+    height: 20%;
+    display: flex;
+    flex-direction: row;
+    border-width: 1px;
+`;
+const CommentContainerText = styled.Text`
+    font-size: ${SCREEN_WIDTH / 18}px;
+    font-weight: bold;
 `;
 const AvatarImage = styled.Image`
     width: ${SCREEN_WIDTH / 6}px;
@@ -278,6 +315,18 @@ export default ({
                             </FourthContainer3>
                         </FourthContainer2>
                     </FourthContainer>
+                    <LocationContainer>
+                        <LocationContainerText>위치</LocationContainerText>
+                    </LocationContainer>
+                    <CommentContainer>
+                        <CommentContainerTitleContainer>
+                            <AntDesign name="star" size={18} color="#F04848" />
+                            <CommentContainerText>{`${room.score}점(후기 159개)`}</CommentContainerText>
+                        </CommentContainerTitleContainer>
+                        <CommentAvatarContainer>
+                            
+                        </CommentAvatarContainer>
+                    </CommentContainer>
                     <BottomContentContainer></BottomContentContainer>
                 </ContentContainer>
             </Container>

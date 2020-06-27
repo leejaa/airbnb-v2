@@ -4,7 +4,7 @@ import { PrismaClient } from '@prisma/client';
 import { hash, compare } from "bcryptjs";
 import { sign, verify } from "jsonwebtoken";
 import _ from "lodash";
-import q from 'q';
+import q, { async } from 'q';
 import { testPhotos, testWords, testAvatars } from './testdata';
 
 const SELECT_USER = 'selectUser';
@@ -13,6 +13,7 @@ const SELECT_PHOTO = 'selectPhoto';
 const SELECT_ROOMS = 'selectRooms';
 const SELECT_ROOM = 'selectRoom';
 const SELECT_LIKES = 'selectLikes';
+const SELECT_REVIEWS = 'selectReviews';
 const UPDATE_PHOTOS = 'updatePhotos';
 const UPDATE_LIKE = 'updateLike';
 export const AUTH_LIST = [
@@ -23,6 +24,18 @@ export const GQLDate = asNexusMethod(GraphQLDate, 'date')
 
 export const prisma = new PrismaClient();
 
+const Review = objectType({
+  name: 'Review',
+  definition(t) {
+    t.string('id')
+    t.string('review'),
+    t.string('createdAt')
+    t.int('roomId')
+    t.int('userId')
+    t.field('user', { type: 'User', nullable: true })
+    t.field('room', { type: 'Room', nullable: true })
+  },
+});
 const Like = objectType({
   name: 'Like',
   definition(t) {
@@ -86,6 +99,7 @@ const Room = objectType({
     t.field('user', { type: 'User' })
     t.list.field('photo', { type: 'Photo' })
     t.list.field('like', { type: 'Like', nullable: true })
+    t.list.field('review', { type: 'Review', nullable: true })
   },
 });
 
@@ -97,11 +111,34 @@ const createUserResult = objectType({
   }
 });
 
-const Objects = [Photo, User, Room, Like, LoginResult, createUserResult];
+const Objects = [Photo, User, Room, Like, LoginResult, createUserResult, Review];
 
 const Query = objectType({
   name: 'Query',
   definition(t) {
+    t.list.field(SELECT_REVIEWS, {
+      type: 'Review',
+      resolve: async (_parent, _args, ctx) => {
+        const reviews = await prisma.review.findMany({
+          include: {
+            room: {
+              select: {
+                id: true
+              }
+            },
+            user: {
+              select: {
+                id: true,
+                avatar: true,
+                email: true,
+                name: true
+              }
+            }
+          }
+        });
+        return reviews;
+      },
+    })
     t.list.field('photo', {
       type: 'Photo',
       resolve: (_parent, _args, ctx) => {
@@ -147,6 +184,23 @@ const Query = objectType({
                 email: true,
                 gender: true,
                 name: true,
+              }
+            },
+            review: {
+              select: {
+                id: true,
+                review: true,
+                createdAt: true,
+              },
+              include: {
+                user: {
+                  select: {
+                    id: true,
+                    avatar: true,
+                    email: true,
+                    name: true
+                  }
+                }
               }
             }
           },
