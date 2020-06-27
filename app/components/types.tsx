@@ -21,6 +21,7 @@ export interface sliderProps {
     showPageLabel?: boolean,
     isRadius?: boolean,
     destination?: string,
+    showPageLabelText?: boolean,
 }
 export interface headerProps {
     cssType?: string,

@@ -79,12 +79,32 @@ const Container7: any = styled.TouchableOpacity`
     justify-content: center;
     align-items: center;
 `;
+const PageLabelContainer: any = styled.View`
+    width: 14%;
+    height: 9%;
+    background-color: black;
+    background: rgba(64, 64, 64, 0.5);
+    position: absolute;
+    right: 3%;
+    bottom: 3%;
+    z-index: 100;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    border-radius: 8px;
+`;
 const TextContainer: any = styled.Text`
     font-size: 12px;
     font-weight: bold;
 `;
 const TextContainer2: any = styled.Text`
     font-size: 13px;
+`;
+const PageLabelText: any = styled.Text`
+    font-size: 13px;
+    color: white;
+    font-weight: bold;
 `;
 const SlideImage: any = styled.Image`
   width: 100%;
@@ -114,6 +134,7 @@ const Slider: React.FC<sliderProps> = ({
     showPageLabel = false,
     isRadius = true,
     destination = "RoomDetail",
+    showPageLabelText = false,
 }) => {
     const navigation = useNavigation();
     const dispatch = useDispatch();
@@ -125,6 +146,7 @@ const Slider: React.FC<sliderProps> = ({
         return isLike;
     }, [room, userId]);
     const [isLikeFast, setIsLikeFast] = useState(isLike);
+    const [currentPictureIndex, setCurrentPictureIndex] = useState(0);
     const DotComponent = useCallback(({ isActive }) => {
         return (
             <>
@@ -180,6 +202,11 @@ const Slider: React.FC<sliderProps> = ({
                         </Container7>
                     )
                 }
+                {
+                    showPageLabelText && (
+                        <PageLabelContainer><PageLabelText>{currentPictureIndex + 1} / 6</PageLabelText></PageLabelContainer>
+                    )
+                }
                 <Swiper
                     controlsProps={{
                         PrevComponent: () => null,
@@ -195,6 +222,7 @@ const Slider: React.FC<sliderProps> = ({
                             )
                         },
                     } as any}
+                    onIndexChanged={(index) => setCurrentPictureIndex(index)}
                 >
                     {room?.photo.slice(0, 6).map(photo => (
                         <TouchableOpacity key={photo.id} onPress={() => navigation.navigate(destination, { id: room?.id })} activeOpacity={1}>
