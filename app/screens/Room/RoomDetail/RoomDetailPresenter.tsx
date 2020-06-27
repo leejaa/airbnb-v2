@@ -14,6 +14,7 @@ import _ from "lodash";
 import { useSelector } from "react-redux";
 import { rootState } from "../../../redux/rootReducer";
 import { useNavigation } from "@react-navigation/native";
+import moment from "moment";
 
 const Container0 = styled.View`
     width: 100%;
@@ -204,14 +205,27 @@ const CommentContainerTitleContainer = styled.View`
     display: flex;
     flex-direction: row;
     align-items: center;
-    border-width: 1px;
 `;
 const CommentAvatarContainer = styled.View`
     width: 100%;
     height: 20%;
     display: flex;
     flex-direction: row;
-    border-width: 1px;
+    align-items: center;
+`;
+const CommentAvatarContainer2 = styled.View`
+    width: 25%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+`;
+const CommentAvatarContainer2Text1 = styled.Text`
+    font-size: ${SCREEN_WIDTH / 30}px;
+`;
+const CommentAvatarContainer2Text2 = styled.Text`
+    font-size: ${SCREEN_WIDTH / 30}px;
+    color: gray;
 `;
 const CommentContainerText = styled.Text`
     font-size: ${SCREEN_WIDTH / 18}px;
@@ -221,6 +235,24 @@ const AvatarImage = styled.Image`
     width: ${SCREEN_WIDTH / 6}px;
     height: ${SCREEN_WIDTH / 6}px;
     border-radius: ${SCREEN_WIDTH / 12}px;
+`;
+const ReviewAvatarImage = styled.Image`
+    width: ${SCREEN_WIDTH / 7}px;
+    height: ${SCREEN_WIDTH / 7}px;
+    border-radius: ${SCREEN_WIDTH / 14}px;
+`;
+const CommentContentContainer = styled.Text`
+    width: 100%;
+    height: 40%;
+`;
+const MoreCommentButtonContainer = styled.View`
+    width: 100%;
+    height: 20%;
+    border-width: 1px;
+    border-radius: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 `;
 
 interface props {
@@ -324,8 +356,18 @@ export default ({
                             <CommentContainerText>{`${room.score}점(후기 159개)`}</CommentContainerText>
                         </CommentContainerTitleContainer>
                         <CommentAvatarContainer>
-                            
+                            <ReviewAvatarImage source={{ uri: `${room?.review?.[0].user?.avatar}` }}></ReviewAvatarImage>
+                            <CommentAvatarContainer2>
+                                <CommentAvatarContainer2Text1>{room?.review?.[0].user?.name}</CommentAvatarContainer2Text1>
+                                <CommentAvatarContainer2Text2>{moment().format('YYYY년 M월')}</CommentAvatarContainer2Text2>
+                            </CommentAvatarContainer2>
                         </CommentAvatarContainer>
+                        <CommentContentContainer>
+                            <Text>{_.map(_.range(0, 6), index => room?.review?.[0].review)}</Text>
+                        </CommentContentContainer>
+                        <MoreCommentButtonContainer>
+                            <Text>후기 <Text style={{ fontWeight: 'bold' }}>{_.size(room?.review)}</Text>개 모두 보기</Text>
+                        </MoreCommentButtonContainer>
                     </CommentContainer>
                     <BottomContentContainer></BottomContentContainer>
                 </ContentContainer>
