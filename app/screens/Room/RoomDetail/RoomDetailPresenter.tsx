@@ -4,7 +4,7 @@ import styled from "styled-components/native";
 import { View, Text } from "react-native";
 import Input from "../../../components/Home/Input";
 import utils, { SCREEN_HEIGHT, SCREEN_WIDTH } from "../../../utils";
-import { Ionicons, AntDesign, EvilIcons } from "@expo/vector-icons";
+import { Ionicons, AntDesign, EvilIcons, MaterialCommunityIcons, Entypo } from "@expo/vector-icons";
 import Slider from "../../../components/Home/Slider";
 import Slider2 from "../../../components/Home/Slider2";
 import { SelectRoomsQuery, Room } from "../../../generated/graphql";
@@ -88,6 +88,10 @@ const TitleText = styled.Text`
     font-size: ${SCREEN_WIDTH / 12}px;
     font-weight: bold;
 `;
+const BottomContentContainer = styled.View`
+    width: 100%;
+    height: ${SCREEN_HEIGHT / 5.5}px;
+`;
 const FooterContainer = styled.View`
     width: 100%;
     height: ${SCREEN_HEIGHT / 5.5}px;
@@ -108,7 +112,6 @@ const SecondContainer = styled.View`
     border-bottom-width: 1px;
     border-color: #D3D1D1;
     display: flex;
-    align-items: center;
     justify-content: center;
 `;
 const SecondContainer2 = styled.View`
@@ -118,23 +121,64 @@ const SecondContainer2 = styled.View`
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    border-width: 1px;
 `;
 const SecondContainer3 = styled.View`
-    width: 100%;
+    width: 80%;
     height: 30%;
-    border-width: 1px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
 `;
 const SecondContainer4 = styled.View`
     width: 50%;
     height: 100%;
-    border-width: 1px;
+    display: flex;
+    justify-content: center;
 `;
-const AvatarContainer = styled.View`
-    width: ${SCREEN_WIDTH / 6}px;
-    height: ${SCREEN_WIDTH / 6}px;
-    border-radius: ${SCREEN_WIDTH / 12}px;
-    border-width: 1px;
+const SecondContainer4Text = styled.Text`
+    font-size: ${SCREEN_WIDTH / 20}px;
+`;
+const SecondContainer4Text2 = styled.Text`
+    font-size: ${SCREEN_WIDTH / 30}px;
+    font-weight: bold;
+`;
+const ThirdContainer = styled.View`
+    width: 100%;
+    height: ${SCREEN_HEIGHT / 4}px;
+    border-bottom-width: 1px;
+    border-color: #D3D1D1;
+    margin-top: ${SCREEN_HEIGHT / 20}px;
+`;
+const FourthContainer = styled.View`
+    width: 100%;
+    height: ${SCREEN_HEIGHT / 2.5}px;
+    border-bottom-width: 1px;
+    border-color: #D3D1D1;
+    margin-top: ${SCREEN_HEIGHT / 20}px;
+    display: flex;
+
+`;
+const FourthContainerTitleText = styled.Text`
+    font-size: ${SCREEN_WIDTH / 15}px;
+    font-weight: 500;
+`;
+const FourthContainer2 = styled.View`
+    width: 100%;
+    height: 90%;
+    display: flex;
+`;
+const FourthContainer3 = styled.View`
+    width: 100%;
+    height: 20%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+
+`;
+const FourthContainer3Text = styled.Text`
+    font-size: ${SCREEN_WIDTH / 26}px;
 `;
 const AvatarImage = styled.Image`
     width: ${SCREEN_WIDTH / 6}px;
@@ -191,13 +235,50 @@ export default ({
                     <HrContainer></HrContainer>
                     <SecondContainer>
                         <SecondContainer2>
-                            <SecondContainer4></SecondContainer4>
-                            <AvatarContainer><AvatarImage source={{ uri: 'https://reactnative.dev/img/tiny_logo.png' }}></AvatarImage></AvatarContainer>
+                            <SecondContainer4>
+                                <SecondContainer4Text>게스트용 별채 전체</SecondContainer4Text>
+                                <SecondContainer4Text2>호스트: {room?.user?.name}님</SecondContainer4Text2>
+                            </SecondContainer4>
+                            <AvatarImage source={{ uri: `${room.user.avatar}` }}></AvatarImage>
                         </SecondContainer2>
                         <SecondContainer3>
-
+                            <Text>인원 5명</Text>
+                            <Text>침실 2개</Text>
+                            <Text>침대 2개</Text>
+                            <Text>욕실 1개</Text>
                         </SecondContainer3>
                     </SecondContainer>
+                    <ThirdContainer>
+                        {
+                            _.map(_.range(0, 8), (item, index) => <Text key={index}>{room?.description}</Text>)
+                        }
+                    </ThirdContainer>
+                    <FourthContainer>
+                        <FourthContainerTitleText>편의시설</FourthContainerTitleText>
+                        <FourthContainer2>
+                            <FourthContainer3>
+                                <FourthContainer3Text>헤어드라이어</FourthContainer3Text>
+                                <MaterialCommunityIcons name="tumble-dryer" size={23} color="black" />
+                            </FourthContainer3>
+                            <FourthContainer3>
+                                <FourthContainer3Text>난방</FourthContainer3Text>
+                                <Ionicons name="ios-bonfire" size={23} color="black" />
+                            </FourthContainer3>
+                            <FourthContainer3>
+                                <FourthContainer3Text>화재경보기</FourthContainer3Text>
+                                <MaterialCommunityIcons name="fire-extinguisher" size={23} color="black" />
+                            </FourthContainer3>
+                            <FourthContainer3>
+                                <FourthContainer3Text>옷걸이</FourthContainer3Text>
+                                <AntDesign name="skin" size={23} color="black" />
+                            </FourthContainer3>
+                            <FourthContainer3>
+                                <FourthContainer3Text>필수품목</FourthContainer3Text>
+                                <Entypo name="briefcase" size={23} color="black" />
+                            </FourthContainer3>
+                        </FourthContainer2>
+                    </FourthContainer>
+                    <BottomContentContainer></BottomContentContainer>
                 </ContentContainer>
             </Container>
             <FooterContainer>
