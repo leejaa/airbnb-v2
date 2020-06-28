@@ -125,7 +125,7 @@ export default () => {
         name="Review"
         component={Review}
         options={{
-          header: () => <Header cssType="002" showSearchIcon={true} />,
+          header: () => <Header cssType="002" showSearchIcon={true} action="review" />,
         }}
       />
       <MainNavigator.Screen

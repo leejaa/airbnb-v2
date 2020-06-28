@@ -10,7 +10,7 @@ import { useNavigation } from "@react-navigation/native";
 import BackBtn from "../Auth/BackBtn";
 import { KAKAO_KEY } from "../../env";
 import { useDispatch, useSelector } from "react-redux";
-import { setSearchPlaceList } from "../../redux/homeSlice";
+import { setSearchPlaceList, toggleSearchReviewText } from "../../redux/homeSlice";
 import { rootState } from "../../redux/rootReducer";
 import moment from "moment";
 
@@ -168,12 +168,14 @@ const styles = StyleSheet.create({
 const Header: React.FC<headerProps> = ({
     cssType = "001",
     showSearchIcon = false,
+    action = "place",
 }: any) => {
     const { selectedSearchPlace = "", selectedSearchDates = [], personCnt = undefined } = useSelector((state: rootState) => state.homeReducer);
     const dispatch = useDispatch();
     const navigation = useNavigation();
     const [showSearchBox, setShowSearchBox] = useState(false);
     const [searchPlaceText, setSearchPlaceText] = useState("");
+    const [searchReviewText, setSearchReviewText] = useState("");
     const [top, setTop] = useState(-40);
     const animateRef = useRef(new Animated.Value(-230)).current;
     const searchTextInputRef: any = useRef(null);
@@ -194,6 +196,9 @@ const Header: React.FC<headerProps> = ({
     const onChangeText = useCallback((value) => {
         setSearchPlaceText(value);
     }, [searchPlaceText]);
+    const onChangeReviewText = useCallback((value) => {
+        setSearchReviewText(value);
+    }, [searchReviewText]);
     const searchAddress = useCallback(async () => {
         if (_.isEqual(searchPlaceText, "")) {
             dispatch(setSearchPlaceList({ data: [] }));
@@ -214,6 +219,11 @@ const Header: React.FC<headerProps> = ({
     useEffect(() => {
         searchAddress();
     }, [searchPlaceText]);
+    useEffect(() => {
+        if (!_.isEqual(searchReviewText, "")) {
+            dispatch(toggleSearchReviewText({data: searchReviewText}))
+        }
+    }, [searchReviewText]);
     const Header001 = useMemo(() => {
         return (
             <>
@@ -260,7 +270,12 @@ const Header: React.FC<headerProps> = ({
                     <BackBtn />
                 </Container12>
                 <Container13>
-                    <Container15 ref={searchTextInputRef} value={searchPlaceText} onChangeText={onChangeText}></Container15>
+                    {
+                        _.isEqual(action, "place") && <Container15 ref={searchTextInputRef} value={searchPlaceText} onChangeText={onChangeText}></Container15>
+                    }
+                    {
+                        _.isEqual(action, "review") && <Container15 ref={searchTextInputRef} value={searchReviewText} onChangeText={onChangeReviewText}></Container15>
+                    }
                 </Container13>
                 <Container14>
                     {
@@ -278,7 +293,7 @@ const Header: React.FC<headerProps> = ({
                 }
             </Container11>
         );
-    }, [searchPlaceText, showSearchIcon]);
+    }, [searchPlaceText, showSearchIcon, action, searchReviewText]);
     const Header003 = useMemo(() => {
         return (
             <Container11>

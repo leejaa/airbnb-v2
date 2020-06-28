@@ -29,6 +29,7 @@ export interface reviewProps {
 export interface headerProps {
     cssType?: string,
     showSearchIcon?: boolean,
+    action?: string,
 }
 export interface calendarProps {
     cssType?: string,
