@@ -3,7 +3,7 @@ import { TouchableOpacity, Dimensions, Text, View, Alert, Animated, StyleSheet }
 import styled from "styled-components/native";
 import _ from "lodash";
 import axios from "axios";
-import { AntDesign, Feather, Entypo } from '@expo/vector-icons';
+import { AntDesign, Feather, Entypo, EvilIcons } from '@expo/vector-icons';
 import { headerProps } from "../types";
 import { SCREEN_HEIGHT, SCREEN_WIDTH } from "../../utils";
 import { useNavigation } from "@react-navigation/native";
@@ -40,15 +40,7 @@ const Container3: any = styled.View`
     justify-content: space-around;
     align-items: center;
 `;
-const Container4: any = styled.View`
-    width: 100%;
-    height: ${SCREEN_HEIGHT / 4}px;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    border-bottom-width: 2px;
-    border-color: #CECBCB;
-`;
+
 const Container5: any = styled.View`
     width: 100%;
     height: 45%;
@@ -131,6 +123,15 @@ const Container15: any = styled.TextInput`
     width: 100%;
     height: 100%;
 `;
+const SearchContainer: any = styled.View`
+    width: 15%;
+    height: 100%;
+    position: absolute;
+    right: 0px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+`;
 const Text1: any = styled.Text`
     font-size: 15px;
     font-weight: bold;
@@ -165,7 +166,8 @@ const styles = StyleSheet.create({
 });
 
 const Header: React.FC<headerProps> = ({
-    cssType = "001"
+    cssType = "001",
+    showSearchIcon = false,
 }: any) => {
     const { selectedSearchPlace = "", selectedSearchDates = [], personCnt = undefined } = useSelector((state: rootState) => state.homeReducer);
     const dispatch = useDispatch();
@@ -267,9 +269,16 @@ const Header: React.FC<headerProps> = ({
                         )
                     }
                 </Container14>
+                {
+                    showSearchIcon && (
+                        <SearchContainer>
+                            <EvilIcons name="search" size={30} color="black" />
+                        </SearchContainer>
+                    )
+                }
             </Container11>
         );
-    }, [searchPlaceText]);
+    }, [searchPlaceText, showSearchIcon]);
     const Header003 = useMemo(() => {
         return (
             <Container11>

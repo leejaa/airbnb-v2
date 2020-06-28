@@ -13,7 +13,9 @@ const Container2 = styled.TouchableOpacity`
 `;
 
 export default ({
-  cssType = "001"
+  cssType = "001",
+  color = "black",
+  size = 24,
 }) => {
   const navigation = useNavigation();
   const goBack = useCallback(() => {
@@ -29,10 +31,10 @@ export default ({
   const BackBtn002 = useMemo(() => {
     return (
       <Container onPress={goBack}>
-        <AntDesign name="close" size={24} color="black" />
+        <AntDesign name="close" size={size} color={color} />
       </Container>
     );
-  }, []);
+  }, [color, size]);
   let BackBtn;
   switch (cssType) {
     case "001":

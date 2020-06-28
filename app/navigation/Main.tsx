@@ -13,6 +13,8 @@ import Header from "../components/Common/Header";
 import SearchPlace from "../screens/Main/SearchPlace";
 import SearchCalendar from "../screens/Main/SearchCalendar";
 import AddGuests from "../screens/Main/AddGuests";
+import Review from "../screens/Room/Review";
+import Avatar from "../screens/Room/Avatar";
 
 const TabsNavigator = createBottomTabNavigator();
 const Tabs = () => (
@@ -114,6 +116,21 @@ export default () => {
       <MainNavigator.Screen
         name="RoomDetail"
         component={RoomDetail}
+        options={{
+          headerShown: false,
+          cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS
+        }}
+      />
+      <MainNavigator.Screen
+        name="Review"
+        component={Review}
+        options={{
+          header: () => <Header cssType="002" showSearchIcon={true} />,
+        }}
+      />
+      <MainNavigator.Screen
+        name="Avatar"
+        component={Avatar}
         options={{
           headerShown: false,
           cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS

@@ -246,7 +246,7 @@ const CommentContentContainer = styled.Text`
     width: 100%;
     height: 40%;
 `;
-const MoreCommentButtonContainer = styled.View`
+const MoreCommentButtonContainer = styled.TouchableOpacity`
     width: 100%;
     height: 20%;
     border-width: 1px;
@@ -412,7 +412,7 @@ export default ({
                         <CommentContentContainer>
                             <Text>{_.map(_.range(0, 6), index => room?.review?.[0].review)}</Text>
                         </CommentContentContainer>
-                        <MoreCommentButtonContainer>
+                        <MoreCommentButtonContainer onPress={() => navigation.navigate("Review", {id: room?.id})}>
                             <Text>후기 <Text style={{ fontWeight: 'bold' }}>{_.size(room?.review)}</Text>개 모두 보기</Text>
                         </MoreCommentButtonContainer>
                     </CommentContainer>

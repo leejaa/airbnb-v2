@@ -1,4 +1,4 @@
-import { Photo, SelectPhotoQuery, SelectRoomsQuery, Room } from "../generated/graphql";
+import { Photo, SelectPhotoQuery, SelectRoomsQuery, Room, Review } from "../generated/graphql";
 
 export interface inputProps {
     value?: string,
@@ -23,8 +23,12 @@ export interface sliderProps {
     destination?: string,
     showPageLabelText?: boolean,
 }
+export interface reviewProps {
+    review: Review,
+}
 export interface headerProps {
     cssType?: string,
+    showSearchIcon?: boolean,
 }
 export interface calendarProps {
     cssType?: string,
