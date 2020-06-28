@@ -1,10 +1,11 @@
 import React, { useCallback, useState, useRef, useEffect } from "react";
-import { Dimensions, ActivityIndicator, StyleSheet, Animated, Alert } from 'react-native';
+import { Dimensions, ActivityIndicator, StyleSheet, Animated, Alert, View, Text } from 'react-native';
+import * as Location from 'expo-location';
+import MapView, { Marker } from 'react-native-maps';
 import styled from "styled-components/native";
-import { View, Text } from "react-native";
 import Input from "../../../components/Home/Input";
 import utils, { SCREEN_HEIGHT, SCREEN_WIDTH } from "../../../utils";
-import { Ionicons, AntDesign, EvilIcons, MaterialCommunityIcons, Entypo } from "@expo/vector-icons";
+import { Ionicons, AntDesign, EvilIcons, MaterialCommunityIcons, Entypo, FontAwesome5 } from "@expo/vector-icons";
 import Slider from "../../../components/Home/Slider";
 import Slider2 from "../../../components/Home/Slider2";
 import { SelectRoomsQuery, Room } from "../../../generated/graphql";
@@ -254,6 +255,22 @@ const MoreCommentButtonContainer = styled.View`
     justify-content: center;
     align-items: center;
 `;
+const MapMarkerContainer = styled.View`
+    width: ${SCREEN_WIDTH / 10}px;
+    height: ${SCREEN_WIDTH / 10}px;
+    background-color: black;
+    border-radius: ${SCREEN_WIDTH / 20}px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+`;
+const styles = StyleSheet.create({
+    MapContainer: {
+        width: '100%',
+        height: '75%',
+        marginTop: SCREEN_HEIGHT / 30,
+    }
+});
 
 interface props {
     room: Room
@@ -263,6 +280,16 @@ export default ({
     room
 }: props) => {
     const navigation = useNavigation();
+    const [location, setLocation] = useState<any>(null);
+    useEffect(() => {
+        (async () => {
+            let { status } = await Location.requestPermissionsAsync();
+            if (status !== 'granted') {
+            }
+            let location: any = await Location.getCurrentPositionAsync({});
+            setLocation(location);
+        })();
+    }, []);
     return (
         <Container0>
             <Container>
@@ -349,6 +376,26 @@ export default ({
                     </FourthContainer>
                     <LocationContainer>
                         <LocationContainerText>위치</LocationContainerText>
+                        <MapView
+                            style={styles.MapContainer}
+                            region={{
+                                latitude: location?.coords?.latitude ?? 0,
+                                longitude: location?.coords?.longitude ?? 0,
+                                latitudeDelta: 0.005,
+                                longitudeDelta: 0.006,
+                            }}
+                        >
+                            <Marker
+                                coordinate={{
+                                    latitude: location?.coords?.latitude ?? 0,
+                                    longitude: location?.coords?.longitude ?? 0,
+                                }}
+                            >
+                                <MapMarkerContainer>
+                                    <FontAwesome5 name="home" size={24} color="white" />
+                                </MapMarkerContainer>
+                            </Marker>
+                        </MapView>
                     </LocationContainer>
                     <CommentContainer>
                         <CommentContainerTitleContainer>
