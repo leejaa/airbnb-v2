@@ -8,7 +8,7 @@ import utils, { SCREEN_HEIGHT, SCREEN_WIDTH } from "../../../utils";
 import { Ionicons, AntDesign, EvilIcons, MaterialCommunityIcons, Entypo, FontAwesome5 } from "@expo/vector-icons";
 import Slider from "../../../components/Home/Slider";
 import Slider2 from "../../../components/Home/Slider2";
-import { SelectRoomsQuery, Room } from "../../../generated/graphql";
+import { SelectRoomsQuery, Room, Review } from "../../../generated/graphql";
 import Header from "../../../components/Common/Header";
 import ModalComponent from "../../../components/Common/Modal";
 import _ from "lodash";
@@ -16,7 +16,7 @@ import { useSelector } from "react-redux";
 import { rootState } from "../../../redux/rootReducer";
 import { useNavigation } from "@react-navigation/native";
 import moment from "moment";
-import Review from "../../../components/Room/Review";
+import ReviewComponent from "../../../components/Room/Review";
 
 const Container = styled.ScrollView`
     width: 100%;
@@ -93,14 +93,15 @@ const styles = StyleSheet.create({
 });
 
 interface props {
-    room: Room
+    room: Room,
+    filteredReview: Review,
 }
 
 export default ({
-    room
+    room,
+    filteredReview,
 }: props) => {
     useEffect(() => {
-
     }, []);
     return (
         <Container>
@@ -160,10 +161,10 @@ export default ({
             </ScoreContainer>
             <ReviewContainer>
             {
-                _.map(room?.review, (review, index) => (
+                _.map(filteredReview, (review, index) => (
                     <ReviewContainer2 key={index}>
-                        <Review
-                            review={review}
+                        <ReviewComponent
+                            review={review as any}
                         />
                     </ReviewContainer2>
                 ))

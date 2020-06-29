@@ -62,6 +62,9 @@ const ContentContainer = styled.View`
     width: 100%;
     padding: ${SCREEN_WIDTH / 18}px;
 `;
+const ContentContainer2 = styled.View`
+    width: 100%;
+`;
 const TitleContainer = styled.View`
     width: 100%;
     height: ${SCREEN_HEIGHT / 8}px;
@@ -96,11 +99,37 @@ const BottomContentContainer = styled.View`
 `;
 const FooterContainer = styled.View`
     width: 100%;
-    height: ${SCREEN_HEIGHT / 5.5}px;
+    height: ${SCREEN_HEIGHT / 8.5}px;
     position: absolute;
     z-index: 100;
     bottom: 0;
     background-color: white;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+`;
+const FooterContainer2 = styled.View`
+    width: 40%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+`;
+const FooterContainer2Text = styled.Text`
+    font-weight: bold;
+`;
+const FooterContainer3 = styled.View`
+    width: 50%;
+    height: 60%;
+    border-radius: 10px;
+    background-color: #F04848;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+`;
+const FooterContainer3Text = styled.Text`
+    color: white;
 `;
 const HrContainer = styled.View`
     margin-top: ${SCREEN_HEIGHT / 25}px;
@@ -264,6 +293,25 @@ const MapMarkerContainer = styled.View`
     justify-content: center;
     align-items: center;
 `;
+const MoreRoomContainer = styled.View`
+    margin-top: ${SCREEN_HEIGHT / 25}px;
+    width: 100%;
+    height: ${SCREEN_HEIGHT / 3}px;
+`;
+const MoreRoomTitleContainer = styled.View`
+    width: 100%;
+    height: 10%;
+    padding-left: ${SCREEN_WIDTH / 20}px;
+`;
+const MoreRoomContainerTitleText = styled.Text`
+    font-size: ${SCREEN_WIDTH / 17}px;
+    font-weight: 500;
+`;
+const MoreRoomContainer2 = styled.View`
+    margin-top: ${SCREEN_HEIGHT / 30}px;
+    width: 100%;
+    height: 80%;
+`;
 const styles = StyleSheet.create({
     MapContainer: {
         width: '100%',
@@ -412,15 +460,32 @@ export default ({
                         <CommentContentContainer>
                             <Text>{_.map(_.range(0, 6), index => room?.review?.[0].review)}</Text>
                         </CommentContentContainer>
-                        <MoreCommentButtonContainer onPress={() => navigation.navigate("Review", {id: room?.id})}>
+                        <MoreCommentButtonContainer onPress={() => navigation.navigate("Review", { id: room?.id })}>
                             <Text>후기 <Text style={{ fontWeight: 'bold' }}>{_.size(room?.review)}</Text>개 모두 보기</Text>
                         </MoreCommentButtonContainer>
                     </CommentContainer>
-                    <BottomContentContainer></BottomContentContainer>
                 </ContentContainer>
+                <ContentContainer2>
+                    <MoreRoomContainer>
+                        <MoreRoomTitleContainer>
+                            <MoreRoomContainerTitleText>숙소 더 보기</MoreRoomContainerTitleText>
+                        </MoreRoomTitleContainer>
+                        <MoreRoomContainer2>
+                            <Slider2
+                                room={room}
+                            />
+                        </MoreRoomContainer2>
+                    </MoreRoomContainer>
+                    <BottomContentContainer></BottomContentContainer>
+                </ContentContainer2>
             </Container>
             <FooterContainer>
-
+                <FooterContainer2>
+                    <FooterContainer2Text>요금을 확인하려면 날짜를 입력하세요.</FooterContainer2Text>
+                </FooterContainer2>
+                <FooterContainer3>
+                    <FooterContainer3Text>예약 가능 여부 보기</FooterContainer3Text>
+                </FooterContainer3>
             </FooterContainer>
         </Container0>
     )

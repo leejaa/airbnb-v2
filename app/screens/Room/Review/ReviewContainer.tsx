@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { Keyboard, ActivityIndicator, View } from "react-native";
 import ReviewPresenter from "./ReviewPresenter";
@@ -10,7 +10,7 @@ import { rootState } from "../../../redux/rootReducer";
 interface props {
 }
 export default ({ }: props) => {
-    const { searchReviewText } = useSelector((state: rootState) => state.homeReducer);
+    const { searchReviewText = "" } = useSelector((state: rootState) => state.homeReducer);
     const route: any = useRoute();
     const { data, loading } = useSelectRoomQuery({
         variables: {
@@ -24,9 +24,14 @@ export default ({ }: props) => {
             </View>
         );
     }
+    const filteredReview = useMemo(() => {
+        const filteredReview = _.isEqual(searchReviewText, '') ? data?.selectRoom?.review : _.filter(data?.selectRoom?.review, (o) => _.includes(o.review, searchReviewText));
+        return filteredReview;
+    }, [searchReviewText]);
     return (
         <ReviewPresenter
             room={data?.selectRoom as any}
+            filteredReview={filteredReview as any}
         />
     );
 };
