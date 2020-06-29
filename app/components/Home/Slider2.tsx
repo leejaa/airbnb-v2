@@ -1,5 +1,5 @@
 import React, { useMemo, useState, useCallback, useEffect } from "react";
-import { TouchableOpacity, Dimensions, NativeSyntheticEvent, NativeScrollEvent, Image } from "react-native";
+import { TouchableOpacity, Dimensions, NativeSyntheticEvent, NativeScrollEvent, Image, View } from "react-native";
 import styled from "styled-components/native";
 import Swiper from "react-native-web-swiper";
 import { inputProps, sliderProps } from "../types";
@@ -28,69 +28,76 @@ const Image1: any = styled.Image`
 `;
 
 const Slider2: React.FC<sliderProps> = ({
-    cssType = "css001",
+    cssType = "001",
     room,
 }) => {
     const [intervals, setIntervals] = useState(1);
     const [width, setWidth] = useState(0);
     const [page, setPage] = useState(0);
-    const container2WidthList = useMemo(() => {
-        let container2WidthList = _.fill(Array(room?.photo.length ?? 0), 1);
-        if (page === 0) {
-            container2WidthList[page] = 0.8;
-            container2WidthList[page+1] = 1.1;
-        } else if (page === ((room?.photo.length ?? 0) - 1)) {
-            container2WidthList[page-1] = 1.1;
-            container2WidthList[page] = 0.85;
-        } else {
-            container2WidthList[page-1] = 1.1;
-            container2WidthList[page] = 0.8;
-            container2WidthList[page+1] = 1.1;
-        }
-        return container2WidthList;
-    }, [page]);
+    const [snapToIntervalNumber, setSnapToIntervalNumber] = useState(width / intervals * 0.65);
     const onScroll = useCallback((data) => {
         let x = data?.nativeEvent?.contentOffset?.x ?? 1;
         x = x === 0 ? 1 : x;
         const intervalWidth = Math.round(width / intervals);
         const newPage = Math.round(x / intervalWidth);
+        if (newPage !== 0) {
+            setSnapToIntervalNumber(width / intervals * 0.7);
+        }
         if (newPage !== page) {
             setPage(newPage);
         }
-    }, [width]);
+    }, [width, page]);
     useEffect(() => {
         const newIntervals = room?.photo.length ?? 1;
         const newWidth = SCREEN_WIDTH * newIntervals;
         setIntervals(newIntervals);
         setWidth(newWidth);
     }, []);
+    const Slider001 = useMemo(() => {
+        return (
+            <Container
+                horizontal={true}
+                showsHorizontalScrollIndicator={false}
+                pagingEnabled={true}
+                decelerationRate={"fast"}
+                contentContainerStyle={{ width: `${100 * intervals}%` }}
+                // onContentSizeChange={(w, h) => init(w)}
+                // onScrollEndDrag={onScrollEndDrag}
+                onScroll={onScroll}
+                scrollEventThrottle={200}
+                snapToInterval={snapToIntervalNumber}
+                // snapToOffsets={[width / intervals * 0.8, width / intervals * 0.8]}
+            >
+                {
+                    room?.photo.map((photo, index) => {
+                        const newContainer2Width = width / intervals * 0.7;
+                        return (
+                            <Container2
+                                key={photo.id}
+                                container2Width={newContainer2Width}>
+                                <Container3>
+                                    <Image1 key={photo.id} source={{ uri: photo.file }} />
+                                </Container3>
+                            </Container2>
+                        )
+                    })
+                }
+            </Container>
+        );
+    }, [room, intervals, width, page, snapToIntervalNumber]);
+    let Slider2;
+    switch (cssType) {
+        case "001":
+            Slider2 = _.clone(Slider001);
+            break;
+        default:
+            Slider2 = _.clone(Slider001);
+            break;
+    }
     return (
-        <Container
-            horizontal={true}
-            showsHorizontalScrollIndicator={false}
-            pagingEnabled={true}
-            decelerationRate={"fast"}
-            contentContainerStyle={{ width: `${100 * intervals}%` }}
-            // onContentSizeChange={(w, h) => init(w)}
-            // onScrollEndDrag={onScrollEndDrag}
-            onScroll={onScroll}
-            scrollEventThrottle={200}
-        >
-            {
-                room?.photo.map((photo, index) => {
-                    const newContainer2Width = width / intervals * container2WidthList[index];
-                    return (
-                        <Container2
-                            key={photo.id}
-                            container2Width={newContainer2Width}>
-                            <Container3>
-                                <Image1 key={photo.id} source={{uri: photo.file}} />
-                            </Container3>
-                        </Container2>
-                    )
-                })
-            }
-        </Container>
+        <>
+            {Slider2}
+        </>
     );
 }
 
