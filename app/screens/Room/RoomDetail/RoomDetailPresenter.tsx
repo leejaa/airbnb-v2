@@ -310,7 +310,7 @@ const MoreRoomContainerTitleText = styled.Text`
 const MoreRoomContainer2 = styled.View`
     margin-top: ${SCREEN_HEIGHT / 30}px;
     width: 100%;
-    height: 80%;
+    height: 90%;
 `;
 const styles = StyleSheet.create({
     MapContainer: {

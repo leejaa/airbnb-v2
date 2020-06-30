@@ -5,6 +5,7 @@ import Swiper from "react-native-web-swiper";
 import { inputProps, sliderProps } from "../types";
 import { SCREEN_WIDTH, SCREEN_HEIGHT } from "../../utils";
 import _ from "lodash";
+import { AntDesign } from "@expo/vector-icons";
 
 const Container = styled.ScrollView`
     height: 100%;
@@ -15,16 +16,27 @@ const Container2: any = styled.View`
     width: ${(props: any) => props.container2Width}px;
     height: 100%;
     display: flex;
-    flex-direction: row;
-    justify-content: center;
+    align-items: center;
 `;
 const Container3: any = styled.View`
     width: 95%;
-    height: 100%;
+    height: 75%;
+`;
+const Container4: any = styled.View`
+    width: 95%;
+    height: 25%;
+    display: flex;
+    justify-content: center;
+`;
+const Container4Text: any = styled.Text`
+    color: #8E8C8C;
+`;
+const Container4Text2: any = styled.Text`
 `;
 const Image1: any = styled.Image`
     width: 100%;
     height: 100%;
+    border-radius: 7px;
 `;
 
 const Slider2: React.FC<sliderProps> = ({
@@ -44,7 +56,7 @@ const Slider2: React.FC<sliderProps> = ({
         return { width: SCREEN_WIDTH * adjustmentRate * (_.size(room?.photo) - 1) + SCREEN_WIDTH * (adjustmentRate + adjustmentRate2) * 1 };
     }, [adjustmentRate, adjustmentRate2, room]);
     useEffect(() => {
-        
+
     }, []);
     const Slider001 = useMemo(() => {
         return (
@@ -67,6 +79,10 @@ const Slider2: React.FC<sliderProps> = ({
                                 <Container3>
                                     <Image1 key={photo.id} source={{ uri: photo.file }} />
                                 </Container3>
+                                <Container4>
+                                    <Container4Text>{room?.address}</Container4Text>
+                                    <Container4Text2>{room?.description}</Container4Text2>
+                                </Container4>
                             </Container2>
                         )
                     })
