@@ -69,6 +69,7 @@ const Slider2: React.FC<sliderProps> = ({
                 onScrollEndDrag={onScroll}
                 scrollEventThrottle={200}
                 snapToInterval={snapToIntervalNumber}
+                disableIntervalMomentum={true}
             >
                 {
                     room?.photo.map((photo, index) => {
