@@ -30,28 +30,21 @@ const Image1: any = styled.Image`
 const Slider2: React.FC<sliderProps> = ({
     cssType = "001",
     room,
+    adjustmentRate = 0.7,
+    adjustmentRate2 = 0.05,
 }) => {
-    const [intervals, setIntervals] = useState(1);
-    const [width, setWidth] = useState(0);
-    const [page, setPage] = useState(0);
-    const [snapToIntervalNumber, setSnapToIntervalNumber] = useState(width / intervals * 0.65);
+    const [snapToIntervalNumber, setSnapToIntervalNumber] = useState(SCREEN_WIDTH * adjustmentRate);
     const onScroll = useCallback((data) => {
-        let x = data?.nativeEvent?.contentOffset?.x ?? 1;
-        x = x === 0 ? 1 : x;
-        const intervalWidth = Math.round(width / intervals);
-        const newPage = Math.round(x / intervalWidth);
-        if (newPage !== 0) {
-            setSnapToIntervalNumber(width / intervals * 0.7);
-        }
-        if (newPage !== page) {
-            setPage(newPage);
-        }
-    }, [width, page]);
+        // let x = data?.nativeEvent?.contentOffset?.x ?? 1;
+        // x = x === 0 ? 1 : x;
+        // const intervalWidth = Math.round(SCREEN_WIDTH * adjustmentRate);
+        // const page = Math.abs(Math.round(x / intervalWidth));
+    }, [snapToIntervalNumber, adjustmentRate]);
+    const contentContainerStyle = useMemo(() => {
+        return { width: SCREEN_WIDTH * adjustmentRate * (_.size(room?.photo) - 1) + SCREEN_WIDTH * (adjustmentRate + adjustmentRate2) * 1 };
+    }, [adjustmentRate, adjustmentRate2, room]);
     useEffect(() => {
-        const newIntervals = room?.photo.length ?? 1;
-        const newWidth = SCREEN_WIDTH * newIntervals;
-        setIntervals(newIntervals);
-        setWidth(newWidth);
+        
     }, []);
     const Slider001 = useMemo(() => {
         return (
@@ -60,21 +53,17 @@ const Slider2: React.FC<sliderProps> = ({
                 showsHorizontalScrollIndicator={false}
                 pagingEnabled={true}
                 decelerationRate={"fast"}
-                contentContainerStyle={{ width: `${100 * intervals}%` }}
-                // onContentSizeChange={(w, h) => init(w)}
-                // onScrollEndDrag={onScrollEndDrag}
-                onScroll={onScroll}
+                contentContainerStyle={contentContainerStyle}
+                onScrollEndDrag={onScroll}
                 scrollEventThrottle={200}
                 snapToInterval={snapToIntervalNumber}
-                // snapToOffsets={[width / intervals * 0.8, width / intervals * 0.8]}
             >
                 {
                     room?.photo.map((photo, index) => {
-                        const newContainer2Width = width / intervals * 0.7;
                         return (
                             <Container2
                                 key={photo.id}
-                                container2Width={newContainer2Width}>
+                                container2Width={_.isEqual(index, 0) ? SCREEN_WIDTH * (adjustmentRate + adjustmentRate2) : SCREEN_WIDTH * adjustmentRate}>
                                 <Container3>
                                     <Image1 key={photo.id} source={{ uri: photo.file }} />
                                 </Container3>
@@ -84,7 +73,7 @@ const Slider2: React.FC<sliderProps> = ({
                 }
             </Container>
         );
-    }, [room, intervals, width, page, snapToIntervalNumber]);
+    }, [room, snapToIntervalNumber, adjustmentRate, adjustmentRate2]);
     let Slider2;
     switch (cssType) {
         case "001":

@@ -22,6 +22,8 @@ export interface sliderProps {
     isRadius?: boolean,
     destination?: string,
     showPageLabelText?: boolean,
+    adjustmentRate?: number,
+    adjustmentRate2?: number,
 }
 export interface reviewProps {
     review: Review,
