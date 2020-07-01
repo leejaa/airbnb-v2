@@ -5,7 +5,7 @@ import Swiper from "react-native-web-swiper";
 import { inputProps, sliderProps } from "../types";
 import { SCREEN_WIDTH, SCREEN_HEIGHT } from "../../utils";
 import _ from "lodash";
-import { AntDesign } from "@expo/vector-icons";
+import { AntDesign, FontAwesome, FontAwesome5 } from "@expo/vector-icons";
 
 const Container = styled.ScrollView`
     height: 100%;
@@ -38,12 +38,26 @@ const Image1: any = styled.Image`
     height: 100%;
     border-radius: 7px;
 `;
+const HeartContainer: any = styled.TouchableOpacity`
+    width: ${SCREEN_WIDTH / 18}px;
+    height: ${SCREEN_WIDTH / 18}px;
+    background-color: white;
+    border-radius: ${SCREEN_WIDTH / 36}px;
+    position: absolute;
+    right: 3%;
+    top: 3%;
+    z-index: 100;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+`;
 
 const Slider2: React.FC<sliderProps> = ({
     cssType = "001",
     room,
     adjustmentRate = 0.7,
     adjustmentRate2 = 0.05,
+    showLikeButton = false,
 }) => {
     const [snapToIntervalNumber, setSnapToIntervalNumber] = useState(SCREEN_WIDTH * adjustmentRate);
     const onScroll = useCallback((data) => {
@@ -78,6 +92,13 @@ const Slider2: React.FC<sliderProps> = ({
                                 key={photo.id}
                                 container2Width={_.isEqual(index, 0) ? SCREEN_WIDTH * (adjustmentRate + adjustmentRate2) : SCREEN_WIDTH * adjustmentRate}>
                                 <Container3>
+                                    {
+                                        showLikeButton && (
+                                            <HeartContainer>
+                                                <FontAwesome5 name="heart" size={15} color="black" />
+                                            </HeartContainer>
+                                        )
+                                    }
                                     <Image1 key={photo.id} source={{ uri: photo.file }} />
                                 </Container3>
                                 <Container4>

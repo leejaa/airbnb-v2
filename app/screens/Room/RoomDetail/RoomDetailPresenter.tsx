@@ -312,6 +312,25 @@ const MoreRoomContainer2 = styled.View`
     width: 100%;
     height: 90%;
 `;
+const NearEnjoyContainer = styled.View`
+    width: 100%;
+    height: ${SCREEN_HEIGHT / 2.5}px;
+    margin-top: ${SCREEN_HEIGHT / 20}px;
+`;
+const NearEnjoyTitleContainer = styled.View`
+    width: 100%;
+    height: 10%;
+    padding-left: ${SCREEN_WIDTH / 20}px;
+`;
+const NearEnjoyContainerTitleText = styled.Text`
+    font-size: ${SCREEN_WIDTH / 17}px;
+    font-weight: 500;
+`;
+const NearEnjoyContainer2 = styled.View`
+    margin-top: ${SCREEN_HEIGHT / 50}px;
+    width: 100%;
+    height: 90%;
+`;
 const styles = StyleSheet.create({
     MapContainer: {
         width: '100%',
@@ -476,6 +495,19 @@ export default ({
                             />
                         </MoreRoomContainer2>
                     </MoreRoomContainer>
+                    <NearEnjoyContainer>
+                        <NearEnjoyTitleContainer>
+                            <NearEnjoyContainerTitleText>주변의 즐길거리</NearEnjoyContainerTitleText>
+                        </NearEnjoyTitleContainer>
+                        <NearEnjoyContainer2>
+                            <Slider2
+                                room={room}
+                                adjustmentRate={0.42}
+                                adjustmentRate2={0.05}
+                                showLikeButton={true}
+                            />
+                        </NearEnjoyContainer2>
+                    </NearEnjoyContainer>
                     <BottomContentContainer></BottomContentContainer>
                 </ContentContainer2>
             </Container>
