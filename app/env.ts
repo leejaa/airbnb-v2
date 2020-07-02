@@ -3,3 +3,4 @@ export const ANDROID_CLIENT_ID = "856576729820-ps9bg6rgsio9a5aot8fpi4a54n16asss.
 export const FACEBOOK_APP_ID = "270721244194600";
 export const KAKAO_KEY = "432b20fd7955265922435dfcd8f60ae9";
 export const IS_PRODUCTION = true;
+export const GOOGLE_CLIENT_ID = "AIzaSyA_pqirbnrxHAk6yTQr2Ppu0-WKG7KMzBQ";

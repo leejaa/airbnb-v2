@@ -5,7 +5,7 @@ import { SCREEN_HEIGHT, SCREEN_WIDTH } from "../../utils";
 import { Feather } from "@expo/vector-icons";
 import { useSelector, useDispatch } from "react-redux";
 import { rootState } from "../../redux/rootReducer";
-import { setSelectedSearchPlace } from "../../redux/homeSlice";
+import { setSelectedSearchPlace, setSearchedPlaceWord, getPlaceInfoList } from "../../redux/homeSlice";
 import { useNavigation } from "@react-navigation/native";
 
 const Container1 = styled.View`
@@ -61,11 +61,12 @@ interface props {
 
 export default ({
 }: props) => {
-    const { searchPlaceList = [] } = useSelector((state: rootState) => state.homeReducer);
+    const { searchPlaceList = [], searchedPlaceWord } = useSelector((state: rootState) => state.homeReducer);
     const dispatch = useDispatch();
     const navigation = useNavigation();
     const selectSearchPlace = useCallback((place_name) => {
         dispatch(setSelectedSearchPlace({data: place_name}));
+        getPlaceInfoList({ searchedPlaceWord, dispatch });
         navigation.navigate("Home");
     }, []);
     return (

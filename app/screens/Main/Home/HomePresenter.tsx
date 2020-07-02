@@ -99,7 +99,6 @@ export default ({
     skip,
     loading,
 }: props) => {
-    const navigation = useNavigation();
     const { showLikeModal = false, modalMessage = "" } = useSelector((state: rootState) => state.homeReducer);
     const animateRef = useRef(new Animated.Value(-100)).current;
     useEffect(() => {

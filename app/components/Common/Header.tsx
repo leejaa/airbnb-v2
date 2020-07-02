@@ -10,7 +10,7 @@ import { useNavigation } from "@react-navigation/native";
 import BackBtn from "../Auth/BackBtn";
 import { KAKAO_KEY } from "../../env";
 import { useDispatch, useSelector } from "react-redux";
-import { setSearchPlaceList, toggleSearchReviewText } from "../../redux/homeSlice";
+import { setSearchPlaceList, toggleSearchReviewText, setSearchPlaceWord, setSearchedPlaceWord } from "../../redux/homeSlice";
 import { rootState } from "../../redux/rootReducer";
 import moment from "moment";
 
@@ -210,6 +210,7 @@ const Header: React.FC<headerProps> = ({
             }
         });
         dispatch(setSearchPlaceList({ data: result?.data?.documents ?? [] }));
+        dispatch(setSearchedPlaceWord({ data: searchPlaceText }));
     }, [searchPlaceText]);
     useEffect(() => {
         if (!_.isNull(searchTextInputRef) && _.isEqual(cssType, "002")) {
