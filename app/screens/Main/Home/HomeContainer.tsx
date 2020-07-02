@@ -10,16 +10,6 @@ import { rootState } from "../../../redux/rootReducer";
 import styled from "styled-components/native";
 import { SCREEN_WIDTH, SCREEN_HEIGHT } from "../../../utils";
 
-const LoadingContainer = styled.View`
-    width: ${SCREEN_WIDTH}px;
-    height: ${SCREEN_HEIGHT}px;
-`;
-const LoadingContainer2 = styled.View`
-  position: absolute;
-  top: 50%;
-  left: 50%;
-`;
-
 interface props {
   token: string,
 }
@@ -43,15 +33,7 @@ export default ({ token }: props) => {
       return roomList;
     }
   }, [roomList]);
-  if (_.isEmpty(filteredData)) {
-    return (
-      <LoadingContainer>
-        <LoadingContainer2>
-          <ActivityIndicator size="large" color="#0000ff" />
-        </LoadingContainer2>
-      </LoadingContainer>
-    );
-  }
+  
   return (
     <HomePresenter
       data={filteredData as any}
@@ -59,6 +41,7 @@ export default ({ token }: props) => {
       pageSize={pageSize}
       skip={skip}
       loading={loading}
+      globalLoading={globalLoading}
     />
   );
 };

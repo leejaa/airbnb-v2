@@ -66,6 +66,7 @@ export default ({
     const navigation = useNavigation();
     const selectSearchPlace = useCallback((place_name) => {
         dispatch(setSelectedSearchPlace({data: place_name}));
+        dispatch(setGlobalLoading({data: true}));
         getPlaceInfoList({ searchedPlaceWord, dispatch });
         navigation.navigate("Home");
     }, [searchedPlaceWord]);

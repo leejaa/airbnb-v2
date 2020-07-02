@@ -67,6 +67,15 @@ const Text1 = styled.Text`
     font-weight: 600;
     font-size: ${SCREEN_WIDTH / 20}px;
 `;
+const LoadingContainer = styled.View`
+    width: ${SCREEN_WIDTH}px;
+    height: ${SCREEN_HEIGHT}px;
+`;
+const LoadingContainer2 = styled.View`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+`;
 
 const styles = StyleSheet.create({
     Container8: {
@@ -90,6 +99,7 @@ interface props {
     pageSize: number,
     skip: number,
     loading: boolean,
+    globalLoading: boolean,
 }
 
 export default ({
@@ -98,6 +108,7 @@ export default ({
     pageSize,
     skip,
     loading,
+    globalLoading,
 }: props) => {
     const { showLikeModal = false, modalMessage = "" } = useSelector((state: rootState) => state.homeReducer);
     const animateRef = useRef(new Animated.Value(-100)).current;
@@ -114,6 +125,18 @@ export default ({
             }).start();
         }
     }, [showLikeModal]);
+    if (_.isEmpty(data) || globalLoading) {
+        return (
+            <Container0>
+                <Header />
+                <LoadingContainer>
+                    <LoadingContainer2>
+                        <ActivityIndicator size="large" color="#0000ff" />
+                    </LoadingContainer2>
+                </LoadingContainer>
+            </Container0>
+        );
+    }
     return (
         <Container0>
             <Container1

@@ -114,6 +114,7 @@ export const getPlaceInfoList = async ({ searchedPlaceWord, dispatch } : any) =>
   }
   const data = { selectRooms };
   dispatch(setRoomList({ data }));
+  dispatch(setGlobalLoading({data: false}));
   return data;
 }
 
