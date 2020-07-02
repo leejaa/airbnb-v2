@@ -4,9 +4,21 @@ import { Keyboard, ActivityIndicator, View } from "react-native";
 import HomePresenter from "./HomePresenter";
 import { useSelectPhotoQuery, useSelectRoomsQuery } from "../../../generated/graphql";
 import _ from "lodash";
-import { getPlaceInfoList } from "../../../redux/homeSlice";
+import { getPlaceInfoList, setGlobalLoading } from "../../../redux/homeSlice";
 import { useSelector, useDispatch } from "react-redux";
 import { rootState } from "../../../redux/rootReducer";
+import styled from "styled-components/native";
+import { SCREEN_WIDTH, SCREEN_HEIGHT } from "../../../utils";
+
+const LoadingContainer = styled.View`
+    width: ${SCREEN_WIDTH}px;
+    height: ${SCREEN_HEIGHT}px;
+`;
+const LoadingContainer2 = styled.View`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+`;
 
 interface props {
   token: string,
@@ -14,7 +26,7 @@ interface props {
 const pageSize = 5;
 export default ({ token }: props) => {
   const dispatch = useDispatch();
-  const { searchedPlaceWord, roomList = [] } = useSelector((state: rootState) => state.homeReducer);
+  const { searchedPlaceWord, roomList = [], globalLoading = false } = useSelector((state: rootState) => state.homeReducer);
   const [skip, setSkip] = useState(0);
   const { data = [], loading = false, fetchMore, networkStatus } = useSelectRoomsQuery({
     variables: {
@@ -31,11 +43,13 @@ export default ({ token }: props) => {
       return roomList;
     }
   }, [roomList]);
-  if (_.isEmpty(data)) {
+  if (_.isEmpty(filteredData)) {
     return (
-      <View>
-        <ActivityIndicator size="large" color="#0000ff" />
-      </View>
+      <LoadingContainer>
+        <LoadingContainer2>
+          <ActivityIndicator size="large" color="#0000ff" />
+        </LoadingContainer2>
+      </LoadingContainer>
     );
   }
   return (

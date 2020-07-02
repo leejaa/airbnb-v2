@@ -144,7 +144,7 @@ export default ({
                 <Container6>
                     {
                         data.selectRooms.map((room, index) => (
-                            <Container5 key={index}>
+                            <Container5 key={room.id}>
                                 <Slider
                                     cssType="css001"
                                     room={room as any}

@@ -15,6 +15,7 @@ export type homeReducerType = {
   searchReviewText: string,
   searchedPlaceWord: string,
   roomList: Array<any>,
+  globalLoading: boolean,
 }
 let initialState: homeReducerType = {
   showSearchModal: false,
@@ -31,6 +32,7 @@ let initialState: homeReducerType = {
   searchReviewText: "",
   searchedPlaceWord: "",
   roomList: [],
+  globalLoading: false,
 };
 
 const homeSlice = createSlice({
@@ -63,8 +65,10 @@ const homeSlice = createSlice({
       state.searchedPlaceWord = action.payload.data;
     },
     setRoomList(state, action) {
-      console.log('test', JSON.stringify(action.payload.data) );
       state.roomList = action.payload.data;
+    },
+    setGlobalLoading(state, action) {
+      state.globalLoading = action.payload.data;
     }
   }
 });
@@ -95,13 +99,12 @@ export const getPlaceInfoList = async ({ searchedPlaceWord, dispatch } : any) =>
         __typename: "Room",
       };
       const photoreferences = _.map(result?.data?.result?.photos ?? [], item => item.photo_reference);
-      let photoIndex = 0;
       for (const photoreference of photoreferences.slice(0, 3)) {
         url = `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${photoreference}&key=${GOOGLE_CLIENT_ID}`;
         result = await axios.get(url, {
         });
         room.photo.push({
-          id: photoIndex++,
+          id: result?.config?.url ?? "",
           file: result?.config?.url ?? "",
           __typename: "Photo",
         });
@@ -115,6 +118,6 @@ export const getPlaceInfoList = async ({ searchedPlaceWord, dispatch } : any) =>
 }
 
 export const { toggleShowSearchModal, setSearchPlaceList, setSelectedSearchPlace, setSelectedSearchDates, setPersonCnt, toggleShowLikeModal, toggleSearchReviewText,
-setSearchedPlaceWord, setRoomList } = homeSlice.actions;
+setSearchedPlaceWord, setRoomList, setGlobalLoading } = homeSlice.actions;
 
 export default homeSlice.reducer;

@@ -11,6 +11,7 @@ import { rootState } from "../../redux/rootReducer";
 import { useUpdateLikeMutation, SelectRoomsDocument } from "../../generated/graphql";
 import { toggleShowLikeModal } from "../../redux/homeSlice";
 import { useNavigation } from "@react-navigation/native";
+import moment from "moment";
 
 const Container: any = styled.View`
     margin-bottom: 10px;
@@ -226,7 +227,7 @@ const Slider: React.FC<sliderProps> = ({
                 >
                     {room?.photo.slice(0, 6).map(photo => (
                         <TouchableOpacity key={photo.id} onPress={() => navigation.navigate(destination, { id: room?.id })} activeOpacity={1}>
-                            <SlideImage source={{ uri: photo.file }} isRadius={isRadius} />
+                            <SlideImage key={new Date()} source={{ uri: `${photo.file}`, cache: "reload" }} isRadius={isRadius} />
                         </TouchableOpacity>
                     ))}
                 </Swiper>
