@@ -1,7 +1,8 @@
 require("dotenv").config();
 const withCSS = require('@zeit/next-css');
+const withPWA = require('next-pwa');
 
-module.exports = {
+module.exports = withPWA({
     typescript: {
         // !! WARN !!
         // Dangerously allow production builds to successfully complete even if
@@ -25,4 +26,4 @@ module.exports = {
         NAVER_CALLBACK_URL: process.env.NAVER_CALLBACK_URL,
         KAKAO_KEY: process.env.KAKAO_KEY,
     }
-}
+})
