@@ -3,6 +3,9 @@ const withCSS = require('@zeit/next-css');
 const withPWA = require('next-pwa');
 
 module.exports = withPWA({
+    pwa: {
+        dest: 'public'
+    },
     typescript: {
         // !! WARN !!
         // Dangerously allow production builds to successfully complete even if
