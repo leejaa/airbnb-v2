@@ -49,7 +49,7 @@
     "apollo-link-schema": "1.2.4",
     "apollo-link-token-refresh": "^0.2.7",
     "apollo-link-ws": "^1.0.20",
-    "apollo-server-micro": "^2.12.0",
+    "apollo-server-micro": "^2.14.2",
     "axios": "^0.19.2",
     "bcryptjs": "^2.4.3",
     "cookie": "^0.4.0",
