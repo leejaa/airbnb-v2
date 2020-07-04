@@ -20,7 +20,6 @@ export default ({ }: props) => {
     const idList = _.map(data2.selectRooms, item => item.id);
     return parseInt(idList[Math.floor(Math.random() * idList.length)]);
   }, [data2]);
-  console.log('id', id);
   const { data, loading } = useSelectRoomQuery({
     variables: {
       id,

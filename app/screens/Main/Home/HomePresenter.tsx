@@ -4,7 +4,7 @@ import styled from "styled-components/native";
 import { View, Text } from "react-native";
 import Input from "../../../components/Home/Input";
 import utils, { SCREEN_HEIGHT, SCREEN_WIDTH } from "../../../utils";
-import { Ionicons } from "@expo/vector-icons";
+import { Ionicons, Entypo, FontAwesome } from "@expo/vector-icons";
 import Slider from "../../../components/Home/Slider";
 import Slider2 from "../../../components/Home/Slider2";
 import { SelectRoomsQuery } from "../../../generated/graphql";
@@ -77,6 +77,23 @@ const LoadingContainer2 = styled.View`
   top: 40%;
   left: 40%;
 `;
+const MapContainer = styled.TouchableOpacity`
+    position: absolute;
+    bottom: 3%;
+    left: ${SCREEN_WIDTH / 2.5}px;
+    width: ${SCREEN_WIDTH / 5}px;
+    height: ${SCREEN_HEIGHT / 17}px;
+    background-color: black;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+    border-radius: 20px;
+    z-index: 100;
+`;
+const MapContainerText = styled.Text`
+    color: white;
+`;
 
 const styles = StyleSheet.create({
     Container8: {
@@ -111,6 +128,7 @@ export default ({
     loading,
     globalLoading,
 }: props) => {
+    const navigation = useNavigation();
     const dispatch = useDispatch();
     const { showLikeModal = false, modalMessage = "", roomList = [], searchedPlaceWord = "", limit = 5 } = useSelector((state: rootState) => state.homeReducer);
     const animateRef = useRef(new Animated.Value(-100)).current;
@@ -198,6 +216,10 @@ export default ({
             <Animated.View style={[styles.Container8, { bottom: animateRef }]}>
                 <Text1>{modalMessage}</Text1>
             </Animated.View>
+            <MapContainer onPress={() => navigation.navigate("SearchMap")}>
+                <FontAwesome name="map" size={15} color="white" />
+                <MapContainerText>지도</MapContainerText>
+            </MapContainer>
         </Container0>
     )
 }

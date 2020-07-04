@@ -15,6 +15,7 @@ import SearchCalendar from "../screens/Main/SearchCalendar";
 import AddGuests from "../screens/Main/AddGuests";
 import Review from "../screens/Room/Review";
 import Avatar from "../screens/Room/Avatar";
+import SearchMap from "../screens/Main/SearchMap";
 
 const TabsNavigator = createBottomTabNavigator();
 const Tabs = () => (
@@ -140,6 +141,11 @@ export default () => {
         name="Search"
         options={{ headerShown: false }}
         component={Search}
+      />
+      <MainNavigator.Screen
+        name="SearchMap"
+        options={{ headerShown: false }}
+        component={SearchMap}
       />
     </MainNavigator.Navigator>
   )
