@@ -14,8 +14,10 @@ export type homeReducerType = {
   modalMessage: string,
   searchReviewText: string,
   searchedPlaceWord: string,
-  roomList: Array<any>,
+  roomList: any,
   globalLoading: boolean,
+  pageSize: number,
+  limit: number,
 }
 let initialState: homeReducerType = {
   showSearchModal: false,
@@ -33,6 +35,8 @@ let initialState: homeReducerType = {
   searchedPlaceWord: "",
   roomList: [],
   globalLoading: false,
+  pageSize: 5,
+  limit: 5,
 };
 
 const homeSlice = createSlice({
@@ -66,6 +70,7 @@ const homeSlice = createSlice({
     },
     setRoomList(state, action) {
       state.roomList = action.payload.data;
+      state.limit = state.limit + state.pageSize;
     },
     setGlobalLoading(state, action) {
       state.globalLoading = action.payload.data;
@@ -73,7 +78,7 @@ const homeSlice = createSlice({
   }
 });
 
-export const getPlaceInfoList = async ({ searchedPlaceWord, dispatch } : any) => {
+export const getPlaceInfoList = async ({ searchedPlaceWord, dispatch, limit = 5 } : any) => {
   const selectRooms = [];
   let room : any = {};
   let url = `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${searchedPlaceWord}+카페&key=${GOOGLE_CLIENT_ID}`;
@@ -81,7 +86,7 @@ export const getPlaceInfoList = async ({ searchedPlaceWord, dispatch } : any) =>
   });
   let placeList = result?.data?.results ?? [];
   if (!_.isEmpty(placeList)) {
-    for (const place of placeList.slice(0, 5)) {
+    for (const place of placeList.slice(0, limit)) {
       url = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${place.place_id}&fields=name,rating,formatted_phone_number,photos&key=${GOOGLE_CLIENT_ID}`;
       result = await axios.get(url, {
       });

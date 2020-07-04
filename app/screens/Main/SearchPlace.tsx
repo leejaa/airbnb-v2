@@ -61,7 +61,7 @@ interface props {
 
 export default ({
 }: props) => {
-    const { searchPlaceList = [], searchedPlaceWord } = useSelector((state: rootState) => state.homeReducer);
+    const { searchPlaceList = [], searchedPlaceWord = "강남" } = useSelector((state: rootState) => state.homeReducer);
     const dispatch = useDispatch();
     const navigation = useNavigation();
     const selectSearchPlace = useCallback((place_name) => {

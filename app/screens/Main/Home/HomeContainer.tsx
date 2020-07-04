@@ -27,13 +27,12 @@ export default ({ token }: props) => {
     notifyOnNetworkStatusChange: true,
   });
   const filteredData = useMemo(() => {
-    if (_.isEmpty(roomList)) {
+    if (_.isEmpty(roomList) || _.isEmpty(roomList?.selectRooms ?? [])) {
       return _.clone(data);
     } else {
       return roomList;
     }
-  }, [roomList]);
-  
+  }, [roomList, data]);
   return (
     <HomePresenter
       data={filteredData as any}

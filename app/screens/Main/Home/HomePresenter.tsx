@@ -11,10 +11,11 @@ import { SelectRoomsQuery } from "../../../generated/graphql";
 import Header from "../../../components/Common/Header";
 import ModalComponent from "../../../components/Common/Modal";
 import _ from "lodash";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { rootState } from "../../../redux/rootReducer";
 import { useNavigation } from "@react-navigation/native";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import { getPlaceInfoList } from "../../../redux/homeSlice";
 
 const Container0 = styled.View`
 `;
@@ -73,8 +74,8 @@ const LoadingContainer = styled.View`
 `;
 const LoadingContainer2 = styled.View`
   position: absolute;
-  top: 50%;
-  left: 50%;
+  top: 40%;
+  left: 40%;
 `;
 
 const styles = StyleSheet.create({
@@ -110,7 +111,8 @@ export default ({
     loading,
     globalLoading,
 }: props) => {
-    const { showLikeModal = false, modalMessage = "" } = useSelector((state: rootState) => state.homeReducer);
+    const dispatch = useDispatch();
+    const { showLikeModal = false, modalMessage = "", roomList = [], searchedPlaceWord = "", limit = 5 } = useSelector((state: rootState) => state.homeReducer);
     const animateRef = useRef(new Animated.Value(-100)).current;
     useEffect(() => {
         if (showLikeModal) {
@@ -146,17 +148,25 @@ export default ({
                         let paddingToBottom = 10;
                         paddingToBottom += e.nativeEvent.layoutMeasurement.height;
                         if (e.nativeEvent.contentOffset.y + paddingToBottom >= e.nativeEvent.contentSize.height) {
-                            fetchMore({
-                                variables: {
-                                    first: pageSize,
-                                    skip: newSkip,
-                                },
-                                updateQuery: (prev: { selectRooms: any; }, { fetchMoreResult }: any) => {
-                                    return Object.assign({}, prev, {
-                                        selectRooms: [...prev.selectRooms, ...fetchMoreResult.selectRooms]
-                                    });
-                                }
-                            });
+                            if (_.isEmpty(roomList)) {
+                                fetchMore({
+                                    variables: {
+                                        first: pageSize,
+                                        skip: newSkip,
+                                    },
+                                    updateQuery: (prev: { selectRooms: any; }, { fetchMoreResult }: any) => {
+                                        return Object.assign({}, prev, {
+                                            selectRooms: [...prev.selectRooms, ...fetchMoreResult.selectRooms]
+                                        });
+                                    }
+                                });
+                            } else {
+                                // getPlaceInfoList({
+                                //     searchedPlaceWord,
+                                //     dispatch,
+                                //     limit,
+                                // });
+                            }
                         }
                     }
                 }
