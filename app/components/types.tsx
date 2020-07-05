@@ -25,6 +25,7 @@ export interface sliderProps {
     adjustmentRate?: number,
     adjustmentRate2?: number,
     roomList?: any,
+    onScrollEndDrag?: any,
 }
 export interface reviewProps {
     review: Review,

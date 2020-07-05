@@ -126,8 +126,8 @@ const HeartContainer: any = styled.TouchableOpacity`
     background-color: white;
     border-radius: ${SCREEN_WIDTH / 36}px;
     position: absolute;
-    right: 3%;
-    top: 3%;
+    right: 7%;
+    top: 5%;
     z-index: 100;
     display: flex;
     justify-content: center;
@@ -141,17 +141,11 @@ const Slider2: React.FC<sliderProps> = ({
     adjustmentRate2 = 0.05,
     showLikeButton = false,
     roomList = [],
+    onScrollEndDrag = () => console.log('onScrollEndDrag'),
 }) => {
-    // const [snapToIntervalNumber, setSnapToIntervalNumber] = useState(SCREEN_WIDTH * adjustmentRate);
     const snapToIntervalNumber = useMemo(() => {
         return SCREEN_WIDTH * adjustmentRate;
     }, [adjustmentRate]);
-    const onScroll = useCallback((data) => {
-        // let x = data?.nativeEvent?.contentOffset?.x ?? 1;
-        // x = x === 0 ? 1 : x;
-        // const intervalWidth = Math.round(SCREEN_WIDTH * adjustmentRate);
-        // const page = Math.abs(Math.round(x / intervalWidth));
-    }, [snapToIntervalNumber, adjustmentRate]);
     const contentContainerStyle = useMemo(() => {
         return { width: SCREEN_WIDTH * adjustmentRate * (_.size(room?.photo) - 1) + SCREEN_WIDTH * (adjustmentRate + adjustmentRate2) * 1 };
     }, [adjustmentRate, adjustmentRate2, room]);
@@ -169,7 +163,6 @@ const Slider2: React.FC<sliderProps> = ({
                 pagingEnabled={true}
                 decelerationRate={"fast"}
                 contentContainerStyle={contentContainerStyle}
-                onScrollEndDrag={onScroll}
                 scrollEventThrottle={200}
                 snapToInterval={snapToIntervalNumber}
                 disableIntervalMomentum={true}
@@ -209,7 +202,7 @@ const Slider2: React.FC<sliderProps> = ({
                 pagingEnabled={true}
                 decelerationRate={"fast"}
                 contentContainerStyle={contentContainerStyle2}
-                onScrollEndDrag={onScroll}
+                onScrollEndDrag={onScrollEndDrag}
                 scrollEventThrottle={200}
                 snapToInterval={snapToIntervalNumber}
                 disableIntervalMomentum={true}
@@ -244,6 +237,9 @@ const Slider2: React.FC<sliderProps> = ({
                                         </CardContainerRight3>
                                     </CardContainerRight>
                                 </CardContainer>
+                                <HeartContainer>
+                                    <FontAwesome5 name="heart" size={15} color="black" />
+                                </HeartContainer>
                             </Container2>
                         )
                     })

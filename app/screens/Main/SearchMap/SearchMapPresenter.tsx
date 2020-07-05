@@ -60,11 +60,15 @@ const styles = StyleSheet.create({
 interface props {
     roomList: any,
     focusedRoomIndex: number,
+    adjustmentRate: number,
+    onScrollEndDrag: any,
 }
 
 export default ({
     roomList,
     focusedRoomIndex,
+    adjustmentRate,
+    onScrollEndDrag,
 }: props) => {
     const navigation = useNavigation();
     return (
@@ -106,9 +110,10 @@ export default ({
                 <Slider2
                     cssType="002"
                     roomList={roomList}
-                    adjustmentRate={0.8}
+                    adjustmentRate={adjustmentRate}
                     adjustmentRate2={0.1}
                     showLikeButton={true}
+                    onScrollEndDrag={onScrollEndDrag}
                 />
             </RoomSliderContainer>
         </Container0>
