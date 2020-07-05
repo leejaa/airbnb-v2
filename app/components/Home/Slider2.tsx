@@ -28,6 +28,82 @@ const Container4: any = styled.View`
     display: flex;
     justify-content: center;
 `;
+const CardContainer: any = styled.View`
+    width: 90%;
+    height: 100%;
+    background-color: white;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: row;
+`;
+const CardContainerLeft = styled.View`
+    width: 30%;
+    height: 100%;
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: 20px;
+`;
+const CardContainerRight = styled.View`
+    width: 70%;
+    height: 100%;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    padding-top: 2%;
+    padding-bottom: 2%;
+`;
+const CardContainerRight1 = styled.View`
+    width: 100%;
+    height: 25%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+`;
+const CardContainerRight1Label = styled.View`
+    width: 30%;
+    height: 80%;
+    border-width: 1px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: ${SCREEN_WIDTH / 60}px;
+`;
+const CardContainerRight1LabelText = styled.Text`
+    font-size: ${SCREEN_WIDTH / 40}px;
+`;
+const CardContainerRight1Text = styled.Text`
+    font-size: ${SCREEN_WIDTH / 35}px;
+    color: gray;
+`;
+const CardContainerRight2 = styled.View`
+    width: 100%;
+    height: 50%;
+`;
+const CardContainerRight2Text = styled.Text`
+    font-size: ${SCREEN_WIDTH / 33}px;
+`;
+const CardContainerRight3 = styled.View`
+    width: 100%;
+    height: 20%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+`;
+const CardContainerRight3View = styled.View`
+    width: 25%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+`;
+const CardContainerRight3Text1 = styled.Text`
+    font-size: ${SCREEN_WIDTH / 35}px;
+`;
+const CardContainerRight3Text2 = styled.Text`
+    font-size: ${SCREEN_WIDTH / 35}px;
+    color: gray;
+`;
+
 const Container4Text: any = styled.Text`
     color: #8E8C8C;
 `;
@@ -37,6 +113,12 @@ const Image1: any = styled.Image`
     width: 100%;
     height: 100%;
     border-radius: 7px;
+`;
+const Image2: any = styled.Image`
+    width: 100%;
+    height: 100%;
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: 20px;
 `;
 const HeartContainer: any = styled.TouchableOpacity`
     width: ${SCREEN_WIDTH / 18}px;
@@ -60,7 +142,10 @@ const Slider2: React.FC<sliderProps> = ({
     showLikeButton = false,
     roomList = [],
 }) => {
-    const [snapToIntervalNumber, setSnapToIntervalNumber] = useState(SCREEN_WIDTH * adjustmentRate);
+    // const [snapToIntervalNumber, setSnapToIntervalNumber] = useState(SCREEN_WIDTH * adjustmentRate);
+    const snapToIntervalNumber = useMemo(() => {
+        return SCREEN_WIDTH * adjustmentRate;
+    }, [adjustmentRate]);
     const onScroll = useCallback((data) => {
         // let x = data?.nativeEvent?.contentOffset?.x ?? 1;
         // x = x === 0 ? 1 : x;
@@ -70,6 +155,9 @@ const Slider2: React.FC<sliderProps> = ({
     const contentContainerStyle = useMemo(() => {
         return { width: SCREEN_WIDTH * adjustmentRate * (_.size(room?.photo) - 1) + SCREEN_WIDTH * (adjustmentRate + adjustmentRate2) * 1 };
     }, [adjustmentRate, adjustmentRate2, room]);
+    const contentContainerStyle2 = useMemo(() => {
+        return { width: SCREEN_WIDTH * adjustmentRate * (_.size(roomList?.selectRooms) - 1) + SCREEN_WIDTH * (adjustmentRate + adjustmentRate2) * 1 };
+    }, [adjustmentRate, adjustmentRate2, roomList]);
     useEffect(() => {
 
     }, []);
@@ -120,39 +208,49 @@ const Slider2: React.FC<sliderProps> = ({
                 showsHorizontalScrollIndicator={false}
                 pagingEnabled={true}
                 decelerationRate={"fast"}
-                contentContainerStyle={contentContainerStyle}
+                contentContainerStyle={contentContainerStyle2}
                 onScrollEndDrag={onScroll}
                 scrollEventThrottle={200}
                 snapToInterval={snapToIntervalNumber}
                 disableIntervalMomentum={true}
             >
                 {
-                    roomList?.selectRooms.map((room : any, index : any) => {
+                    roomList?.selectRooms.map((room: any, index: any) => {
                         return (
                             <Container2
                                 key={room.id}
-                                container2Width={_.isEqual(index, 0) ? SCREEN_WIDTH * (adjustmentRate + adjustmentRate2) : SCREEN_WIDTH * adjustmentRate}>
-                                <Container3>
-                                    {
-                                        showLikeButton && (
-                                            <HeartContainer>
-                                                <FontAwesome5 name="heart" size={15} color="black" />
-                                            </HeartContainer>
-                                        )
-                                    }
-                                    <Image1 key={room.id} source={{ uri: room?.photo?.[0]?.file ?? "" }} />
-                                </Container3>
-                                <Container4>
-                                    <Container4Text>{room?.name}</Container4Text>
-                                    <Container4Text2>{room?.address}</Container4Text2>
-                                </Container4>
+                                container2Width={_.isEqual(index, 0) ? SCREEN_WIDTH * (adjustmentRate + adjustmentRate2) : SCREEN_WIDTH * adjustmentRate}
+                            >
+                                <CardContainer>
+                                    <CardContainerLeft>
+                                        <Image2 key={room.id} source={{ uri: room?.photo?.[0]?.file }} />
+                                    </CardContainerLeft>
+                                    <CardContainerRight>
+                                        <CardContainerRight1>
+                                            <CardContainerRight1Label>
+                                                <CardContainerRight1LabelText>슈퍼호스트</CardContainerRight1LabelText>
+                                            </CardContainerRight1Label>
+                                            <CardContainerRight1Text>{room?.name ?? ""}</CardContainerRight1Text>
+                                        </CardContainerRight1>
+                                        <CardContainerRight2>
+                                            <CardContainerRight2Text>{room?.address ?? ""}</CardContainerRight2Text>
+                                        </CardContainerRight2>
+                                        <CardContainerRight3>
+                                            <CardContainerRight3View>
+                                                <AntDesign name="star" size={12} color="rgb(255, 56, 92)" />
+                                                <CardContainerRight3Text1>{room?.score ?? 0}</CardContainerRight3Text1>
+                                                <CardContainerRight3Text2>{`(${room?.price ?? 0})`}</CardContainerRight3Text2>
+                                            </CardContainerRight3View>
+                                        </CardContainerRight3>
+                                    </CardContainerRight>
+                                </CardContainer>
                             </Container2>
                         )
                     })
                 }
             </Container>
         );
-    }, [room, snapToIntervalNumber, adjustmentRate, adjustmentRate2]);
+    }, [room, snapToIntervalNumber, adjustmentRate, adjustmentRate2, roomList]);
     let Slider2;
     switch (cssType) {
         case "001":

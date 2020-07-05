@@ -45,9 +45,8 @@ const MapMarkerContainer: any = styled.View`
     align-items: center;
 `;
 const RoomSliderContainer = styled.View`
-    border-width: 1px;
     position: absolute;
-    bottom: ${SCREEN_HEIGHT / 9}px;
+    bottom: ${SCREEN_HEIGHT / 10}px;
     width: ${SCREEN_WIDTH}px;
     height: ${SCREEN_HEIGHT / 7}px;
     z-index: 100;
@@ -107,8 +106,8 @@ export default ({
                 <Slider2
                     cssType="002"
                     roomList={roomList}
-                    adjustmentRate={0.42}
-                    adjustmentRate2={0.05}
+                    adjustmentRate={0.8}
+                    adjustmentRate2={0.1}
                     showLikeButton={true}
                 />
             </RoomSliderContainer>
