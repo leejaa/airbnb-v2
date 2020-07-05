@@ -1,21 +1,13 @@
 import React, { useCallback, useState, useRef, useEffect } from "react";
-import { Dimensions, ActivityIndicator, StyleSheet, Animated } from 'react-native';
+import { Dimensions, ActivityIndicator, StyleSheet, Animated, Alert, View, Text } from 'react-native';
 import styled from "styled-components/native";
-import { View, Text } from "react-native";
-import Input from "../../../components/Home/Input";
 import utils, { SCREEN_HEIGHT, SCREEN_WIDTH } from "../../../utils";
 import { Ionicons, Entypo, FontAwesome, AntDesign, MaterialCommunityIcons } from "@expo/vector-icons";
-import Slider from "../../../components/Home/Slider";
-import Slider2 from "../../../components/Home/Slider2";
-import { SelectRoomsQuery } from "../../../generated/graphql";
-import Header from "../../../components/Common/Header";
-import ModalComponent from "../../../components/Common/Modal";
 import _ from "lodash";
-import { useSelector, useDispatch } from "react-redux";
-import { rootState } from "../../../redux/rootReducer";
+import MapView from "react-native-maps";
+import { Marker } from "react-native-maps";
 import { useNavigation } from "@react-navigation/native";
-import { TouchableOpacity } from "react-native-gesture-handler";
-import { getPlaceInfoList } from "../../../redux/homeSlice";
+import Slider2 from "../../../components/Home/Slider2";
 
 const Container0 = styled.View`
     width: ${SCREEN_WIDTH}px;
@@ -37,30 +29,89 @@ const TopContainer = styled.View`
 const CloseContainer = styled.TouchableOpacity`
     width: ${SCREEN_WIDTH / 10}px;
     height: ${SCREEN_WIDTH / 10}px;
-    border-width: 1px;
     border-radius: ${SCREEN_WIDTH / 50}px;
     background-color: white;
     display: flex;
     justify-content: center;
     align-items: center;
 `;
-
+const MapMarkerContainer: any = styled.View`
+    width: ${SCREEN_WIDTH / 10}px;
+    height: ${SCREEN_WIDTH / 10}px;
+    background-color: ${(props: any) => props.color};
+    border-radius: ${SCREEN_WIDTH / 20}px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+`;
+const RoomSliderContainer = styled.View`
+    border-width: 1px;
+    position: absolute;
+    bottom: ${SCREEN_HEIGHT / 9}px;
+    width: ${SCREEN_WIDTH}px;
+    height: ${SCREEN_HEIGHT / 7}px;
+    z-index: 100;
+`;
+const styles = StyleSheet.create({
+    MapContainer: {
+        width: '100%',
+        height: '100%',
+    }
+});
 interface props {
+    roomList: any,
+    focusedRoomIndex: number,
 }
 
 export default ({
+    roomList,
+    focusedRoomIndex,
 }: props) => {
-
+    const navigation = useNavigation();
     return (
         <Container0>
             <TopContainer>
-                <CloseContainer>
+                <CloseContainer onPress={() => navigation.goBack()}>
                     <AntDesign name="close" size={20} color="black" />
                 </CloseContainer>
                 <CloseContainer>
                     <MaterialCommunityIcons name="sort-variant" size={20} color="black" />
                 </CloseContainer>
             </TopContainer>
+            <MapView
+                style={styles.MapContainer}
+                region={{
+                    latitude: roomList?.selectRooms?.[focusedRoomIndex]?.lat ?? 0,
+                    longitude: roomList?.selectRooms?.[focusedRoomIndex]?.lng ?? 0,
+                    latitudeDelta: 0.015,
+                    longitudeDelta: 0.015,
+                }}
+            >
+                {
+                    _.map(roomList?.selectRooms ?? [], (room, index) => (
+                        <Marker
+                            key={room.id}
+                            coordinate={{
+                                latitude: room?.lat ?? 0,
+                                longitude: room?.lng ?? 0,
+                            }}
+                        >
+                            <MapMarkerContainer color={_.isEqual(index, focusedRoomIndex) ? "black" : "white"}>
+                                <FontAwesome name="home" size={24} color={_.isEqual(index, focusedRoomIndex) ? "white" : "black"} />
+                            </MapMarkerContainer>
+                        </Marker>
+                    ))
+                }
+            </MapView>
+            <RoomSliderContainer>
+                <Slider2
+                    cssType="002"
+                    roomList={roomList}
+                    adjustmentRate={0.42}
+                    adjustmentRate2={0.05}
+                    showLikeButton={true}
+                />
+            </RoomSliderContainer>
         </Container0>
     )
 }

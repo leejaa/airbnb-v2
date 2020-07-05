@@ -58,6 +58,7 @@ const Slider2: React.FC<sliderProps> = ({
     adjustmentRate = 0.7,
     adjustmentRate2 = 0.05,
     showLikeButton = false,
+    roomList = [],
 }) => {
     const [snapToIntervalNumber, setSnapToIntervalNumber] = useState(SCREEN_WIDTH * adjustmentRate);
     const onScroll = useCallback((data) => {
@@ -112,10 +113,53 @@ const Slider2: React.FC<sliderProps> = ({
             </Container>
         );
     }, [room, snapToIntervalNumber, adjustmentRate, adjustmentRate2]);
+    const Slider002 = useMemo(() => {
+        return (
+            <Container
+                horizontal={true}
+                showsHorizontalScrollIndicator={false}
+                pagingEnabled={true}
+                decelerationRate={"fast"}
+                contentContainerStyle={contentContainerStyle}
+                onScrollEndDrag={onScroll}
+                scrollEventThrottle={200}
+                snapToInterval={snapToIntervalNumber}
+                disableIntervalMomentum={true}
+            >
+                {
+                    roomList?.selectRooms.map((room : any, index : any) => {
+                        return (
+                            <Container2
+                                key={room.id}
+                                container2Width={_.isEqual(index, 0) ? SCREEN_WIDTH * (adjustmentRate + adjustmentRate2) : SCREEN_WIDTH * adjustmentRate}>
+                                <Container3>
+                                    {
+                                        showLikeButton && (
+                                            <HeartContainer>
+                                                <FontAwesome5 name="heart" size={15} color="black" />
+                                            </HeartContainer>
+                                        )
+                                    }
+                                    <Image1 key={room.id} source={{ uri: room?.photo?.[0]?.file ?? "" }} />
+                                </Container3>
+                                <Container4>
+                                    <Container4Text>{room?.name}</Container4Text>
+                                    <Container4Text2>{room?.address}</Container4Text2>
+                                </Container4>
+                            </Container2>
+                        )
+                    })
+                }
+            </Container>
+        );
+    }, [room, snapToIntervalNumber, adjustmentRate, adjustmentRate2]);
     let Slider2;
     switch (cssType) {
         case "001":
             Slider2 = _.clone(Slider001);
+            break;
+        case "002":
+            Slider2 = _.clone(Slider002);
             break;
         default:
             Slider2 = _.clone(Slider001);

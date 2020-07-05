@@ -24,6 +24,7 @@ export interface sliderProps {
     showPageLabelText?: boolean,
     adjustmentRate?: number,
     adjustmentRate2?: number,
+    roomList?: any,
 }
 export interface reviewProps {
     review: Review,
