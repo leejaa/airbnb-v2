@@ -78,10 +78,13 @@ const homeSlice = createSlice({
   }
 });
 
-export const getPlaceInfoList = async ({ searchedPlaceWord, dispatch, limit = 5 } : any) => {
+export const getPlaceInfoList = async ({ searchedPlaceWord = "", dispatch, limit = 5, latitude = 0, longitude = 0, action = "default" } : any) => {
   const selectRooms = [];
   let room : any = {};
   let url = `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${searchedPlaceWord}+카페&key=${GOOGLE_CLIENT_ID}`;
+  if (_.isEqual(action, "findByLocation")) {
+    url = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${latitude},${longitude}&radius=1500&type=cafe&key=${GOOGLE_CLIENT_ID}`;
+  }
   let result = await axios.get(url, {
   });
   let placeList = result?.data?.results ?? [];
@@ -93,12 +96,12 @@ export const getPlaceInfoList = async ({ searchedPlaceWord, dispatch, limit = 5 
       room = {
         id: place.id,
         name: place.name,
-        address: place.formatted_address,
+        address: place.formatted_address || place.vicinity,
         country: "한국",
-        description: place.formatted_address,
+        description: place.formatted_address || place.vicinity,
         lat: place?.geometry?.location?.lat ?? 0,
         lng: place?.geometry?.location?.lng ?? 0,
-        price: place?.user_ratings_total ?? 0,
+        price: place.user_ratings_total || place.price_level || 0,
         photo: [],
         score: place?.rating ?? 0,
         __typename: "Room",

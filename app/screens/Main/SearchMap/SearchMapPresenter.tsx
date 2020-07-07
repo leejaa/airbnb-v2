@@ -1,13 +1,14 @@
-import React, { useCallback, useState, useRef, useEffect } from "react";
+import React, { useCallback, useState, useRef, useEffect, useLayoutEffect } from "react";
 import { Dimensions, ActivityIndicator, StyleSheet, Animated, Alert, View, Text } from 'react-native';
 import styled from "styled-components/native";
-import utils, { SCREEN_HEIGHT, SCREEN_WIDTH } from "../../../utils";
-import { Ionicons, Entypo, FontAwesome, AntDesign, MaterialCommunityIcons } from "@expo/vector-icons";
+import utils, { SCREEN_HEIGHT, SCREEN_WIDTH, useDidMountEffect } from "../../../utils";
+import { Ionicons, Entypo, FontAwesome, AntDesign, MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
 import _ from "lodash";
 import MapView from "react-native-maps";
 import { Marker } from "react-native-maps";
 import { useNavigation } from "@react-navigation/native";
 import Slider2 from "../../../components/Home/Slider2";
+import { getPlaceInfoListByLocation, getPlaceInfoList } from "../../../redux/homeSlice";
 
 const Container0 = styled.View`
     width: ${SCREEN_WIDTH}px;
@@ -32,6 +33,16 @@ const CloseContainer = styled.TouchableOpacity`
     border-radius: ${SCREEN_WIDTH / 50}px;
     background-color: white;
     display: flex;
+    justify-content: center;
+    align-items: center;
+`;
+const SearchContainer = styled.TouchableOpacity`
+    width: ${SCREEN_WIDTH / 3.5}px;
+    height: ${SCREEN_WIDTH / 10}px;
+    border-radius: ${SCREEN_WIDTH / 30}px;
+    background-color: white;
+    display: flex;
+    flex-direction: row;
     justify-content: center;
     align-items: center;
 `;
@@ -62,6 +73,12 @@ interface props {
     focusedRoomIndex: number,
     adjustmentRate: number,
     onScrollEndDrag: any,
+    showSearchButton: boolean,
+    onRegionChange: any,
+    onRegionChangeComplete: any,
+    searchThisArea: any,
+    onMapReady: any,
+    globalLoading: boolean,
 }
 
 export default ({
@@ -69,6 +86,12 @@ export default ({
     focusedRoomIndex,
     adjustmentRate,
     onScrollEndDrag,
+    showSearchButton,
+    onRegionChange,
+    onRegionChangeComplete,
+    searchThisArea,
+    onMapReady,
+    globalLoading,
 }: props) => {
     const navigation = useNavigation();
     return (
@@ -77,18 +100,30 @@ export default ({
                 <CloseContainer onPress={() => navigation.goBack()}>
                     <AntDesign name="close" size={20} color="black" />
                 </CloseContainer>
+                {
+                    showSearchButton && (
+                        <SearchContainer onPress={searchThisArea}>
+                            <MaterialIcons name="refresh" size={20} color="black" />
+                            <Text> {globalLoading ? "검색중..." : "이 지역 검색"}</Text>
+                        </SearchContainer>
+                    )
+                }
                 <CloseContainer>
                     <MaterialCommunityIcons name="sort-variant" size={20} color="black" />
                 </CloseContainer>
             </TopContainer>
             <MapView
                 style={styles.MapContainer}
-                region={{
+                initialRegion={{
                     latitude: roomList?.selectRooms?.[focusedRoomIndex]?.lat ?? 0,
                     longitude: roomList?.selectRooms?.[focusedRoomIndex]?.lng ?? 0,
-                    latitudeDelta: 0.015,
-                    longitudeDelta: 0.015,
+                    latitudeDelta: utils.isAndroid() ? 0.015 : 0.155,
+                    longitudeDelta: utils.isAndroid() ? 0.015 : 0.155,
                 }}
+                onRegionChange={onRegionChange}
+                onRegionChangeComplete={onRegionChangeComplete}
+                onMapReady={onMapReady}
+                zoomEnabled={true}
             >
                 {
                     _.map(roomList?.selectRooms ?? [], (room, index) => (

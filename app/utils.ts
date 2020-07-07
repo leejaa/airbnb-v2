@@ -2,6 +2,7 @@ import { Platform } from "react-native";
 import { Dimensions } from "react-native";
 import moment from "moment";
 import _ from "lodash";
+import { useRef, useEffect } from "react";
 const { width, height } = Dimensions.get("screen");
 const format = 'YYYY-MM-DD';
 export default {
@@ -32,4 +33,13 @@ export const getDatesEachMonths = ({baseDate, monthPageSize} : any) => {
       dateArray.push(newDateArray);
   });
   return dateArray;
+}
+
+
+export const useDidMountEffect = (func : any, deps : any) => {
+    const didMount = useRef(false);
+    useEffect(() => {
+        if (didMount.current) func();
+        else didMount.current = true;
+    }, deps);
 }

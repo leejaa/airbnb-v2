@@ -6,13 +6,14 @@ import { inputProps, sliderProps } from "../types";
 import { SCREEN_WIDTH, SCREEN_HEIGHT } from "../../utils";
 import _ from "lodash";
 import { AntDesign, FontAwesome, FontAwesome5 } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
 
 const Container = styled.ScrollView`
     height: 100%;
     padding-top: 10px;
     padding-bottom: 10px;
 `;
-const Container2: any = styled.View`
+const Container2: any = styled.TouchableOpacity`
     width: ${(props: any) => props.container2Width}px;
     height: 100%;
     display: flex;
@@ -142,7 +143,9 @@ const Slider2: React.FC<sliderProps> = ({
     showLikeButton = false,
     roomList = [],
     onScrollEndDrag = () => console.log('onScrollEndDrag'),
+    destination = "RoomDetail",
 }) => {
+    const navigation = useNavigation();
     const snapToIntervalNumber = useMemo(() => {
         return SCREEN_WIDTH * adjustmentRate;
     }, [adjustmentRate]);
@@ -172,7 +175,8 @@ const Slider2: React.FC<sliderProps> = ({
                         return (
                             <Container2
                                 key={photo.id}
-                                container2Width={_.isEqual(index, 0) ? SCREEN_WIDTH * (adjustmentRate + adjustmentRate2) : SCREEN_WIDTH * adjustmentRate}>
+                                container2Width={_.isEqual(index, 0) ? SCREEN_WIDTH * (adjustmentRate + adjustmentRate2) : SCREEN_WIDTH * adjustmentRate}
+                            >
                                 <Container3>
                                     {
                                         showLikeButton && (
@@ -208,11 +212,12 @@ const Slider2: React.FC<sliderProps> = ({
                 disableIntervalMomentum={true}
             >
                 {
-                    roomList?.selectRooms.map((room: any, index: any) => {
+                    !_.isEmpty(roomList?.selectRooms ?? []) && roomList?.selectRooms.map((room: any, index: any) => {
                         return (
                             <Container2
                                 key={room.id}
                                 container2Width={_.isEqual(index, 0) ? SCREEN_WIDTH * (adjustmentRate + adjustmentRate2) : SCREEN_WIDTH * adjustmentRate}
+                                onPress={() => navigation.navigate(destination, { id: room?.id })}
                             >
                                 <CardContainer>
                                     <CardContainerLeft>
