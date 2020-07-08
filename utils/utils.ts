@@ -21,5 +21,6 @@ export const getDatesEachMonths = ({baseDate, monthPageSize} : any) => {
     return dateArray;
 }
 
-export const WEBSCREEN_WIDTH = window.screen.width;
-export const WEBSCREEN_HEIGHT = window.screen.height;
+export const WEBSCREEN_WIDTH = typeof window !== 'undefined' ? window.screen.width : 0;
+export const WEBSCREEN_HEIGHT = typeof window !== 'undefined' ? window.screen.height : 0;
+export const IS_CLIENT = typeof window !== 'undefined';
