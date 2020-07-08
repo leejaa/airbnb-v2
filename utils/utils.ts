@@ -20,3 +20,6 @@ export const getDatesEachMonths = ({baseDate, monthPageSize} : any) => {
     });
     return dateArray;
 }
+
+export const WEBSCREEN_WIDTH = window.screen.width;
+export const WEBSCREEN_HEIGHT = window.screen.height;
