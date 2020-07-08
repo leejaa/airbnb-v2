@@ -24,6 +24,7 @@ export type indexReducerType = {
     babyCnt: number,
   },
   modalMessage: string,
+  searchPlaceText: string,
 }
 let initialState : indexReducerType = {
   userId: undefined,
@@ -45,6 +46,7 @@ let initialState : indexReducerType = {
     babyCnt: 0,
   },
   modalMessage: "좋아요에 추가되었습니다.",
+  searchPlaceText: "",
 };
 
 const indexSlice = createSlice({
@@ -93,11 +95,14 @@ const indexSlice = createSlice({
     changeGuestInfo(state, action) {
       state.guestInfo = action.payload.data;
     },
+    setSearchPlaceText(state, action) {
+      state.searchPlaceText = action.payload.data;
+    },
   }
 });
 
 export const { toggleShowJoinModal, toggleShowLoginModal, toggleIsLogin, toggleShowSearchModal, toggleShowHeader, toggleShowSearchPlace, toggleShowSearchCalendar,
-  changeSelectedDateRange, toggleAddGuest, toggleShowSearchTotalModal, toggleSearchTotalModalIndex, changeGuestInfo, toggleLikeModal
+  changeSelectedDateRange, toggleAddGuest, toggleShowSearchTotalModal, toggleSearchTotalModalIndex, changeGuestInfo, toggleLikeModal, setSearchPlaceText
 } = indexSlice.actions;
 
 export default indexSlice.reducer;

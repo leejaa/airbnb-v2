@@ -1,9 +1,9 @@
-import React, { useCallback, useState, useMemo } from "react";
+import React, { useCallback, useState, useMemo, useEffect } from "react";
 import axios from "axios";
 import { InputProps, SearchProps, SearchPlaceProps, SearchTotalModalProps } from "../types";
 import { CloseOutlined } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
-import { toggleShowHeader, toggleShowSearchTotalModal, toggleSearchTotalModalIndex, changeSelectedDateRange, changeGuestInfo } from "../../redux/indexSlice";
+import { toggleShowHeader, toggleShowSearchTotalModal, toggleSearchTotalModalIndex, changeSelectedDateRange, changeGuestInfo, setSearchPlaceText } from "../../redux/indexSlice";
 import Button from "./Button";
 import { rootState } from "../../redux/rootReducer";
 import Input from "./Input";
@@ -46,15 +46,17 @@ const SearchTotalModal: React.FunctionComponent<SearchTotalModalProps> = ({
     const [searchResultList, setSearchResultList] = useState([]);
     const onChangeSearchPlace = useCallback((e) => {
         setSearchPlace(e?.target?.value ?? '');
-        searchAddress();
+        searchAddress(e?.target?.value ?? '');
     }, [searchPlace, searchResultList]);
-    const searchAddress = useCallback(async () => {
-        const result = await axios.get(`https://dapi.kakao.com/v2/local/search/keyword.json?query=${searchPlace}`, {
-            headers: {
-                Authorization: `KakaoAK ${process.env.KAKAO_KEY}`
-            }
-        });
-        setSearchResultList(result?.data?.documents ?? []);
+    const searchAddress = useCallback(async (data) => {
+        if (!_.isEmpty(data)) {
+            const result = await axios.get(`https://dapi.kakao.com/v2/local/search/keyword.json?query=${data}`, {
+                headers: {
+                    Authorization: `KakaoAK ${process.env.KAKAO_KEY}`
+                }
+            });
+            setSearchResultList(result?.data?.documents ?? []);
+        }
     }, [searchPlace, searchResultList]);
     const selectedDateText = useMemo(() => {
         let selectedDateText = "";
@@ -63,6 +65,9 @@ const SearchTotalModal: React.FunctionComponent<SearchTotalModalProps> = ({
         }
         return selectedDateText;
     }, [selectedDateRange]);
+    useEffect(() => {
+        dispatch(setSearchPlaceText({data: searchPlace}));
+    }, [searchPlace]);
     return (
         <div className="absolute w-full h-80p bottom-0 flex items-center justify-center">
             <div className="w-9/12 h-90p flex flex-col">

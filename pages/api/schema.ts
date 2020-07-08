@@ -201,6 +201,8 @@ const Query = objectType({
         } catch (error) {
           console.log('error', error);
           return null;
+        } finally {
+          await prisma.disconnect();
         }
       },
     })
@@ -239,6 +241,7 @@ const Query = objectType({
             id: 'desc'
           }
         });
+        await prisma.disconnect();
         return rooms;
       },
     })
@@ -279,7 +282,6 @@ const Query = objectType({
           first,
           skip,
         });
-        console.log('photos', JSON.stringify(photos));
         return photos;
       },
     })
