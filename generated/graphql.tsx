@@ -82,6 +82,7 @@ export type Query = {
   selectLikes: Array<Like>;
   selectRoom: Room;
   selectRooms: Array<Room>;
+  searchRooms: Array<Room>;
   selectUser: User;
   selectUser2: User;
   selectAllUsers: Array<User>;
@@ -98,6 +99,11 @@ export type QuerySelectRoomArgs = {
 export type QuerySelectRoomsArgs = {
   first?: Maybe<Scalars['Int']>;
   skip?: Maybe<Scalars['Int']>;
+};
+
+
+export type QuerySearchRoomsArgs = {
+  searchedPlaceWord?: Maybe<Scalars['String']>;
 };
 
 
@@ -262,6 +268,23 @@ export type SelectRoomsQuery = (
         & Pick<User, 'id'>
       )> }
     )>> }
+  )> }
+);
+
+export type SearchRoomsQueryVariables = {
+  searchedPlaceWord: Scalars['String'];
+};
+
+
+export type SearchRoomsQuery = (
+  { __typename?: 'Query' }
+  & { searchRooms: Array<(
+    { __typename?: 'Room' }
+    & Pick<Room, 'id' | 'name' | 'address' | 'country' | 'description' | 'lat' | 'lng' | 'price' | 'score'>
+    & { photo: Array<(
+      { __typename?: 'Photo' }
+      & Pick<Photo, 'id' | 'file'>
+    )> }
   )> }
 );
 
@@ -533,6 +556,51 @@ export function useSelectRoomsLazyQuery(baseOptions?: ApolloReactHooks.LazyQuery
 export type SelectRoomsQueryHookResult = ReturnType<typeof useSelectRoomsQuery>;
 export type SelectRoomsLazyQueryHookResult = ReturnType<typeof useSelectRoomsLazyQuery>;
 export type SelectRoomsQueryResult = ApolloReactCommon.QueryResult<SelectRoomsQuery, SelectRoomsQueryVariables>;
+export const SearchRoomsDocument = gql`
+    query searchRooms($searchedPlaceWord: String!) {
+  searchRooms(searchedPlaceWord: $searchedPlaceWord) {
+    id
+    name
+    address
+    country
+    description
+    lat
+    lng
+    price
+    score
+    photo {
+      id
+      file
+    }
+  }
+}
+    `;
+
+/**
+ * __useSearchRoomsQuery__
+ *
+ * To run a query within a React component, call `useSearchRoomsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useSearchRoomsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useSearchRoomsQuery({
+ *   variables: {
+ *      searchedPlaceWord: // value for 'searchedPlaceWord'
+ *   },
+ * });
+ */
+export function useSearchRoomsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<SearchRoomsQuery, SearchRoomsQueryVariables>) {
+        return ApolloReactHooks.useQuery<SearchRoomsQuery, SearchRoomsQueryVariables>(SearchRoomsDocument, baseOptions);
+      }
+export function useSearchRoomsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<SearchRoomsQuery, SearchRoomsQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<SearchRoomsQuery, SearchRoomsQueryVariables>(SearchRoomsDocument, baseOptions);
+        }
+export type SearchRoomsQueryHookResult = ReturnType<typeof useSearchRoomsQuery>;
+export type SearchRoomsLazyQueryHookResult = ReturnType<typeof useSearchRoomsLazyQuery>;
+export type SearchRoomsQueryResult = ApolloReactCommon.QueryResult<SearchRoomsQuery, SearchRoomsQueryVariables>;
 export const SelectRoomDocument = gql`
     query selectRoom($id: Int!) {
   selectRoom(id: $id) {

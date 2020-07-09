@@ -26,6 +26,7 @@ module.exports = withPWA({
         IS_PRODUCTION: process.env.IS_PRODUCTION,
         GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
         GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
+        GOOGLE_MAP_CLIENT_ID: process.env.GOOGLE_MAP_CLIENT_ID,
         NAVER_CLIENT_ID: process.env.NAVER_CLIENT_ID,
         NAVER_CALLBACK_URL: process.env.NAVER_CALLBACK_URL,
         KAKAO_KEY: process.env.KAKAO_KEY,

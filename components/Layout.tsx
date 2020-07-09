@@ -17,10 +17,11 @@ import SearchTotalModal from "./common/SearchTotalModal";
 import Modal from "./index/Modal";
 
 type Props = {
-  props: any
+  props: any,
+  headerCssType?: string,
 };
 
-const Layout: React.FunctionComponent<Props> = ({ props, children }) => {
+const Layout: React.FunctionComponent<Props> = ({ props, children, headerCssType = "001" }) => {
   const isAuth = props?.isAuth ?? true;
   const router = useRouter();
   const { showJoinModal, showLoginModal, showSearchModal, showHeader = true, showSearchPlace, showSearchCalendar, showAddGuest, showSearchTotalModal,
@@ -61,8 +62,8 @@ const Layout: React.FunctionComponent<Props> = ({ props, children }) => {
   }, [joinRef, loginRef, totalModalRef]);
   return (
     <div className={`overflow-x-hidden overflow-y-scroll w-full h-full relative ${(showJoinModal || showLoginModal || showSearchTotalModal) && 'bg-black bg-opacity-75'}`}>
-      <div className={`px-16 border-b border-gray-300 ${!showHeader && 'hidden'}`}>
-        <Header />
+      <div className={`px-16 border-b border-gray-300 absolute top-0 ${!showHeader && 'hidden'}`}>
+        <Header headerCssType={headerCssType}/>
       </div>
       <div className={`w-30 h-200 bg-white z-20 absolute right-35 top-10 p-6 ${!showJoinModal && 'hidden'}`} ref={showJoinModal ? joinRef : null}>
         <Join />

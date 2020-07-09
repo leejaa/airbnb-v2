@@ -3,6 +3,7 @@ import { GraphQLDate } from 'graphql-iso-date';
 import { PrismaClient } from '@prisma/client';
 import { hash, compare } from "bcryptjs";
 import { sign, verify } from "jsonwebtoken";
+import axios from "axios";
 import _ from "lodash";
 import q, { async } from 'q';
 import { testPhotos, testWords, testAvatars } from './testdata';
@@ -11,6 +12,7 @@ const SELECT_USER = 'selectUser';
 const SELECT_USER2 = 'selectUser2';
 const SELECT_PHOTO = 'selectPhoto';
 const SELECT_ROOMS = 'selectRooms';
+const SEARCH_ROOMS = 'searchRooms';
 const SELECT_ROOM = 'selectRoom';
 const SELECT_LIKES = 'selectLikes';
 const SELECT_REVIEWS = 'selectReviews';
@@ -29,7 +31,7 @@ const Review = objectType({
   definition(t) {
     t.string('id')
     t.string('review'),
-    t.string('createdAt')
+      t.string('createdAt')
     t.int('roomId')
     t.int('userId')
     t.field('user', { type: 'User', nullable: true })
@@ -245,6 +247,56 @@ const Query = objectType({
         return rooms;
       },
     })
+    t.list.field(SEARCH_ROOMS, {
+      type: 'Room',
+      args: { searchedPlaceWord: stringArg() },
+      resolve: async (_parent, { searchedPlaceWord = "" }, ctx) => {
+        try {
+          const selectRooms = [];
+          let room: any = {};
+          let url = `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${encodeURI(`${searchedPlaceWord}+카페`)}&key=${process.env.GOOGLE_MAP_CLIENT_ID}`;
+          let result = await axios.get(url, {
+          });
+          let placeList = result?.data?.results ?? [];
+          if (!_.isEmpty(placeList)) {
+            for (const place of placeList.slice(0, 5)) {
+              url = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${place.place_id}&fields=name,rating,formatted_phone_number,photos&key=${process.env.GOOGLE_MAP_CLIENT_ID}`;
+              result = await axios.get(url, {
+              });
+              room = {
+                id: place.id,
+                name: place.name,
+                address: place.formatted_address || place.vicinity,
+                country: "한국",
+                description: place.formatted_address || place.vicinity,
+                lat: place?.geometry?.location?.lat ?? 0,
+                lng: place?.geometry?.location?.lng ?? 0,
+                price: place.user_ratings_total || place.price_level || 0,
+                photo: [],
+                score: place?.rating ?? 0,
+                __typename: "Room",
+              };
+              const photoreferences = _.map(result?.data?.result?.photos ?? [], item => item.photo_reference);
+              for (const photoreference of photoreferences.slice(0, 3)) {
+                url = `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${photoreference}&key=${process.env.GOOGLE_MAP_CLIENT_ID}`;
+                result = await axios.get(url, {
+                });
+                room.photo.push({
+                  id: result?.config?.url ?? "",
+                  file: result?.config?.url ?? "",
+                  __typename: "Photo",
+                });
+              }
+              selectRooms.push(room);
+            }
+          }
+          return selectRooms;
+        } catch (error) {
+          console.log('error', error);
+          return error;          
+        }
+      },
+    })
     t.field(SELECT_USER, {
       type: 'User',
       args: { id: intArg({ required: true }) },
@@ -366,8 +418,8 @@ const Mutation = objectType({
               }
             });
             console.log('cnt', cnt);
-            cnt ++;
-            pictureIndex ++;
+            cnt++;
+            pictureIndex++;
             if (_.gte(pictureIndex, _.size(testAvatars))) {
               pictureIndex = 0;
             }

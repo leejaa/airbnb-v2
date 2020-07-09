@@ -70,6 +70,26 @@ query selectRooms($first: Int, $skip: Int){
   }
 }
 
+query searchRooms($searchedPlaceWord: String!){
+  searchRooms(
+    searchedPlaceWord: $searchedPlaceWord,
+  ){
+    id
+    name
+    address
+    country
+    description
+    lat
+    lng
+    price
+    score
+    photo{
+      id
+      file
+    }
+  }
+}
+
 query selectRoom($id: Int!){
   selectRoom(
     id: $id,
