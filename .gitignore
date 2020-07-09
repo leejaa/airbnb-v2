@@ -3,3 +3,5 @@ node_modules/*
 .env
 out/*
 dist/*
+public/sw.js
+public/sw.js.map

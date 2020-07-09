@@ -255,12 +255,9 @@ const Query = objectType({
           const selectRooms = [];
           let room: any = {};
           let url = `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${encodeURI(`${searchedPlaceWord}+카페`)}&key=${process.env.GOOGLE_MAP_CLIENT_ID}`;
-          console.log('url', url);
           let result = await axios.get(url, {
           });
-          console.log('result', result);
           let placeList = result?.data?.results ?? [];
-          console.log('placeList', JSON.stringify(placeList));
           if (!_.isEmpty(placeList)) {
             for (const place of placeList.slice(0, 5)) {
               url = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${place.place_id}&fields=name,rating,formatted_phone_number,photos&key=${process.env.GOOGLE_MAP_CLIENT_ID}`;

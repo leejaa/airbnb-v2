@@ -1,5 +1,6 @@
 import React, { useCallback, useMemo, useState, useEffect } from "react";
 import { Carousel } from 'react-responsive-carousel';
+import styled from "styled-components";
 import { RoomCardProps } from "../types";
 import _ from "lodash";
 import { StarFilled, HeartOutlined, LeftOutlined, RightOutlined, HeartFilled } from "@ant-design/icons";
@@ -8,6 +9,20 @@ import { toggleShowLoginModal, toggleLikeModal } from "../../redux/indexSlice";
 import { useUpdateLikeMutation, useSelectRoomsQuery, SelectRoomsDocument } from "../../generated/graphql";
 import { rootState } from "../../redux/rootReducer";
 import { query } from "express";
+
+const Container = styled.div`
+    width: 100%;
+    height: 100%;
+`;
+const PictureContainer = styled.div`
+    border-width: 1px;
+    width: 100%;
+    height: 73%;
+`;
+const RoomImage = styled.img`
+    border-radius: 20px;
+    height: ${(props:any) => props.height}px;
+`;
 
 const RoomCard: React.FunctionComponent<RoomCardProps> = ({
     roomCardType = '001',
@@ -124,8 +139,8 @@ const RoomCard: React.FunctionComponent<RoomCardProps> = ({
                                 isLikeFast ? (
                                     <HeartFilled style={{ fontSize: 17, color: "rgb(255, 56, 92)" }} />
                                 ) : (
-                                    <HeartOutlined style={{ fontSize: 17, color: "rgb(34, 34, 34)" }} />
-                                )
+                                        <HeartOutlined style={{ fontSize: 17, color: "rgb(34, 34, 34)" }} />
+                                    )
                             }
                         </div>
                     )
@@ -173,6 +188,33 @@ const RoomCard: React.FunctionComponent<RoomCardProps> = ({
             </div>
         );
     }, [css, room, showDot, imgHeight, mt, showArrows, showLikeButton, isLikeFast]);
+    const RoomCard003 = useMemo(() => {
+        return (
+            <Container>
+                <PictureContainer>
+                    <Carousel
+                        showArrows={false}
+                        showStatus={false}
+                        showIndicators={true}
+                        infiniteLoop={true}
+                        showThumbs={false}
+                        renderArrowPrev={arrowPrev}
+                        renderArrowNext={arrowNext}
+                    >
+                        {
+                            room.photo.slice(0, 5).map(photo => {
+                                return (
+                                    <div key={photo.id} className="w-full">
+                                        <RoomImage src={`${photo.file ?? ""}`} height={imgHeight}/>
+                                    </div>
+                                )
+                            })
+                        }
+                    </Carousel>
+                </PictureContainer>
+            </Container>
+        );
+    }, [imgHeight]);
     let RoomCard;
     switch (roomCardType) {
         case '001':
@@ -180,6 +222,9 @@ const RoomCard: React.FunctionComponent<RoomCardProps> = ({
             break;
         case '002':
             RoomCard = _.clone(RoomCard002);
+            break;
+        case '003':
+            RoomCard = _.clone(RoomCard003);
             break;
         default:
             RoomCard = _.clone(RoomCard001);

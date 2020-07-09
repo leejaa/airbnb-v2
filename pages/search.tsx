@@ -8,6 +8,7 @@ import { WEBSCREEN_HEIGHT, WEBSCREEN_WIDTH, IS_CLIENT } from "../utils/utils";
 import { useSelector, useDispatch } from "react-redux";
 import { rootState } from "../redux/rootReducer";
 import { useRouter } from "next/router";
+import RoomCard from "../components/index/RoomCard";
 
 const Container = styled.div`
   width: 100%;
@@ -21,12 +22,10 @@ const RoomsContainer = styled.div`
   width: 100%;
   position: absolute;
   top: 0;
-  overflow: hidden;
 `;
 const RoomsContainer2 = styled.div`
   border-width: 1px;
   width: 100%;
-  height: 50000px;
   margin-top: 300px;
   border-top-left-radius: 20px;
   border-top-right-radius: 20px;
@@ -66,14 +65,13 @@ const RoomCardContainer = styled.div`
 `;
 
 const Search = (props) => {
-  const router : any = useRouter();
+  const router: any = useRouter();
   const { data, loading } = useSearchRoomsQuery({
     variables: {
-      searchedPlaceWord:  router?.query?.keyword ?? "",
+      searchedPlaceWord: router?.query?.keyword ?? "",
     },
     fetchPolicy: "cache-first",
   });
-  console.log('data', JSON.stringify(data));
   useEffect(() => {
   }, []);
   if (!IS_CLIENT || loading) {
@@ -92,13 +90,21 @@ const Search = (props) => {
             <RoomsContainer2TopLabel></RoomsContainer2TopLabel>
           </RoomsContainer2Top>
           <RoomsContainer2Title>
-            <LeftOutlined style={{ fontSize: 17, color: 'black' }}/>
+            <LeftOutlined style={{ fontSize: 17, color: 'black' }} />
             <RoomsContainer2TitleSpan>300개 이상의 숙소</RoomsContainer2TitleSpan>
             <div></div>
           </RoomsContainer2Title>
-          <RoomCardContainer></RoomCardContainer>
-          <RoomCardContainer></RoomCardContainer>
-          <RoomCardContainer></RoomCardContainer>
+          {
+            _.map(data?.searchRooms ?? [], (room, index) => (
+              <RoomCardContainer>
+                <RoomCard
+                  room={room as any}
+                  roomCardType="003"
+                  imgHeight={`${WEBSCREEN_HEIGHT / 3.6}`}
+                />
+              </RoomCardContainer>
+            ))
+          }
         </RoomsContainer2>
       </RoomsContainer>
     </Layout>
