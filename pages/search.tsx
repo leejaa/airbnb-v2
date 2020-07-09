@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { LeftOutlined } from "@ant-design/icons";
 import Layout from "../components/Layout";
 import _ from "lodash";
-import { useSelectRoomsQuery } from "../generated/graphql";
+import { useSelectRoomsQuery, useSearchRoomsQuery } from "../generated/graphql";
 import { WEBSCREEN_HEIGHT, WEBSCREEN_WIDTH, IS_CLIENT } from "../utils/utils";
 import { useSelector, useDispatch } from "react-redux";
 import { rootState } from "../redux/rootReducer";
@@ -66,12 +66,17 @@ const RoomCardContainer = styled.div`
 `;
 
 const Search = (props) => {
-  const router = useRouter();
-  const dispatch = useDispatch();
-  const { roomList = [] } = useSelector((state: rootState) => state.roomReducer);
+  const router : any = useRouter();
+  const { data, loading } = useSearchRoomsQuery({
+    variables: {
+      searchedPlaceWord:  router?.query?.keyword ?? "",
+    },
+    fetchPolicy: "cache-first",
+  });
+  console.log('data', JSON.stringify(data));
   useEffect(() => {
   }, []);
-  if (!IS_CLIENT) {
+  if (!IS_CLIENT || loading) {
     <Layout props={props}>
       <Container>
         로딩중...
