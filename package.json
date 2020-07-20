@@ -65,7 +65,7 @@
     "isomorphic-unfetch": "3.0.0",
     "jsonwebtoken": "^8.5.1",
     "jwt-decode": "^2.2.0",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.19",
     "lodash-move": "^1.1.1",
     "micro-cors": "^0.1.1",
     "moment": "^2.26.0",
