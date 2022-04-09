@@ -68,7 +68,7 @@
     "lodash": "^4.17.15",
     "lodash-move": "^1.1.1",
     "micro-cors": "^0.1.1",
-    "moment": "^2.26.0",
+    "moment": "^2.29.2",
     "next": "^9.4.4",
     "next-compose-plugins": "^2.2.0",
     "next-env": "^1.1.1",
